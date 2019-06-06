@@ -1,0 +1,141 @@
+package objects;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import core.GameManager;
+
+
+public class Emu extends GameObject{
+	public static final int NORMAL = 0;
+	public static final int SHIELD = 1;
+	public static final int MOTHER = 2;
+	ArrayList<BufferedImage> emuAnim;
+	HealthBar hpBar;
+	Shield shield;
+	
+	int frame = 0;
+	long animTimer;
+	long animCooldown = 100;
+	Rectangle head;
+	Rectangle body;
+	Rectangle legs;
+	
+	int type = 0;
+	long specialCooldown = 5000;
+	
+	public Emu(int x, int y, int width, int height, double speed, Color color, ArrayList<BufferedImage> emuAnim) {
+		super(x, y, width, height, speed, color);
+		this.emuAnim = emuAnim;
+		double size = (2.0-speed/2.1);
+		this.width*=size;
+		this.height*=size;
+		this.hpBar = new HealthBar(this, 50,10);
+		head = new Rectangle();
+		body = new Rectangle();
+		legs = new Rectangle();
+		animCooldown*=(3.2-speed);
+		int healthMod = (int) ((GameManager.getSecondsSinceStart()/20)*size);
+		this.maxHealth = Math.max(2.5-speed,1)+1+healthMod;
+		this.health = maxHealth;
+	}
+	
+	public void setType(int type){
+		this.type = type;
+		if(type == SHIELD){
+			shield = new Shield((int)(getX()+width/3), (int)(getY()-height/3), (int)(width*1.5), (int)(height*1.5), 0, Color.BLUE, this);
+			GameManager.addShield(shield);
+		}
+	}
+	
+	public void update(){
+		super.update();
+		hpBar.update();
+		if(type == 1){
+			shield.update();
+		}
+		if (System.currentTimeMillis() - animTimer >= animCooldown) {
+			animTimer = System.currentTimeMillis();
+			frame++;
+			if(frame > 3){
+				frame = 0;
+			}
+		}
+		updateCollisionBoxes();
+		move();
+	}
+	
+	void performSpecial(){
+		if(type == 1){
+			
+		}
+	}
+	
+	void updateCollisionBoxes(){
+		int d = Math.abs(2-frame);
+		head.setBounds((int)getX()+(width/25)-d*3, (int)getY(), (int)(width/2.5), (int)(height/2.6));
+		body.setBounds((int)getX()+(width/25), (int)(getY()+(height*0.4)), (int)(width*0.95), (int)(height/2.5));
+		legs.setBounds((int)(getX() + width/3), (int)(getY()+(height*0.8)), (int)(width/2.5), height/5);
+	}
+	
+	void drawCollisionBoxes(Graphics g){
+		g.setColor(Color.BLUE);
+		g.drawRect((int)head.x, (int)head.y, head.width, head.height);
+		g.drawRect((int)body.x, (int)body.y, body.width, body.height);
+		g.drawRect((int)legs.x, (int)legs.y, legs.width, legs.height);
+	}
+	
+	boolean collidesWith(Rectangle o){
+		if(o.intersects(head) || o.intersects(body) || o.intersects(legs)){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean collidesWith(Projectile o){
+		if(o.collisionBox.intersects(head)){
+			takeDamage(o.getDamage()*Player.headshotMultiplier);
+			return true;
+		}
+		else if(o.collisionBox.intersects(body) || o.collisionBox.intersects(legs)){
+			takeDamage(o.getDamage());
+			return true;
+		}
+		return false;
+	}
+	
+	public void move(){
+		setX(getX() - speed);
+		if(collidesWith(GameManager.base)){
+			GameManager.takeDamage((int)health);
+			setAlive(false);
+		}
+	}
+	
+	public void takeDamage(double damage){
+		health -= damage;
+		if(health <= 0){
+			setAlive(false);
+			GameManager.incrementScore((int)(maxHealth));
+		}
+	}
+	
+	public void draw(Graphics g){
+		hpBar.draw(g);
+		g.drawImage(emuAnim.get(frame), (int)getX()-10, (int)getY()-15, width+20, height+25,null);
+		if(GameObject.debugRenderMode == 1){
+			drawCollisionBoxes(g);
+		}
+		if(type == 1){
+			shield.draw(g);
+		}
+		super.draw(g);
+	}
+	
+	public void setAnim(ArrayList<BufferedImage> anim){
+		this.emuAnim = anim;
+	}
+
+}
