@@ -1,6 +1,7 @@
 package objects;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -31,7 +32,17 @@ public class Projectile extends GameObject {
 
 	public void draw(Graphics g) {
 		super.draw(g);
-		g.drawImage(GamePanel.fireball.get(getFrame()), (int) getX(), (int) getY(), width, height,	null);
+		if(vy == 0){
+			g.drawImage(GamePanel.fireball.get(getFrame()), (int) getX(), (int) getY(), width, height,	null);
+		}
+		else{
+			Graphics2D g2d = (Graphics2D) g.create();
+			double rads = Math.toRadians((vy/speed)*90);
+			g2d.rotate(rads, (int) getX()+width/2, (int) getY()+height/2);
+			g2d.drawImage(GamePanel.fireball.get(getFrame()), (int) getX(), (int) getY(), width, height,	null);
+			g2d.rotate(-rads, (int) getX()+width/2, (int) getY()+height/2);
+			g2d.dispose();
+		}
 	}
 
 	public void update() {

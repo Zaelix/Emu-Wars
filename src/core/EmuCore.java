@@ -29,7 +29,7 @@ public class EmuCore {
 		panel = new GamePanel();
 		frame.setVisible(true);
 		frame.setSize(WIDTH,HEIGHT);
-		
+		frame.setTitle("The Second Great Emu War");
 		frame.add(panel);
 		frame.addKeyListener(panel);
 		frame.addMouseListener(panel);
