@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import core.EmuCore;
+import core.GamePanel;
 
 
 public class GameObject {
@@ -23,6 +24,10 @@ public class GameObject {
 	Color color;
 	private boolean isAlive = true;
 	Rectangle collisionBox;
+	private long animTimer;
+	private long animCooldown = 100;
+	private int frame;
+	public boolean isActive = true;
 	
 	GameObject(int x, int y, int width, int height, double speed, Color color){
 		this.setX(x - (width/2));
@@ -53,6 +58,26 @@ public class GameObject {
 			g.drawRect(collisionBox.x, collisionBox.y, collisionBox.width, collisionBox.height);
 			g.setColor(Color.CYAN);
 			g.drawOval((int)getCenterX()-2, (int)getCenterY()-2, 4, 4);
+		}
+	}
+	
+	void animate(){
+		if (System.currentTimeMillis() - animTimer >= getAnimCooldown()) {
+			animTimer = System.currentTimeMillis();
+			setFrame(getFrame() + 1);
+			if(getFrame() > 3){
+				setFrame(0);
+			}
+		}
+	}
+	
+	void animateOnce(int animationLength){
+		if (System.currentTimeMillis() - animTimer >= getAnimCooldown()) {
+			animTimer = System.currentTimeMillis();
+			setFrame(getFrame() + 1);
+			if (getFrame() >= animationLength) {
+				isActive = false;
+			}
 		}
 	}
 
@@ -94,5 +119,32 @@ public class GameObject {
 
 	public void setY(double y) {
 		this.y = y;
+	}
+
+	public long getAnimCooldown() {
+		return animCooldown;
+	}
+
+	public void setAnimCooldown(long animCooldown) {
+		this.animCooldown = animCooldown;
+	}
+
+	protected void setAnimTimer(long animTimer) {
+		this.animTimer = animTimer;
+		
+	}
+	
+	public void startAnimation() {
+		setFrame(0);
+		setAnimTimer(System.currentTimeMillis());
+		isActive = true;
+	}
+
+	public int getFrame() {
+		return frame;
+	}
+
+	public void setFrame(int frame) {
+		this.frame = frame;
 	}
 }

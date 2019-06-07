@@ -43,7 +43,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	public static ArrayList<BufferedImage> emuRun = new ArrayList<BufferedImage>();
 	public static ArrayList<BufferedImage> emuSit = new ArrayList<BufferedImage>();
 	public static ArrayList<BufferedImage> emuFloat = new ArrayList<BufferedImage>();
-
+	
+	
+	public static ArrayList<BufferedImage> explosion = new ArrayList<BufferedImage>();
+	public static ArrayList<BufferedImage> turretFire = new ArrayList<BufferedImage>();
+	public static ArrayList<BufferedImage> fireball = new ArrayList<BufferedImage>();
+	
 	public static BufferedImage shield;
 
 	// Colored Variant objects
@@ -53,6 +58,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	public static ArrayList<ArrayList<BufferedImage>> runAnims = new ArrayList<ArrayList<BufferedImage>>();
 	ArrayList<Character> typed = new ArrayList<Character>();
 
+	private int menuDifficultyChoice = 0;
 	GamePanel() {
 		timer = new Timer(1000 / 100, this);
 		startGame();
@@ -70,36 +76,61 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 	void loadImages() {
 		loadEmuImages();
-		Path currentRelativePath = Paths.get("");
-		String s = currentRelativePath.toAbsolutePath().toString();
-		try {
-			shield = ImageIO.read(new File(s + "\\src\\spr_shield.png"));
-		} catch (IOException e) {
-			System.out.println("failed to load " + s + "\\src\\spr_shield.png");
-		}
-
+		loadExplosionImages();
+		loadTurretImages();
+		loadFireballImages();
+		shield = loadImage("spr_shield.png");
+		
 	}
-
-	void loadEmuImages() {
+	
+	BufferedImage loadImage(String fileName){
 		BufferedImage img = null;
 		Path currentRelativePath = Paths.get("");
 		String s = currentRelativePath.toAbsolutePath().toString();
 		try {
-			img = ImageIO.read(new File(s + "\\src\\bird.png"));
+			img = ImageIO.read(new File(s + "\\src\\"+fileName));
 		} catch (IOException e) {
-			System.out.println("failed to load " + s + "\\src\\bird.png");
+			System.out.println("failed to load " + s + "\\src\\"+fileName);
+		}
+		return img;
+	}
+
+	void loadEmuImages() {
+		BufferedImage img = loadImage("bird.png");
+		int xSize = (img.getWidth() / 4);
+		int ySize = (img.getHeight() / 6);
+		for (int i = 0; i < 4; i++) {
+			emuStand.add(img.getSubimage(i * xSize, 0*ySize, xSize,	ySize));
 		}
 		for (int i = 0; i < 4; i++) {
-			emuStand.add(img.getSubimage(i * (img.getWidth() / 4), 0*(img.getHeight() / 6), img.getWidth() / 4,	(img.getHeight() / 6)));
+			  emuRun.add(img.getSubimage(i * xSize, 1*ySize, xSize,	ySize));
 		}
 		for (int i = 0; i < 4; i++) {
-			  emuRun.add(img.getSubimage(i * (img.getWidth() / 4), 1*(img.getHeight() / 6), img.getWidth() / 4,	(img.getHeight() / 6) ));
+			  emuSit.add(img.getSubimage(i * xSize, 2*ySize, xSize,	ySize));
 		}
 		for (int i = 0; i < 4; i++) {
-			  emuSit.add(img.getSubimage(i * (img.getWidth() / 4), 2*(img.getHeight() / 6), img.getWidth() / 4,	(img.getHeight() / 6)));
+			emuFloat.add(img.getSubimage(i * xSize, 5*ySize, xSize,	ySize));
 		}
+	}
+	
+	void loadExplosionImages(){
+		BufferedImage img = loadImage("explosion.png");
+		for (int i = 0; i < 10; i++) {
+			explosion.add(img.getSubimage(i * 96, 0, 96, 96));
+		}
+	}
+	
+	void loadTurretImages(){
+		BufferedImage img = loadImage("kir-shoot.png");
+		for (int i = 0; i < 5; i++) {
+			turretFire.add(img.getSubimage(i * 96, 0, 96, 96));
+		}
+	}
+	
+	void loadFireballImages(){
+		BufferedImage img = loadImage("fireball.png");
 		for (int i = 0; i < 4; i++) {
-			emuFloat.add(img.getSubimage(i * (img.getWidth() / 4), 5*(img.getHeight() / 6), img.getWidth() / 4,	(img.getHeight() / 6)));
+			fireball.add(img.getSubimage(i * 26, 0, 26, 14));
 		}
 	}
 
@@ -225,6 +256,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		// System.out.println(e.getKeyCode());
 		int keyCode = e.getKeyCode();
 		char keyChar = e.getKeyChar();
+		System.out.println(e.getKeyCode());
 		if (GameManager.currentState == GameManager.GAME_STATE) {
 			if (keyChar == 'w') {
 				Player.up = true;
@@ -260,24 +292,27 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		}
 		if (GameManager.currentState == GameManager.MENU_STATE) {
 			if (keyCode == 49) {
-				GameManager.menuEmu.setAnim(emuSit);
-				GameManager.setDifficulty(0);
+				setDifficulty(0);
 			}
 			if (keyCode == 50) {
-				GameManager.menuEmu.setAnim(emuStand);
-				GameManager.setDifficulty(1);
+				setDifficulty(1);
 			}
 			if (keyCode == 51) {
-				GameManager.menuEmu.setAnim(emuRun);
-				GameManager.setDifficulty(2);
+				setDifficulty(2);
 			}
 			if (keyCode == 57) {
-				GameManager.menuEmu.setAnim(emuFloat);
-				GameManager.setDifficulty(9);
+				setDifficulty(9);
 			}
-			if(keyCode == 10){
+			if(keyCode == 10 || keyCode == 32){
 				GameManager.menuEmu.setX(EmuCore.WIDTH*2);
 				GameManager.start();
+			}
+			if(keyCode == 38 || keyCode == 87){
+				setDifficulty(menuDifficultyChoice-1);
+			}
+
+			if(keyCode == 40 || keyCode == 83){
+				setDifficulty(menuDifficultyChoice+1);
 			}
 		}
 		if(GameManager.currentState == GameManager.END_STATE){
@@ -286,6 +321,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			}
 		}
 
+	}
+	
+	void setDifficulty(int d){
+		if(d > 2 && d != 9){
+			d = 2;
+		}
+		else if(d < 0){
+			d = 0;
+		}
+		menuDifficultyChoice = d;
+		if(d == 0){
+			GameManager.menuEmu.setAnim(emuSit);
+		}
+		else if(d == 1){
+			GameManager.menuEmu.setAnim(emuStand);
+		}
+		else if(d == 2){
+			GameManager.menuEmu.setAnim(emuRun);
+		}
+		else if(d == 9){
+			GameManager.menuEmu.setAnim(emuFloat);
+		}
+		GameManager.setDifficulty(d);
 	}
 
 	@Override

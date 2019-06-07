@@ -8,26 +8,16 @@ import core.GamePanel;
 
 public class Projectile extends GameObject {
 	private double damage = 1;
-
-	ArrayList<Point> trail = new ArrayList<Point>();
-	int trailSize = 10;
-
-	public Projectile(int x, int y, int width, int height, double speed, Color color, Point from, Point to, double damage){
-		super(x,y,width,height,speed,color);
-
-		setup(x,y,width, height, speed, color, from, to, damage);
-		
-	}
 	
-	Projectile(int x, int y, int width, int height, double speed, Color color, Point from, Point to, double damage, int trailSize){
-		super(x,y,width,height,speed,color);
 
-		setup(x,y,width, height, speed, color, from, to, damage);
-		this.trailSize = trailSize;
+	public Projectile(int x, int y, double speed, Color color, Point from, Point to, double damage){
+		super(x,y,(int) (20+speed), (int) (15-(speed/2)),speed,color);
+
+		setup(x,y, speed, color, from, to, damage);
 		
 	}
 
-	void setup(int x, int y, int width, int height, double speed, Color color,
+	void setup(int x, int y, double speed, Color color,
 			Point from, Point to, double damage) {
 		double slopeX = from.x - (to.x - 10);
 		double slopeY = from.y - (to.y - 32);
@@ -41,36 +31,14 @@ public class Projectile extends GameObject {
 
 	public void draw(Graphics g) {
 		super.draw(g);
-		int x = (int) this.getX();
-		int y = (int) this.getY();
-		g.setColor(color);
-		g.fillOval(x, y, width, height);
-		if(trailSize > 0){
-			drawParticles(g, x, y);
-		}
-	}
-
-	void drawParticles(Graphics g, int x, int y) {
-		int dx = GamePanel.gen.nextInt(7);
-		int dy = GamePanel.gen.nextInt(7);
-		trail.add(new Point((int) x + dx, (int) y + dy));
-
-		for (Point p : trail) {
-			int r = GamePanel.gen.nextInt(80) + 170;
-			int gb = GamePanel.gen.nextInt(40);
-			g.setColor(new Color(r, gb, gb));
-			g.fillOval(p.x, p.y, 2, 2);
-		}
-
-		while (trail.size() > trailSize) {
-			trail.remove(0);
-		}
+		g.drawImage(GamePanel.fireball.get(getFrame()), (int) getX(), (int) getY(), width, height,	null);
 	}
 
 	public void update() {
 		super.update();
 		setX(getX() + vx);
 		setY(getY() + vy);
+		animate();
 
 	}
 

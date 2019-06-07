@@ -18,6 +18,7 @@ import java.util.Timer;
 import javax.imageio.ImageIO;
 
 import objects.Emu;
+import objects.Explosion;
 import objects.GameObject;
 import objects.Player;
 import objects.Projectile;
@@ -45,10 +46,13 @@ public class GameManager {
 	static ArrayList<UpgradeButton> buttons = new ArrayList<UpgradeButton>();
 	static ArrayList<Tower> towers = new ArrayList<Tower>();
 	static ArrayList<Shield> shields = new ArrayList<Shield>();
+	static ArrayList<Explosion> explosionPool = new ArrayList<Explosion>();
 
 	static Player player = new Player(250, 450, 50, 50, Color.BLUE);
-	static Emu menuEmu = new Emu(800, 200, 200,300,0, Color.BLUE, GamePanel.emuSit);
-	static Rectangle menuSelection = new Rectangle(100, (int)(EmuCore.HEIGHT * 0.3));
+	static Emu menuEmu = new Emu(800, 200, 200, 300, 0, Color.BLUE,
+			GamePanel.emuSit);
+	static Rectangle menuSelection = new Rectangle(100,
+			(int) (EmuCore.HEIGHT * 0.3));
 	static int difficulty = 0;
 	long lastFrameTime;
 	long spawnTimer;
@@ -77,7 +81,11 @@ public class GameManager {
 	GameManager() {
 		timeAtStart = System.currentTimeMillis();
 		menuSelection.x = 75;
-		menuSelection.y = (int)(EmuCore.HEIGHT * 0.23);
+		menuSelection.y = (int) (EmuCore.HEIGHT * 0.23);
+
+		for (int i = 0; i < 20; i++) {
+			explosionPool.add(new Explosion(-1000, -1000, 150, 150));
+		}
 	}
 
 	void draw(Graphics g) {
@@ -103,7 +111,7 @@ public class GameManager {
 		g.drawString("2 ", 100, (int) (EmuCore.HEIGHT * 0.4));
 		g.drawString("3 ", 100, (int) (EmuCore.HEIGHT * 0.5));
 		menuEmu.draw(g);
-		menuSelection.y = (int)(EmuCore.HEIGHT * (0.23 + (0.1*difficulty)));
+		menuSelection.y = (int) (EmuCore.HEIGHT * (0.23 + (0.1 * difficulty)));
 		g.drawRoundRect(menuSelection.x, menuSelection.y, 400, 100, 50, 50);
 
 		g.drawString("PRESS ENTER TO START", 75, (int) (EmuCore.HEIGHT * 0.6));
@@ -143,6 +151,10 @@ public class GameManager {
 
 			for (int i = 0; i < buttons.size(); i++) {
 				buttons.get(i).draw(g);
+			}
+
+			for (int i = 0; i < explosionPool.size(); i++) {
+				explosionPool.get(i).draw(g);
 			}
 			// drawLineToCursor(g);
 			drawPointsBox(g);
@@ -225,13 +237,19 @@ public class GameManager {
 		for (int i = 0; i < towers.size(); i++) {
 			towers.get(i).update();
 		}
+		for (int i = 0; i < explosionPool.size(); i++) {
+			explosionPool.get(i).update();
+		}
 		spawnEmus();
 		checkCollisions();
 		purgeObjects();
 
 		// Increasing spawn rates
-		if (frameCount % 10 == 0) {
+		if (frameCount % 10 == 0 && spawnCooldown > 10) {
 			spawnCooldown *= spawnChangeRate;
+		}
+		else if(spawnCooldown<10 && frameCount % 10 == 0){
+			Emu.healthDifficultyDivisor-=0.01;
 		}
 		if (frameCount % 2000 == 0 && spawnChangeRate < 0.9999) {
 			spawnChangeRate += 0.0001;
@@ -239,7 +257,8 @@ public class GameManager {
 		frameCount++;
 		updateStats();
 
-		specialsSpawnChance = Math.min(getSecondsSinceStart() / specialsSpawnChanceGrowthrate, specialsSpawnChanceMax);
+		specialsSpawnChance = Math.min(getSecondsSinceStart()
+				/ specialsSpawnChanceGrowthrate, specialsSpawnChanceMax);
 	}
 
 	void updateEndState() {
@@ -276,16 +295,19 @@ public class GameManager {
 				clicked.x - 10, clicked.y - 32);
 
 	}
-	
-	public Point getMouseLocation(){
+
+	public Point getMouseLocation() {
 		Point mouse = MouseInfo.getPointerInfo().getLocation();
 		Point frame = EmuCore.frame.getLocation();
 		return new Point((int) (mouse.getX() - frame.getX()),
 				(int) (mouse.getY() - frame.getY()));
 	}
-	
-	public boolean mouseIntersects(Rectangle box){
-		if(mouseLoc.getX() > box.getX() && mouseLoc.getX() < box.getX() + box.getWidth() && mouseLoc.getY() > box.getY() && mouseLoc.getY() < box.getY() + box.getHeight()){
+
+	public boolean mouseIntersects(Rectangle box) {
+		if (mouseLoc.getX() > box.getX()
+				&& mouseLoc.getX() < box.getX() + box.getWidth()
+				&& mouseLoc.getY() > box.getY()
+				&& mouseLoc.getY() < box.getY() + box.getHeight()) {
 			return true;
 		}
 		return false;
@@ -416,8 +438,8 @@ public class GameManager {
 		Point play = new Point((int) player.getCenterX(),
 				(int) player.getCenterY());
 		bullets.add(new Projectile((int) player.getCenterX(), (int) player
-				.getCenterY(), 10, 10, player.getBulletSpeed(), Color.ORANGE,
-				play, p, player.getDamage()));
+				.getCenterY(), player.getBulletSpeed(), Color.ORANGE, play, p,
+				player.getDamage()));
 	}
 
 	static void setClickPoint(Point p) {
@@ -427,26 +449,27 @@ public class GameManager {
 	public static void gameOver() {
 		currentState = END_STATE;
 		menuEmu.setAnim(GamePanel.emuSit);
-		menuEmu.setX(EmuCore.WIDTH/6);
-		
+		menuEmu.setX(EmuCore.WIDTH / 6);
+
 		timeAtEnd = getSecondsSinceStart();
 		// timer.stop();
 	}
 
-	public static void start(){
+	public static void start() {
 		currentState = GAME_STATE;
 		setDifficultyStats();
 	}
-	
-	public static void setDifficulty(int diff){
+
+	public static void setDifficulty(int diff) {
 		difficulty = diff;
 	}
+
 	public static void setDifficultyStats() {
 		if (difficulty == 0) {
 			playerHealth = 100;
 			points = 50;
 			spawnCooldown = 8000;
-			spawnChangeRate = 0.9999;	
+			spawnChangeRate = 0.9999;
 			specialsSpawnChance = 0;
 			specialsSpawnChanceGrowthrate = 40;
 			specialsSpawnChanceMax = 50;
@@ -506,10 +529,25 @@ public class GameManager {
 		GameObject obj;
 		if (object.equals("Tower")) {
 			obj = new Tower((int) player.getCenterX(),
-					(int) player.getCenterY(), 50, 50, 0, Color.GREEN);
+					(int) player.getCenterY(), 100, 100, 0, Color.GREEN);
 			towers.add((Tower) obj);
 		}
 
+	}
+
+	public static void explodeAt(int x, int y, int size) {
+		Explosion ex = null;
+		for (Explosion e : explosionPool) {
+			if (!e.isActive) {
+				ex = e;
+			}
+		}
+		if (ex == null) {
+			ex = new Explosion(-100, -100, 150, 150);
+		}
+		ex.setSize(size * 2);
+		ex.setPosition(x, y);
+		ex.startAnimation();
 	}
 
 	public static Point getClickedPoint() {

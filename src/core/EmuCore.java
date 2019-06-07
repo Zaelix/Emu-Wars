@@ -62,4 +62,14 @@ public class EmuCore {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/*
+	 * CREDITS:
+	 * explosion by J-Robot, OpenGameArt.org
+	 * gungirl by Spring, OpenGameArt.org
+	 * kir by Spring, OpenGameArt.org
+	 * shield by Bonsaiheldin, OpenGameArt.org
+	 * 
+	 */
 }

@@ -60,7 +60,7 @@ public class Player extends GameObject {
 	void fireAt(int x, int y) {
 		Point play = new Point((int) getCenterX(), (int) getCenterY());
 		Point target = new Point(x, y);
-		Projectile p = new Projectile((int) getCenterX(), (int) getCenterY(), 10, 10,
+		Projectile p = new Projectile((int) getCenterX(), (int) getCenterY(),
 				getBulletSpeed(), Color.orange, play, target, getDamage());
 		GameManager.addBullet(p);
 	}

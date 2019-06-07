@@ -55,6 +55,9 @@ public class HealthBar {
 			g.setColor(color);
 			g.fillRect((int) (x + 1), (int) (y + 1),
 					(int) ((width - 2) * percent), height - 2);
+			if(GameObject.debugRenderMode == 1){
+				g.drawString(Math.ceil(owner.health) + "/" + Math.ceil(owner.maxHealth), (int)x, (int)y);
+			}
 		}
 	}
 }
