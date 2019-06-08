@@ -49,7 +49,7 @@ public class GameManager {
 	static ArrayList<Explosion> explosionPool = new ArrayList<Explosion>();
 
 	static Player player = new Player(250, 450, 50, 50, Color.BLUE);
-	static Emu menuEmu = new Emu(800, 200, 200, 300, 0, Color.BLUE,
+	static Emu menuEmu = new Emu(EmuCore.WIDTH/2, 200, 200, 300, 0, Color.BLUE,
 			GamePanel.emuSit);
 	static Rectangle menuSelection = new Rectangle(100,
 			(int) (EmuCore.HEIGHT * 0.3));

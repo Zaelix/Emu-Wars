@@ -317,7 +317,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		}
 		if(GameManager.currentState == GameManager.END_STATE){
 			if (keyCode == 10) {
-				GameManager.restart();
+				GameManager.currentState = GameManager.MENU_STATE;
+				GameManager.menuEmu.setX(EmuCore.WIDTH/2);
 			}
 		}
 
