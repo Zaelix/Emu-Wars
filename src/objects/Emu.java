@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import core.GameManager;
+import core.GamePanel;
 
 
 public class Emu extends GameObject{
@@ -22,6 +23,7 @@ public class Emu extends GameObject{
 	Rectangle legs;
 	
 	int type = 0;
+	long specialTimer;
 	long specialCooldown = 5000;
 	
 	public Emu(int x, int y, int width, int height, double speed, Color color, ArrayList<BufferedImage> emuAnim) {
@@ -45,6 +47,18 @@ public class Emu extends GameObject{
 		if(type == SHIELD){
 			shield = new Shield((int)(getX()+width/3), (int)(getY()-height/3), (int)(width*1.5), (int)(height*1.5), 0, Color.BLUE, this);
 			GameManager.addShield(shield);
+			setAnim(GamePanel.emuFloat);
+		}
+		if(type == MOTHER && speed > 0.4){
+			type = NORMAL;
+			setAnim(GamePanel.emuRun);
+		}
+		else if (type == MOTHER){
+			setAnim(GamePanel.emuSit);
+			this.width*=1.5;
+			this.height*=1.5;
+			this.maxHealth*=1.5;
+			this.health = this.maxHealth;
 		}
 	}
 	
@@ -57,12 +71,18 @@ public class Emu extends GameObject{
 		animate();
 		updateCollisionBoxes();
 		move();
+		performSpecial();
 	}
 	
 	void performSpecial(){
-		if(type == 1){
-			
+		if (System.currentTimeMillis() - specialTimer >= specialCooldown) {
+			specialTimer = System.currentTimeMillis();
+			if(type == MOTHER){
+				Emu e = new Emu((int)getX(), (int)getY(), (int) (width/1.5), (int) (height/1.5), speed*1.5, Color.BLACK, GamePanel.emuRun);
+				GameManager.addEmu(e);
+			}
 		}
+		
 	}
 	
 	void updateCollisionBoxes(){

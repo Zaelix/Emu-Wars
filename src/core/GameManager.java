@@ -335,7 +335,8 @@ public class GameManager {
 				Color.BLACK, anim);
 
 		if (GamePanel.gen.nextInt(100) < specialsSpawnChance) {
-			e.setType(1);
+			int type = GamePanel.gen.nextInt(3);
+			e.setType(type);
 		}
 		addEmu(e);
 
@@ -398,7 +399,7 @@ public class GameManager {
 		bullets.add(p);
 	}
 
-	static void addEmu(Emu e) {
+	public static void addEmu(Emu e) {
 		emus.add(e);
 	}
 

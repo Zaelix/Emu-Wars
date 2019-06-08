@@ -26,7 +26,7 @@ public class Projectile extends GameObject {
 		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
 		vx = -slopeX / magn * speed;
 		vy = -slopeY / magn * speed;
-
+		
 		this.setDamage(damage);
 	}
 
