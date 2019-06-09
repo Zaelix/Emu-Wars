@@ -2,6 +2,7 @@ package objects;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class Grenade extends GameObject{
 	long fuseLength = 2000;
 	int diameter = 100;
 	private double damage = 1;
+	
+	double angle = 0;
 	Grenade(int x, int y, double speed, Point from, Point to) {
 		super(x, y, 30, 30, speed, Color.RED);
 		setup(from, to);
@@ -41,8 +44,14 @@ public class Grenade extends GameObject{
 	}
 	
 	public void draw(Graphics g){
-		g.drawImage(GamePanel.grenade, (int)getX(), (int)getY(), width, height, null);
-		//g.drawRect((int)getX(), (int)getY(), 20, 20);
+		//g.drawImage(GamePanel.grenade, (int)getX(), (int)getY(), width, height, null);
+		Graphics2D g2d = (Graphics2D) g.create();
+		double rads = Math.toRadians(angle);
+		g2d.rotate(rads, (int) getX()+width/2, (int) getY()+height/2);
+		g2d.drawImage(GamePanel.grenade, (int)getX(), (int)getY(), width, height, null);
+		g2d.rotate(-rads, (int) getX()+width/2, (int) getY()+height/2);
+		g2d.dispose();
+		angle+=vx+vy;
 		super.draw(g);
 	}
 	

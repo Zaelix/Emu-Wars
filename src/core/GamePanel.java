@@ -158,6 +158,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			GameManager.spawnCooldown = 100;
 			typed.clear();
 		}
+		if (t.contains("ineedmorebooms")) {
+			Player.grenadeCooldown = 5;
+			Player.maxGrenades = 10;
+			typed.clear();
+		}
 
 	}
 

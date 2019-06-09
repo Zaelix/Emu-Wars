@@ -23,9 +23,9 @@ public class Player extends GameObject {
 	private double bulletSpeed = 3;
 
 	long grenadeTimer = 0;
-	private long grenadeCooldown = 4000;
-	int grenades = 3;
-	int maxGrenades = 3;
+	public static long grenadeCooldown = 4000;
+	public static int grenades = 3;
+	public static int maxGrenades = 3;
 
 	public Player(int x, int y, int width, int height, Color color) {
 		super(x, y, width, height, height, color);
