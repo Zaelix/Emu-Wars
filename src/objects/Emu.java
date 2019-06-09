@@ -127,10 +127,15 @@ public class Emu extends GameObject{
 	}
 	
 	public void takeDamage(double damage){
-		health -= damage;
+		if(type == SHIELD && shield.isAlive()){
+			shield.takeDamage(damage);
+		}
+		else{
+			health -= damage;
+		}
 		if(health <= 0){
 			setAlive(false);
-			GameManager.explodeAt((int)getX()-width/2, (int)getY()-height/2, width, GamePanel.emuExplosion);
+			GameManager.explodeAt((int)getX()-width/2, (int)getY()-height/2, width, GamePanel.explosion);
 			GameManager.incrementScore((int)(maxHealth));
 		}
 	}

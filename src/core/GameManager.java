@@ -67,6 +67,7 @@ public class GameManager {
 	static long timeAtStart;
 	static long timeAtEnd;
 
+	public static Font defaultFont = new Font("AR ESSENCE", Font.BOLD, 20);
 	Font endFont = new Font("AR DESTINE", Font.BOLD, 50);
 	Font pausedFont = new Font("AR DESTINE", Font.BOLD, 430);
 
@@ -171,6 +172,7 @@ public class GameManager {
 	}
 
 	void drawEndState(Graphics g) {
+		g.setFont(defaultFont);
 		g.setColor(Color.BLACK);
 		g.setFont(endFont);
 		g.drawString("GAME OVER", (int) (EmuCore.WIDTH / 2.5),
@@ -184,6 +186,7 @@ public class GameManager {
 	}
 
 	void drawHealthBox(Graphics g) {
+		g.setFont(defaultFont);
 		g.setColor(Color.BLACK);
 		g.fillRect(130, 10, 80, 49);
 		g.setColor(new Color(40, 240, 40));
@@ -196,6 +199,7 @@ public class GameManager {
 	}
 
 	void drawPointsBox(Graphics g) {
+		g.setFont(defaultFont);
 		String pts = myFormatter.format(points);
 		g.setColor(Color.BLACK);
 		g.fillRect(10, 10, 120, 49);
@@ -575,11 +579,16 @@ public class GameManager {
 		ex.startAnimation();
 	}
 	
-	public static void damageArea(int x, int y, double size, double damage){
+	public static void damageArea(int x, int y, double size, double damage, double maxDamage){
 		for(Emu e : emus){
-			double dist = dist(e.getCenterX(), e.getCenterY(), x, y);
-			if(dist < size){
-				e.takeDamage(damage/dist);
+			double dist = dist(e.getCenterX(), e.getCenterY(), x, y) - e.getAverageSize()/2;
+			if (dist <= 0){
+				dist = 1;
+			}
+			if(dist <= size){
+				double d = Math.min(damage*(size/dist), maxDamage);
+				e.takeDamage(d);
+				System.out.println(d);
 			}
 		}
 	}

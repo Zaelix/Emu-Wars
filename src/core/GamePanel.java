@@ -127,7 +127,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		variantColor = new Color(gen.nextInt(150), gen.nextInt(150),
 				gen.nextInt(150));
 		for (int i = 0; i < 10; i++) {
-			emuExplosion.add(shuffleImageColorComponents(img.getSubimage(i * 96, 0, 96, 96), arr, variantColor));
+			emuExplosion.add(getColoredImage(img.getSubimage(i * 96, 0, 96, 96), arr, variantColor));
 		}
 	}
 
@@ -276,7 +276,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		// System.out.println(e.getKeyCode());
 		int keyCode = e.getKeyCode();
 		char keyChar = e.getKeyChar();
-		System.out.println(e.getKeyCode());
 		if (GameManager.currentState == GameManager.GAME_STATE) {
 			if (keyChar == 'w') {
 				Player.up = true;

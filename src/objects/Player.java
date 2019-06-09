@@ -1,4 +1,5 @@
 package objects;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -21,6 +22,11 @@ public class Player extends GameObject {
 	private double damage = 1;
 	private double bulletSpeed = 3;
 
+	long grenadeTimer = 0;
+	private long grenadeCooldown = 4000;
+	int grenades = 3;
+	int maxGrenades = 3;
+
 	public Player(int x, int y, int width, int height, Color color) {
 		super(x, y, width, height, height, color);
 	}
@@ -28,15 +34,26 @@ public class Player extends GameObject {
 	public void draw(Graphics g) {
 		g.setColor(color);
 		g.fillRect((int) getX(), (int) getY(), width, height);
-		
+
 		// draw the center point
 		g.setColor(Color.CYAN);
+		drawGrenadeCount(g);
 		super.draw(g);
+	}
+
+	public void drawGrenadeCount(Graphics g) {
+		g.setFont(GameManager.defaultFont);
+		g.setColor(Color.BLACK);
+		g.drawString(grenades+"", (int) getX(), (int) getY() - 4);
+		g.drawString("x", (int) getX()+15, (int) getY() - 4);
+		g.drawImage(GamePanel.grenade, (int) getX() + 25, (int) getY() - 25,
+				25, 25, null);
 	}
 
 	public void update() {
 		super.update();
-		if (isFiring() && System.currentTimeMillis() - fireTimer >= getFireCooldown()) {
+		if (isFiring()
+				&& System.currentTimeMillis() - fireTimer >= getFireCooldown()) {
 			fire();
 
 			fireTimer = System.currentTimeMillis();
@@ -47,6 +64,13 @@ public class Player extends GameObject {
 			fireRandom();
 
 			fireTimer = System.currentTimeMillis();
+		}
+		
+		if (System.currentTimeMillis() - grenadeTimer >= grenadeCooldown) {
+			grenadeTimer = System.currentTimeMillis();
+			if(grenades < maxGrenades){
+				grenades++;
+			}
 		}
 
 		if (up) {
@@ -72,13 +96,17 @@ public class Player extends GameObject {
 	void fire() {
 		fireAt(GameManager.getClickedPoint().x, GameManager.getClickedPoint().y);
 	}
-	
-	public void throwGrenade(){
-		Point play = new Point((int) getCenterX(), (int) getCenterY());
-		Point target = new Point(GameManager.getClickedPoint().x, GameManager.getClickedPoint().y);
-		Grenade g = new Grenade((int) getCenterX(), (int) getCenterY(),
-				5, play, target);
-		GameManager.addGrenade(g);
+
+	public void throwGrenade() {
+		if (grenades > 0) {
+			Point play = new Point((int) getCenterX(), (int) getCenterY());
+			Point target = new Point(GameManager.getClickedPoint().x,
+					GameManager.getClickedPoint().y);
+			Grenade g = new Grenade((int) getCenterX(), (int) getCenterY(), 5,
+					play, target);
+			GameManager.addGrenade(g);
+			grenades--;
+		}
 	}
 
 	public double getBulletSpeed() {

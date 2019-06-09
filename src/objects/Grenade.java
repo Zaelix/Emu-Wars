@@ -12,10 +12,10 @@ import core.GamePanel;
 public class Grenade extends GameObject{
 	long startTime = System.currentTimeMillis();
 	long fuseLength = 2000;
-	int diameter = 250;
-	private double damage = 100;
+	int diameter = 100;
+	private double damage = 1;
 	Grenade(int x, int y, double speed, Point from, Point to) {
-		super(x, y, 20, 20, speed, Color.RED);
+		super(x, y, 30, 30, speed, Color.RED);
 		setup(from, to);
 	}
 	
@@ -42,15 +42,14 @@ public class Grenade extends GameObject{
 	
 	public void draw(Graphics g){
 		g.drawImage(GamePanel.grenade, (int)getX(), (int)getY(), width, height, null);
-		g.drawRect((int)getX(), (int)getY(), 20, 20);
+		//g.drawRect((int)getX(), (int)getY(), 20, 20);
 		super.draw(g);
 	}
 	
 	void detonate(){
-		System.out.println("Grenade Exploded!");
 		setAlive(false);
 		
 		GameManager.explodeAt((int)getX()-diameter+20, (int)getY()-diameter+20, diameter, GamePanel.explosion);
-		GameManager.damageArea((int)getX(), (int)getY(), diameter, damage);
+		GameManager.damageArea((int)getX(), (int)getY(), diameter, damage, damage*5);
 	}
 }

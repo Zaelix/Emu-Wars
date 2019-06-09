@@ -15,7 +15,8 @@ public class UpgradeButton {
 	int y;
 	int width;
 	int height;
-	Font keyFont = new Font("AR ESSENCE", 10, 20);
+	Font keyFont = new Font("AR ESSENCE", 10, 40);
+	Font displayFont = new Font("AR ESSENCE", 10, 20);
 	String text;
 	private double value;
 	int decimals;
@@ -67,7 +68,7 @@ public class UpgradeButton {
 
 	}
 
-	public void draw(Graphics g) {
+	public void drawOLD(Graphics g) {
 		if (isDivider) {
 			g.setColor(Color.BLACK);
 			g.fillRect(x, y, width, height); // Name box
@@ -75,7 +76,7 @@ public class UpgradeButton {
 			String val = myFormatter.format(getValue());
 			String costF = myFormatter.format(cost);
 			int tHeight = (int) (y + (height / 1.3));
-			g.setColor(Color.GRAY);
+			g.setColor(Color.BLUE);
 			g.fillRect(x, y + height, width, height); // Name box
 			g.fillRect(x, y, width, height); // Cost Box
 			g.fillRect(x + width, y, width / 3, height * 2); // Value Box
@@ -88,13 +89,51 @@ public class UpgradeButton {
 																					// Box
 
 			g.setColor(Color.BLACK);
-			g.setFont(keyFont);
+			g.setFont(displayFont);
 			g.drawString(text, x + (width / 8), tHeight);
 			g.drawString("Cost: " + costF, x + 3, tHeight + height);
 			g.drawString(val + "", x + width + 2, tHeight + (height / 2));
-			
+
+			g.setFont(keyFont);
 			g.setColor(Color.RED);
 			g.drawString(getKey() + "", x + 3, tHeight);
+		}
+	}
+	
+	public void draw(Graphics g){
+		if (isDivider) {
+			g.setColor(Color.BLACK);
+			g.fillRect(x, y, width, height); // Name box
+		} else {
+			String val = myFormatter.format(getValue());
+			String costF = myFormatter.format(cost);
+			int tHeight = (int) (y + (height / 1.3));
+			g.setColor(Color.RED);
+			g.fillRect(x, y + height, width, height); // Name box
+			g.fillRect(x, y, width, height); // Cost Box
+			g.fillRect(x + width, y, width / 3, height * 2); // Value Box
+
+			g.setColor(Color.GREEN);
+			g.fillRect(x + 1, y + 1, width - 2, height - 2); // Name Box
+			g.fillRect(x + 1, y + height + 1, (width) - 2, height - 2); // Cost
+																		// Box
+			g.fillRect(x + width + 1, y + 1, (width / 3) - 2, (height * 2) - 2); // Value
+																					// Box
+			int keyBoxWidth = (width/5);
+			g.setFont(displayFont);
+			g.setColor(Color.BLACK);
+			g.drawString(text, x + (width / 4), tHeight);
+			g.drawString("Cost: " + costF, x + (width / 4), tHeight + height);
+			g.drawString(val + "", x + width + 2, tHeight + (height / 2));
+			
+			// Key Box Display
+			g.setFont(keyFont);
+			g.setColor(Color.RED);
+			g.fillRect(x, y, keyBoxWidth, height*2);
+			g.setColor(Color.GREEN);
+			g.fillRect(x+1, y+1, keyBoxWidth-2, height*2-2);
+			g.setColor(Color.RED);
+			g.drawString(getKey() + "", x + 3, tHeight+20);
 		}
 	}
 

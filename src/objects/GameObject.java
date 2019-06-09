@@ -120,6 +120,10 @@ public class GameObject {
 	public void setY(double y) {
 		this.y = y;
 	}
+	
+	public int getAverageSize(){
+		return (width+height)/2;
+	}
 
 	public long getAnimCooldown() {
 		return animCooldown;

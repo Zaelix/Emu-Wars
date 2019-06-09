@@ -25,7 +25,7 @@ public class HealthBar {
 	void update() {
 		this.x = owner.getX() + xOffset;
 		this.y = owner.getY() - height - 5;
-		percent = owner.health / owner.maxHealth;
+		percent = Math.max(owner.health / owner.maxHealth, 0);
 		if(owner instanceof Shield){
 			this.color = Color.BLUE;
 		}
@@ -35,8 +35,12 @@ public class HealthBar {
 	}
 	
 	void updateColor(){
-		Color c = new Color((int)(255-(255*percent)),  (int)(255*percent), 0);
+		Color c = new Color((int)constrain(255-(255*percent), 255, 0),  (int)constrain(255*percent, 255, 0), 0);
 		this.color = c;
+	}
+	
+	double constrain(double x, int max, int min){
+		return Math.max(Math.min(x, max), min);
 	}
 	
 	void setColor(Color c){
