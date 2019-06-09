@@ -1,0 +1,56 @@
+package objects;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import core.GameManager;
+import core.GamePanel;
+
+public class Grenade extends GameObject{
+	long startTime = System.currentTimeMillis();
+	long fuseLength = 2000;
+	int diameter = 250;
+	private double damage = 100;
+	Grenade(int x, int y, double speed, Point from, Point to) {
+		super(x, y, 20, 20, speed, Color.RED);
+		setup(from, to);
+	}
+	
+	void setup(Point from, Point to){
+		double slopeX = from.x - (to.x - 10);
+		double slopeY = from.y - (to.y - 32);
+
+		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
+		speed *= magn/165;
+		vx = -slopeX / magn * speed;
+		vy = -slopeY / magn * speed;
+	}
+
+	public void update(){
+		super.update();
+		setX(getX() + vx);
+		setY(getY() + vy);
+		vx *= 0.97;
+		vy *= 0.97;
+		if (System.currentTimeMillis() - startTime >= fuseLength) {
+			detonate();
+		}
+	}
+	
+	public void draw(Graphics g){
+		g.drawImage(GamePanel.grenade, (int)getX(), (int)getY(), width, height, null);
+		g.drawRect((int)getX(), (int)getY(), 20, 20);
+		super.draw(g);
+	}
+	
+	void detonate(){
+		System.out.println("Grenade Exploded!");
+		setAlive(false);
+		
+		GameManager.explodeAt((int)getX()-diameter+20, (int)getY()-diameter+20, diameter, GamePanel.explosion);
+		GameManager.damageArea((int)getX(), (int)getY(), diameter, damage);
+	}
+}

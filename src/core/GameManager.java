@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import objects.Emu;
 import objects.Explosion;
 import objects.GameObject;
+import objects.Grenade;
 import objects.Player;
 import objects.Projectile;
 import objects.Shield;
@@ -46,6 +47,7 @@ public class GameManager {
 	static ArrayList<UpgradeButton> buttons = new ArrayList<UpgradeButton>();
 	static ArrayList<Tower> towers = new ArrayList<Tower>();
 	static ArrayList<Shield> shields = new ArrayList<Shield>();
+	static ArrayList<Grenade> grenades = new ArrayList<Grenade>();
 	static ArrayList<Explosion> explosionPool = new ArrayList<Explosion>();
 
 	static Player player = new Player(250, 450, 50, 50, Color.BLUE);
@@ -156,6 +158,10 @@ public class GameManager {
 			for (int i = 0; i < explosionPool.size(); i++) {
 				explosionPool.get(i).draw(g);
 			}
+			
+			for (int i = 0; i < grenades.size(); i++) {
+				grenades.get(i).draw(g);
+			}
 			// drawLineToCursor(g);
 			drawPointsBox(g);
 			drawHealthBox(g);
@@ -239,6 +245,9 @@ public class GameManager {
 		}
 		for (int i = 0; i < explosionPool.size(); i++) {
 			explosionPool.get(i).update();
+		}
+		for (int i = 0; i < grenades.size(); i++) {
+			grenades.get(i).update();
 		}
 		spawnEmus();
 		checkCollisions();
@@ -383,6 +392,16 @@ public class GameManager {
 				emus.remove(i);
 			}
 		}
+		for (int i = shields.size() - 1; i >= 0; i--) {
+			if (shields.get(i).isAlive() == false) {
+				shields.remove(i);
+			}
+		}
+		for (int i = grenades.size() - 1; i >= 0; i--) {
+			if (grenades.get(i).isAlive() == false) {
+				grenades.remove(i);
+			}
+		}
 	}
 
 	public static void togglePaused() {
@@ -405,6 +424,10 @@ public class GameManager {
 
 	public static void addShield(Shield s) {
 		shields.add(s);
+	}
+	
+	public static void addGrenade(Grenade g){
+		grenades.add(g);
 	}
 
 	public static void incrementScore(int value) {
@@ -536,7 +559,7 @@ public class GameManager {
 
 	}
 
-	public static void explodeAt(int x, int y, int size) {
+	public static void explodeAt(int x, int y, int size, ArrayList<BufferedImage> anim) {
 		Explosion ex = null;
 		for (Explosion e : explosionPool) {
 			if (!e.isActive) {
@@ -546,9 +569,19 @@ public class GameManager {
 		if (ex == null) {
 			ex = new Explosion(-100, -100, 150, 150);
 		}
+		ex.setAnim(anim);
 		ex.setSize(size * 2);
 		ex.setPosition(x, y);
 		ex.startAnimation();
+	}
+	
+	public static void damageArea(int x, int y, double size, double damage){
+		for(Emu e : emus){
+			double dist = dist(e.getCenterX(), e.getCenterY(), x, y);
+			if(dist < size){
+				e.takeDamage(damage/dist);
+			}
+		}
 	}
 
 	public static Point getClickedPoint() {

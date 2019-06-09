@@ -70,6 +70,6 @@ public class EmuCore {
 	 * gungirl by Spring, OpenGameArt.org
 	 * kir by Spring, OpenGameArt.org
 	 * shield by Bonsaiheldin, OpenGameArt.org
-	 * 
+	 * explosives by BizmasterStudios, OpenGameArt.org
 	 */
 }

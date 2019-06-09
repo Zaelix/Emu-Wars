@@ -51,7 +51,7 @@ public class Emu extends GameObject{
 		}
 		if(type == MOTHER && speed > 0.4){
 			type = NORMAL;
-			setAnim(GamePanel.emuRun);
+			setAnim(GamePanel.emuFloat);
 		}
 		else if (type == MOTHER){
 			setAnim(GamePanel.emuSit);
@@ -130,7 +130,7 @@ public class Emu extends GameObject{
 		health -= damage;
 		if(health <= 0){
 			setAlive(false);
-			GameManager.explodeAt((int)getX()-width/2, (int)getY()-height/2, width);
+			GameManager.explodeAt((int)getX()-width/2, (int)getY()-height/2, width, GamePanel.emuExplosion);
 			GameManager.incrementScore((int)(maxHealth));
 		}
 	}

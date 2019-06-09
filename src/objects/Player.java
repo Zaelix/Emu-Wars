@@ -72,6 +72,14 @@ public class Player extends GameObject {
 	void fire() {
 		fireAt(GameManager.getClickedPoint().x, GameManager.getClickedPoint().y);
 	}
+	
+	public void throwGrenade(){
+		Point play = new Point((int) getCenterX(), (int) getCenterY());
+		Point target = new Point(GameManager.getClickedPoint().x, GameManager.getClickedPoint().y);
+		Grenade g = new Grenade((int) getCenterX(), (int) getCenterY(),
+				5, play, target);
+		GameManager.addGrenade(g);
+	}
 
 	public double getBulletSpeed() {
 		return bulletSpeed;
