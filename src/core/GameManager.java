@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -316,15 +317,30 @@ public class GameManager {
 				(int) (mouse.getY() - frame.getY()));
 	}
 
-	public boolean mouseIntersects(Rectangle box) {
-		if (mouseLoc.getX() > box.getX()
-				&& mouseLoc.getX() < box.getX() + box.getWidth()
-				&& mouseLoc.getY() > box.getY()
-				&& mouseLoc.getY() < box.getY() + box.getHeight()) {
+	public static boolean mouseIntersects(Rectangle box) {
+		Rectangle mLoc = new Rectangle(clicked.x-10, clicked.y-32, 1, 1);
+		if(mLoc.intersects(box)){
 			return true;
 		}
 		return false;
+//		
+//		if (mouseLoc.getX() > box.getX()
+//				&& mouseLoc.getX() < box.getX() + box.getWidth()
+//				&& mouseLoc.getY() > box.getY()
+//				&& mouseLoc.getY() < box.getY() + box.getHeight()) {
+//			return true;
+//		}
+//		return false;
 	}
+	
+	public static void checkIfUpgradeButtonsClicked(MouseEvent e){
+		for(UpgradeButton b : buttons){
+			if(!b.isDivider && mouseIntersects(new Rectangle(b.getX(), b.getY(), 200, b.getHeight()*2))){
+				b.buy();
+			}
+		}
+	}
+
 
 	public static float dist(double x, double y, double x2, double y2) {
 		return (float) Math.sqrt(Math.pow((x - x2), 2) + Math.pow((y - y2), 2));
@@ -357,16 +373,16 @@ public class GameManager {
 
 	static void createButtons() {
 		buttons.clear();
-		buttons.add(new UpgradeButton(10, 150, 25, "Fire Rate", 1, 2, 1));
-		buttons.add(new UpgradeButton(10, 150, 25, "Bullet Speed", 1, 2, 1.4));
-		buttons.add(new UpgradeButton(10, 150, 25, "Bullet Damage", 1, 2, 1));
-		buttons.add(new UpgradeButton(10, 150, 25, "Move Speed", 1, 2, 2.3));
+		buttons.add(new UpgradeButton("Fire Rate", 1, 2, 1));
+		buttons.add(new UpgradeButton("Bullet Speed", 1, 2, 1.4));
+		buttons.add(new UpgradeButton("Bullet Damage", 1, 2, 1));
+		buttons.add(new UpgradeButton("Move Speed", 1, 2, 2.3));
 		buttons.add(new UpgradeButton());
-		buttons.add(new UpgradeButton(10, 150, 25, "Buy Tower", 1, 2, 0.35,
+		buttons.add(new UpgradeButton("Buy Tower", 1, 2, 0.35,
 				"Tower"));
-		buttons.add(new UpgradeButton(10, 150, 25, "T.Fire Rate", 1, 2, 0.2));
-		buttons.add(new UpgradeButton(10, 150, 25, "T.Bullet Speed", 1, 2, 0.2));
-		buttons.add(new UpgradeButton(10, 150, 25, "T.Bullet Dmg", 1, 2, 0.2));
+		buttons.add(new UpgradeButton("T.Fire Rate", 1, 2, 0.2));
+		buttons.add(new UpgradeButton("T.Bullet Speed", 1, 2, 0.2));
+		buttons.add(new UpgradeButton("T.Bullet Dmg", 1, 2, 0.2));
 	}
 
 	void checkCollisions() {

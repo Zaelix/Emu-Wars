@@ -413,13 +413,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	public void mousePressed(MouseEvent e) {
 
 		GameManager.setClickPoint(new Point(e.getX(), e.getY()));
-		if (e.getButton() == MouseEvent.BUTTON1) {
+		if (e.getButton() == MouseEvent.BUTTON1 && e.getX() > 230) {
 			dm.player.setFiring(true);
 		}
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			dm.player.throwGrenade();
 		}
+		GameManager.checkIfUpgradeButtonsClicked(e);
 	}
+	
 
 	@Override
 	public void mouseReleased(MouseEvent e) {

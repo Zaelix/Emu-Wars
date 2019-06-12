@@ -19,6 +19,14 @@ public class EmuCore {
 	public static final int HEIGHT = 1000;
 	public static JFrame frame;
 	GamePanel panel;
+	
+	static BufferedImage blankCursorImg;
+	static BufferedImage customCursorImg;
+	
+	static Cursor blankCursor;
+	static Cursor customCursor;
+
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		EmuCore es = new EmuCore();
@@ -35,31 +43,40 @@ public class EmuCore {
 		frame.addMouseListener(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		setTransparentCursor();
+		loadCursors();
+		setCursor(1);
 		frame.pack();
 		
 	}
 	
-	void setTransparentCursor(){
+	void loadCursors(){
 		// Transparent 16 x 16 pixel cursor image.
-		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		blankCursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		
-		BufferedImage crosshair;
 		Path currentRelativePath = Paths.get("");
 		String s = currentRelativePath.toAbsolutePath().toString();
 		
 		try {
-			crosshair = ImageIO.read(new File(s + "\\src\\crosshair.png"));
+			customCursorImg = ImageIO.read(new File(s + "\\src\\cursor.png"));
 			
 			// Create a new blank cursor.
-			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-			    cursorImg, new Point(0, 0), "blank cursor");
+			blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+					blankCursorImg, new Point(0, 0), "blank cursor");
+			customCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+					customCursorImg, new Point(0, 0), "custom cursor");
 
-			// Set the blank cursor to the JFrame.
-			frame.getContentPane().setCursor(blankCursor);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void setCursor(int type){
+		if(type == 0){
+			frame.getContentPane().setCursor(blankCursor);
+		}
+		else if(type == 1){
+			frame.getContentPane().setCursor(customCursor);
 		}
 	}
 	
