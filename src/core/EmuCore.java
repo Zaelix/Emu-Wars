@@ -15,8 +15,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class EmuCore {
-	public static final int WIDTH = 1800;
-	public static final int HEIGHT = 1000;
+	public static int WIDTH = 1800;
+	public static int HEIGHT = 1000;
 	public static JFrame frame;
 	GamePanel panel;
 	
@@ -33,16 +33,26 @@ public class EmuCore {
 		es.setup();
 	}
 	void setup(){
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		WIDTH = dim.width;
+		HEIGHT = dim.height;
 		frame = new JFrame();
 		panel = new GamePanel();
-		frame.setVisible(true);
-		frame.setSize(WIDTH,HEIGHT);
+		//frame.setSize(WIDTH,HEIGHT);
 		frame.setTitle("The Second Great Emu War");
 		frame.add(panel);
 		frame.addKeyListener(panel);
 		frame.addMouseListener(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		frame.getContentPane().setPreferredSize(dim);
+
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		frame.setUndecorated(true);
+		frame.setVisible(true);
+		
+		GameManager.mouseXOffset = 0;
+		GameManager.mouseYOffset = 0;
+		
 		loadCursors();
 		setCursor(1);
 		frame.pack();

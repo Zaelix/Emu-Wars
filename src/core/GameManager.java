@@ -36,6 +36,8 @@ public class GameManager {
 	public static final int END_STATE = 2;
 	public static double frameRate = 1;
 
+	public static int mouseXOffset = 10;
+	public static int mouseYOffset = 32;
 	static int playerHealth = 10;
 	public static Rectangle base = new Rectangle(0, 0, 210, EmuCore.HEIGHT);
 	static double points = 10;
@@ -318,8 +320,8 @@ public class GameManager {
 
 	void drawLineToCursor(Graphics g) {
 		g.setColor(Color.RED);
-		g.drawLine((int) player.getX(), (int) player.getY(), clicked.x - 10,
-				clicked.y - 32);
+		g.drawLine((int) player.getX(), (int) player.getY(), clicked.x - mouseXOffset,
+				clicked.y - mouseYOffset);
 	}
 
 	void drawLine(Graphics g) {
@@ -328,7 +330,7 @@ public class GameManager {
 		clicked = mouseLoc;
 		g.setColor(Color.RED);
 		g.drawLine((int) player.getCenterX(), (int) player.getCenterY(),
-				clicked.x - 10, clicked.y - 32);
+				clicked.x - mouseXOffset, clicked.y - mouseYOffset);
 
 	}
 
@@ -340,12 +342,13 @@ public class GameManager {
 	}
 
 	public static boolean mouseIntersects(Rectangle box) {
-		Rectangle mLoc = new Rectangle(mouseLoc.x-10, mouseLoc.y-32, 1, 1);
+		Rectangle mLoc = new Rectangle(mouseLoc.x-mouseXOffset, mouseLoc.y-mouseYOffset, 1, 1);
 		if(mLoc.intersects(box)){
 			return true;
 		}
 		return false;
 	}
+	
 	
 	public static void checkIfUpgradeButtonsClicked(MouseEvent e){
 		for(UpgradeButton b : buttons){

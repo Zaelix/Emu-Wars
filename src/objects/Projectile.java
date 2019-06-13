@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import core.GameManager;
 import core.GamePanel;
 
 public class Projectile extends GameObject {
@@ -20,8 +21,8 @@ public class Projectile extends GameObject {
 
 	void setup(int x, int y, double speed, Color color,
 			Point from, Point to, double damage) {
-		double slopeX = from.x - (to.x - 10);
-		double slopeY = from.y - (to.y - 32);
+		double slopeX = from.x - (to.x - GameManager.mouseXOffset);
+		double slopeY = from.y - (to.y - GameManager.mouseYOffset);
 
 		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
 		vx = -slopeX / magn * speed;

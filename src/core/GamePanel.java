@@ -426,8 +426,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			}
 			GameManager.checkIfUpgradeButtonsClicked(e);
 		}
-		if(GameManager.currentState == GameManager.MENU_STATE){
-			
+		if (GameManager.currentState == GameManager.MENU_STATE) {
+			for (int i = 0; i < GameManager.menuDifficultyRects.length; i++) {
+				if (GameManager
+						.mouseIntersects(GameManager.menuDifficultyRects[i])) {
+					GamePanel.setDifficulty(i);
+
+					GameManager.menuEmu.setX(EmuCore.WIDTH * 2);
+					GameManager.start();
+				}
+			}
 		}
 	}
 
