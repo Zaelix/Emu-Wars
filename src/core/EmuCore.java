@@ -71,7 +71,7 @@ public class EmuCore {
 		}
 	}
 	
-	public void setCursor(int type){
+	public static void setCursor(int type){
 		if(type == 0){
 			frame.getContentPane().setCursor(blankCursor);
 		}

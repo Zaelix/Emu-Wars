@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	public static ArrayList<ArrayList<BufferedImage>> runAnims = new ArrayList<ArrayList<BufferedImage>>();
 	ArrayList<Character> typed = new ArrayList<Character>();
 
-	private int menuDifficultyChoice = 0;
+	private static int menuDifficultyChoice = 0;
 
 	GamePanel() {
 		timer = new Timer(1000 / 100, this);
@@ -127,7 +127,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		variantColor = new Color(gen.nextInt(150), gen.nextInt(150),
 				gen.nextInt(150));
 		for (int i = 0; i < 10; i++) {
-			emuExplosion.add(getColoredImage(img.getSubimage(i * 96, 0, 96, 96), arr, variantColor));
+			emuExplosion.add(getColoredImage(
+					img.getSubimage(i * 96, 0, 96, 96), arr, variantColor));
 		}
 	}
 
@@ -169,7 +170,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	void makeStandardizedAnimVariants() {
 		if (runAnims.size() < 100) {
 			int[] arr = { gen.nextInt(3), gen.nextInt(3), gen.nextInt(3) };
-			runAnim.add(shuffleImageColorComponents(emuRun.get(variantFrame), arr, variantColor));
+			runAnim.add(shuffleImageColorComponents(emuRun.get(variantFrame),
+					arr, variantColor));
 			variantFrame++;
 			if (variantFrame > 3) {
 				variantFrame = 0;
@@ -185,7 +187,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	void makeAnimVariants() {
 		// System.out.println(runAnims.size());
 		if (runAnims.size() < 100) {
-			runAnim.add(getColoredImage(emuRun.get(variantFrame), null, variantColor));
+			runAnim.add(getColoredImage(emuRun.get(variantFrame), null,
+					variantColor));
 			variantFrame++;
 			if (variantFrame > 3) {
 				variantFrame = 0;
@@ -198,8 +201,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		}
 	}
 
-	static BufferedImage getColoredImage(BufferedImage image, 
-			int[] order, Color cMod) {
+	static BufferedImage getColoredImage(BufferedImage image, int[] order,
+			Color cMod) {
 		BufferedImage newImage = new BufferedImage(image.getWidth(),
 				image.getHeight(), image.getType());
 		for (int x = 0; x < image.getWidth(); x++) {
@@ -223,7 +226,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 	static BufferedImage shuffleImageColorComponents(BufferedImage image,
 			int[] order, Color cMod) {
-		
+
 		BufferedImage newImage = new BufferedImage(image.getWidth(),
 				image.getHeight(), image.getType());
 		for (int x = 0; x < image.getWidth(); x++) {
@@ -233,7 +236,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 				int green = (color & 0xff00) >> 8;
 				int blue = color & 0xff;
 				int a = (color & 0xff000000) >>> 24;
-				
+
 				int c = cMod.getRGB();
 				int r = red | ((c & 0xff0000) >> 16);
 				int g = green | ((c & 0xff00) >> 8);
@@ -244,16 +247,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		}
 		return newImage;
 	}
-	
-	public static BufferedImage setAlpha(BufferedImage img, int cx, int cy, byte alpha) {       
-	    alpha %= 0xff; 
-        int color = img.getRGB(cx, cy);
 
-        int mc = (alpha << 24) | 0x00ffffff;
-        int newcolor = color & mc;
-        img.setRGB(cx, cy, newcolor);            
-	       
-	    return img;
+	public static BufferedImage setAlpha(BufferedImage img, int cx, int cy,
+			byte alpha) {
+		alpha %= 0xff;
+		int color = img.getRGB(cx, cy);
+
+		int mc = (alpha << 24) | 0x00ffffff;
+		int newcolor = color & mc;
+		img.setRGB(cx, cy, newcolor);
+
+		return img;
 	}
 
 	@Override
@@ -348,7 +352,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 	}
 
-	void setDifficulty(int d) {
+	public static void setDifficulty(int d) {
 		if (d > 2 && d != 9) {
 			d = 2;
 		} else if (d < 0) {
@@ -413,15 +417,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	public void mousePressed(MouseEvent e) {
 
 		GameManager.setClickPoint(new Point(e.getX(), e.getY()));
-		if (e.getButton() == MouseEvent.BUTTON1 && e.getX() > 230) {
-			dm.player.setFiring(true);
+		if (GameManager.currentState == GameManager.GAME_STATE) {
+			if (e.getButton() == MouseEvent.BUTTON1 && e.getX() > 230) {
+				dm.player.setFiring(true);
+			}
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				dm.player.throwGrenade();
+			}
+			GameManager.checkIfUpgradeButtonsClicked(e);
 		}
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			dm.player.throwGrenade();
+		if(GameManager.currentState == GameManager.MENU_STATE){
+			
 		}
-		GameManager.checkIfUpgradeButtonsClicked(e);
 	}
-	
 
 	@Override
 	public void mouseReleased(MouseEvent e) {

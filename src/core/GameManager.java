@@ -56,6 +56,8 @@ public class GameManager {
 			GamePanel.emuSit);
 	static Rectangle menuSelection = new Rectangle(100,
 			(int) (EmuCore.HEIGHT * 0.3));
+	
+	static Rectangle[] menuDifficultyRects = new Rectangle[3];
 	static int difficulty = 0;
 	long lastFrameTime;
 	long spawnTimer;
@@ -90,6 +92,10 @@ public class GameManager {
 		for (int i = 0; i < 20; i++) {
 			explosionPool.add(new Explosion(-1000, -1000, 150, 150));
 		}
+
+		menuDifficultyRects[0] = new Rectangle(100, (int) (EmuCore.HEIGHT * 0.3)-50, 250, 70);
+		menuDifficultyRects[1] = new Rectangle(100, (int) (EmuCore.HEIGHT * 0.4)-50, 250, 70);
+		menuDifficultyRects[2] = new Rectangle(100, (int) (EmuCore.HEIGHT * 0.5)-50, 250, 70);
 	}
 
 	void draw(Graphics g) {
@@ -119,6 +125,8 @@ public class GameManager {
 		g.drawRoundRect(menuSelection.x, menuSelection.y, 400, 100, 50, 50);
 
 		g.drawString("PRESS ENTER TO START", 75, (int) (EmuCore.HEIGHT * 0.6));
+		
+		
 	}
 
 	void drawGameState(Graphics g) {
@@ -214,6 +222,7 @@ public class GameManager {
 
 	void update() {
 		mouseLoc = getMouseLocation();
+		
 		if (isPaused == false) {
 			if (currentState == MENU_STATE) {
 				updateMenuState();
@@ -226,10 +235,23 @@ public class GameManager {
 	}
 
 	void updateMenuState() {
+		EmuCore.setCursor(1);
 		menuEmu.update();
+		for(int i = 0; i < menuDifficultyRects.length; i++){
+			if(mouseIntersects(menuDifficultyRects[i])){
+				GamePanel.setDifficulty(i);
+			}
+		}
+		
 	}
 
 	void updateGameState() {
+		if(mouseLoc.x > 230){
+			EmuCore.setCursor(0);
+		}
+		else{
+			EmuCore.setCursor(1);
+		}
 		frameRate = (1000.0 / (System.currentTimeMillis() - lastFrameTime));
 		String fps = myFormatter.format(frameRate);
 		// System.out.println(fps);
@@ -318,19 +340,11 @@ public class GameManager {
 	}
 
 	public static boolean mouseIntersects(Rectangle box) {
-		Rectangle mLoc = new Rectangle(clicked.x-10, clicked.y-32, 1, 1);
+		Rectangle mLoc = new Rectangle(mouseLoc.x-10, mouseLoc.y-32, 1, 1);
 		if(mLoc.intersects(box)){
 			return true;
 		}
 		return false;
-//		
-//		if (mouseLoc.getX() > box.getX()
-//				&& mouseLoc.getX() < box.getX() + box.getWidth()
-//				&& mouseLoc.getY() > box.getY()
-//				&& mouseLoc.getY() < box.getY() + box.getHeight()) {
-//			return true;
-//		}
-//		return false;
 	}
 	
 	public static void checkIfUpgradeButtonsClicked(MouseEvent e){
@@ -551,6 +565,7 @@ public class GameManager {
 		bullets.clear();
 		buttons.clear();
 		towers.clear();
+		shields.clear();
 		UpgradeButton.nextValidKey = 1;
 		UpgradeButton.nextValidY = 65;
 		createButtons();
