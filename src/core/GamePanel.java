@@ -50,6 +50,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 	public static BufferedImage shield;
 	public static BufferedImage grenade;
+	
+	public static BufferedImage tankBase;
+	public static BufferedImage tankTurret;
 
 	// Colored Variant objects
 	public static ArrayList<BufferedImage> emuExplosion = new ArrayList<BufferedImage>();
@@ -85,7 +88,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		loadFireballImages();
 		shield = loadImage("spr_shield.png");
 		grenade = loadImage("explosives.png").getSubimage(32, 0, 32, 32);
-
+		tankBase = loadImage("tank_base.png");
+		tankTurret = loadImage("tank_turret.png");
+		
 	}
 
 	BufferedImage loadImage(String fileName) {

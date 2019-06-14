@@ -2,6 +2,7 @@ package objects;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.Timer;
 
@@ -27,16 +28,26 @@ public class Player extends GameObject {
 	public static int grenades = 3;
 	public static int maxGrenades = 3;
 
+	Point barrel = new Point();
+	
 	public Player(int x, int y, int width, int height, Color color) {
 		super(x, y, width, height, height, color);
 	}
 
 	public void draw(Graphics g) {
-		g.setColor(color);
-		g.fillRect((int) getX(), (int) getY(), width, height);
+		//g.setColor(color);
+		//g.fillRect((int) getX(), (int) getY(), width, height);
 
+		g.drawImage(GamePanel.tankBase, (int)getX(), (int)getY(), width, height, null);
+		
+		Graphics2D g2d = (Graphics2D) g.create();
+
+		double rads = Math.toRadians(angle);
+		g2d.rotate(rads, (int) getX()+width/2, (int) getY()+height/2);
+		g2d.drawImage(GamePanel.tankTurret, (int)getX(), (int)getY(), width, height, null);
+		g2d.rotate(-rads, (int) getX()+width/2, (int) getY()+height/2);
+		g2d.dispose();
 		// draw the center point
-		g.setColor(Color.CYAN);
 		drawGrenadeCount(g);
 		super.draw(g);
 	}
@@ -84,8 +95,8 @@ public class Player extends GameObject {
 	void fireAt(int x, int y) {
 		Point play = new Point((int) getCenterX(), (int) getCenterY());
 		Point target = new Point(x, y);
-		Projectile p = new Projectile((int) getCenterX(), (int) getCenterY(),
-				getBulletSpeed(), Color.orange, play, target, getDamage());
+		Projectile p = new Projectile(barrel.x, barrel.y,
+				getBulletSpeed(), Color.orange, barrel, target, getDamage());
 		GameManager.addBullet(p);
 	}
 
@@ -155,5 +166,18 @@ public class Player extends GameObject {
 
 	public void setFiring(boolean isFiring) {
 		this.isFiring = isFiring;
+	}
+	
+	public void setFiringAngle(Point tar){
+		double slopeX = getCenterX() - (tar.x - GameManager.mouseXOffset);
+		double slopeY = getCenterY() - (tar.y - GameManager.mouseYOffset);
+
+		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
+		vx = -slopeX / magn * speed;
+		vy = -slopeY / magn * speed;
+		angle = (Math.atan2(slopeY, slopeX)*180/Math.PI)-90;
+		
+		barrel = new Point((int)(getCenterX()+vx*50), (int)(getCenterY()+vy*50));
+		//angle = (vy)*90 + 90;
 	}
 }

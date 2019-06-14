@@ -53,7 +53,7 @@ public class GameManager {
 	static ArrayList<Grenade> grenades = new ArrayList<Grenade>();
 	static ArrayList<Explosion> explosionPool = new ArrayList<Explosion>();
 
-	static Player player = new Player(250, 450, 50, 50, Color.BLUE);
+	static Player player = new Player(250, 450, 50, 100, Color.BLUE);
 	static Emu menuEmu = new Emu(EmuCore.WIDTH/2, 200, 200, 300, 0, Color.BLUE,
 			GamePanel.emuSit);
 	static Rectangle menuSelection = new Rectangle(100,
@@ -120,8 +120,8 @@ public class GameManager {
 
 		g.setColor(Color.RED);
 		g.drawString("1", 100, (int) (EmuCore.HEIGHT * 0.3));
-		g.drawString("2 ", 100, (int) (EmuCore.HEIGHT * 0.4));
-		g.drawString("3 ", 100, (int) (EmuCore.HEIGHT * 0.5));
+		g.drawString("2", 100, (int) (EmuCore.HEIGHT * 0.4));
+		g.drawString("3", 100, (int) (EmuCore.HEIGHT * 0.5));
 		menuEmu.draw(g);
 		menuSelection.y = (int) (EmuCore.HEIGHT * (0.23 + (0.1 * difficulty)));
 		g.drawRoundRect(menuSelection.x, menuSelection.y, 400, 100, 50, 50);
@@ -151,7 +151,6 @@ public class GameManager {
 		} else {
 			g.setColor(Color.GRAY);
 			g.fillRect(0, 0, 220, EmuCore.HEIGHT);
-			player.draw(g);
 			drawLine(g);
 			for (Projectile p : bullets) {
 				p.draw(g);
@@ -174,6 +173,7 @@ public class GameManager {
 			for (int i = 0; i < grenades.size(); i++) {
 				grenades.get(i).draw(g);
 			}
+			player.draw(g);
 			// drawLineToCursor(g);
 			drawPointsBox(g);
 			drawHealthBox(g);
@@ -331,7 +331,7 @@ public class GameManager {
 		g.setColor(Color.RED);
 		g.drawLine((int) player.getCenterX(), (int) player.getCenterY(),
 				clicked.x - mouseXOffset, clicked.y - mouseYOffset);
-
+		player.setFiringAngle(clicked);
 	}
 
 	public Point getMouseLocation() {
@@ -622,7 +622,7 @@ public class GameManager {
 			if(dist <= size){
 				double d = Math.min(damage*(size/dist), maxDamage);
 				e.takeDamage(d);
-				System.out.println(d);
+				//System.out.println(d);
 			}
 		}
 	}

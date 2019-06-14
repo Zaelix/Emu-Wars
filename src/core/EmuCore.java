@@ -98,5 +98,6 @@ public class EmuCore {
 	 * kir by Spring, OpenGameArt.org
 	 * shield by Bonsaiheldin, OpenGameArt.org
 	 * explosives by BizmasterStudios, OpenGameArt.org
+	 * tank by wovado, OpenGameArt.org
 	 */
 }
