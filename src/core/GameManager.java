@@ -55,11 +55,11 @@ public class GameManager {
 	static ArrayList<Explosion> explosionPool = new ArrayList<Explosion>();
 
 	static Player player = new Player(250, 450, 50, 100, Color.BLUE);
-	static Emu menuEmu = new Emu(EmuCore.WIDTH/2, 200, 200, 300, 0, Color.BLUE,
-			GamePanel.emuSit);
+	static Emu menuEmu = new Emu(EmuCore.WIDTH / 2, 200, 200, 300, 0,
+			Color.BLUE, GamePanel.emuSit);
 	static Rectangle menuSelection = new Rectangle(100,
 			(int) (EmuCore.HEIGHT * 0.3));
-	
+
 	static Rectangle[] menuDifficultyRects = new Rectangle[3];
 	static int difficulty = 0;
 	long lastFrameTime;
@@ -96,9 +96,12 @@ public class GameManager {
 			explosionPool.add(new Explosion(-1000, -1000, 150, 150));
 		}
 
-		menuDifficultyRects[0] = new Rectangle(100, (int) (EmuCore.HEIGHT * 0.3)-50, 250, 70);
-		menuDifficultyRects[1] = new Rectangle(100, (int) (EmuCore.HEIGHT * 0.4)-50, 250, 70);
-		menuDifficultyRects[2] = new Rectangle(100, (int) (EmuCore.HEIGHT * 0.5)-50, 250, 70);
+		menuDifficultyRects[0] = new Rectangle(100,
+				(int) (EmuCore.HEIGHT * 0.3) - 50, 250, 70);
+		menuDifficultyRects[1] = new Rectangle(100,
+				(int) (EmuCore.HEIGHT * 0.4) - 50, 250, 70);
+		menuDifficultyRects[2] = new Rectangle(100,
+				(int) (EmuCore.HEIGHT * 0.5) - 50, 250, 70);
 	}
 
 	void draw(Graphics g) {
@@ -128,8 +131,7 @@ public class GameManager {
 		g.drawRoundRect(menuSelection.x, menuSelection.y, 400, 100, 50, 50);
 
 		g.drawString("PRESS ENTER TO START", 75, (int) (EmuCore.HEIGHT * 0.6));
-		
-		
+
 	}
 
 	void drawGameState(Graphics g) {
@@ -170,7 +172,7 @@ public class GameManager {
 			for (int i = 0; i < explosionPool.size(); i++) {
 				explosionPool.get(i).draw(g);
 			}
-			
+
 			for (int i = 0; i < grenades.size(); i++) {
 				grenades.get(i).draw(g);
 			}
@@ -225,7 +227,7 @@ public class GameManager {
 
 	void update() {
 		mouseLoc = getMouseLocation();
-		
+
 		if (isPaused == false) {
 			if (currentState == MENU_STATE) {
 				updateMenuState();
@@ -240,23 +242,23 @@ public class GameManager {
 	void updateMenuState() {
 		EmuCore.setCursor(1);
 		menuEmu.update();
-		for(int i = 0; i < menuDifficultyRects.length; i++){
-			if(mouseIntersects(menuDifficultyRects[i])){
+		for (int i = 0; i < menuDifficultyRects.length; i++) {
+			if (mouseIntersects(menuDifficultyRects[i])) {
 				GamePanel.setDifficulty(i);
 			}
 		}
-		
+
 	}
-	
-	public static ArrayList<Emu> getClosestEmus(){
+
+	public static ArrayList<Emu> getClosestEmus() {
 		return closestEmus;
 	}
-	
-	ArrayList<Emu> findClosestEnemies(){
+
+	ArrayList<Emu> findClosestEnemies() {
 		ArrayList<Emu> closest = new ArrayList<Emu>();
-		for(Emu e : emus){
-			if(isCloserThanAny(closest, (int) e.getCenterX())){
-				if(closest.size() == 5){
+		for (Emu e : emus) {
+			if (isCloserThanAny(closest, (int) e.getCenterX())) {
+				if (closest.size() == 5) {
 					closest.remove(getIndexOfFarthest(closest));
 				}
 				closest.add(e);
@@ -264,24 +266,24 @@ public class GameManager {
 		}
 		return closest;
 	}
-	
-	boolean isCloserThanAny(ArrayList<Emu> closest, int dist){
-		if(closest.size() < 5){
+
+	boolean isCloserThanAny(ArrayList<Emu> closest, int dist) {
+		if (closest.size() < 5) {
 			return true;
 		}
-		for(Emu e : closest){
-			if(dist < e.getCenterX()){
+		for (Emu e : closest) {
+			if (dist < e.getCenterX()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	int getIndexOfFarthest(ArrayList<Emu> closest){
+
+	int getIndexOfFarthest(ArrayList<Emu> closest) {
 		int farthest = 0;
 		int index = -1;
-		for(int i = 0; i < closest.size(); i++){
-			if(closest.get(i).getCenterX() > farthest){
+		for (int i = 0; i < closest.size(); i++) {
+			if (closest.get(i).getCenterX() > farthest) {
 				farthest = (int) closest.get(i).getCenterX();
 				index = i;
 			}
@@ -290,13 +292,12 @@ public class GameManager {
 	}
 
 	void updateGameState() {
-		if(frameCount%10==0){
+		if (frameCount % 10 == 0) {
 			closestEmus = findClosestEnemies();
 		}
-		if(mouseLoc.x > 230){
+		if (mouseLoc.x > 230) {
 			EmuCore.setCursor(0);
-		}
-		else{
+		} else {
 			EmuCore.setCursor(1);
 		}
 		frameRate = (1000.0 / (System.currentTimeMillis() - lastFrameTime));
@@ -330,9 +331,8 @@ public class GameManager {
 		// Increasing spawn rates
 		if (frameCount % 10 == 0 && spawnCooldown > 10) {
 			spawnCooldown *= spawnChangeRate;
-		}
-		else if(spawnCooldown<10 && frameCount % 10 == 0){
-			Emu.healthDifficultyDivisor-=0.01;
+		} else if (spawnCooldown < 10 && frameCount % 10 == 0) {
+			Emu.healthDifficultyDivisor -= 0.01;
 		}
 		if (frameCount % 2000 == 0 && spawnChangeRate < 0.9999) {
 			spawnChangeRate += 0.0001;
@@ -365,8 +365,8 @@ public class GameManager {
 
 	void drawLineToCursor(Graphics g) {
 		g.setColor(Color.RED);
-		g.drawLine((int) player.getX(), (int) player.getY(), clicked.x - mouseXOffset,
-				clicked.y - mouseYOffset);
+		g.drawLine((int) player.getX(), (int) player.getY(), clicked.x
+				- mouseXOffset, clicked.y - mouseYOffset);
 	}
 
 	void drawLine(Graphics g) {
@@ -387,22 +387,23 @@ public class GameManager {
 	}
 
 	public static boolean mouseIntersects(Rectangle box) {
-		Rectangle mLoc = new Rectangle(mouseLoc.x-mouseXOffset, mouseLoc.y-mouseYOffset, 1, 1);
-		if(mLoc.intersects(box)){
+		Rectangle mLoc = new Rectangle(mouseLoc.x - mouseXOffset, mouseLoc.y
+				- mouseYOffset, 1, 1);
+		if (mLoc.intersects(box)) {
 			return true;
 		}
 		return false;
 	}
-	
-	
-	public static void checkIfUpgradeButtonsClicked(MouseEvent e){
-		for(UpgradeButton b : buttons){
-			if(!b.isDivider && mouseIntersects(new Rectangle(b.getX(), b.getY(), 200, b.getHeight()*2))){
+
+	public static void checkIfUpgradeButtonsClicked(MouseEvent e) {
+		for (UpgradeButton b : buttons) {
+			if (!b.isDivider
+					&& mouseIntersects(new Rectangle(b.getX(), b.getY(), 200,
+							b.getHeight() * 2))) {
 				b.buy();
 			}
 		}
 	}
-
 
 	public static float dist(double x, double y, double x2, double y2) {
 		return (float) Math.sqrt(Math.pow((x - x2), 2) + Math.pow((y - y2), 2));
@@ -435,16 +436,15 @@ public class GameManager {
 
 	static void createButtons() {
 		buttons.clear();
-		buttons.add(new UpgradeButton("Fire Rate", 1, 2, 1));
-		buttons.add(new UpgradeButton("Bullet Speed", 1, 2, 1.4));
-		buttons.add(new UpgradeButton("Bullet Damage", 1, 2, 1));
-		buttons.add(new UpgradeButton("Move Speed", 1, 2, 2.3));
+		buttons.add(new UpgradeButton("Fire Rate", 1, 1));
+		buttons.add(new UpgradeButton("Bullet Speed", 1, 1.4));
+		buttons.add(new UpgradeButton("Bullet Damage", 1, 1));
+		buttons.add(new UpgradeButton("Move Speed", 1, 2.3));
 		buttons.add(new UpgradeButton());
-		buttons.add(new UpgradeButton("Buy Tower", 1, 2, 0.35,
-				"Tower"));
-		buttons.add(new UpgradeButton("T.Fire Rate", 1, 2, 0.2));
-		buttons.add(new UpgradeButton("T.Bullet Speed", 1, 2, 0.2));
-		buttons.add(new UpgradeButton("T.Bullet Dmg", 1, 2, 0.2));
+		buttons.add(new UpgradeButton("Buy Tower", 1, 0.35, "Tower"));
+		buttons.add(new UpgradeButton("T.Fire Rate", 1, 0.2));
+		buttons.add(new UpgradeButton("T.Bullet Speed", 1, 0.3));
+		buttons.add(new UpgradeButton("T.Bullet Dmg", 1, 0.2));
 	}
 
 	void checkCollisions() {
@@ -507,8 +507,8 @@ public class GameManager {
 	public static void addShield(Shield s) {
 		shields.add(s);
 	}
-	
-	public static void addGrenade(Grenade g){
+
+	public static void addGrenade(Grenade g) {
 		grenades.add(g);
 	}
 
@@ -642,7 +642,8 @@ public class GameManager {
 
 	}
 
-	public static void explodeAt(int x, int y, int size, ArrayList<BufferedImage> anim) {
+	public static void explodeAt(int x, int y, int size,
+			ArrayList<BufferedImage> anim) {
 		Explosion ex = null;
 		for (Explosion e : explosionPool) {
 			if (!e.isActive) {
@@ -657,17 +658,19 @@ public class GameManager {
 		ex.setPosition(x, y);
 		ex.startAnimation();
 	}
-	
-	public static void damageArea(int x, int y, double size, double damage, double maxDamage){
-		for(Emu e : emus){
-			double dist = dist(e.getCenterX(), e.getCenterY(), x, y) - e.getAverageSize()/2;
-			if (dist <= 0){
+
+	public static void damageArea(int x, int y, double size, double damage,
+			double maxDamage) {
+		for (Emu e : emus) {
+			double dist = dist(e.getCenterX(), e.getCenterY(), x, y)
+					- e.getAverageSize() / 2;
+			if (dist <= 0) {
 				dist = 1;
 			}
-			if(dist <= size){
-				double d = Math.min(damage*(size/dist), maxDamage);
+			if (dist <= size) {
+				double d = Math.min(damage * (size / dist), maxDamage);
 				e.takeDamage(d);
-				//System.out.println(d);
+				// System.out.println(d);
 			}
 		}
 	}

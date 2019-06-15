@@ -30,14 +30,12 @@ public class UpgradeButton {
 
 	DecimalFormat myFormatter = new DecimalFormat("###.#");
 
-	public UpgradeButton(String text, double value, int decimals,
-			double multiplier) {
-		setup(text, value, decimals, multiplier);
+	public UpgradeButton(String text, double value, double multiplier) {
+		setup(text, value, multiplier);
 	}
 
-	public UpgradeButton(String text, double value, int decimals,
-			double multiplier, String object) {
-		setup(text, value, decimals, multiplier);
+	public UpgradeButton(String text, double value,double multiplier, String object) {
+		setup(text, value, multiplier);
 		this.buysAnObject = true;
 		this.object = object;
 	}
@@ -51,7 +49,7 @@ public class UpgradeButton {
 		isDivider = true;
 	}
 
-	void setup(String text, double value, int decimals, double multiplier) {
+	void setup(String text, double value, double multiplier) {
 		this.setKey(nextValidKey);
 		nextValidKey++;
 		this.x = 10;
@@ -61,7 +59,7 @@ public class UpgradeButton {
 		nextValidY += height * 2 + 5;
 		this.text = text;
 		this.setValue(value);
-		this.decimals = decimals;
+		this.decimals = 2;
 		this.multiplier = multiplier;
 	}
 
