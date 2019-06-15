@@ -106,8 +106,8 @@ public class UpgradeButton {
 		}
 
 		if (GameObject.debugRenderMode == 1) {
-			g.setColor(Color.MAGENTA);
-			g.fillRect(x, y, 200, height);
+			//g.setColor(Color.MAGENTA);
+			//g.fillRect(x, y, 200, height);
 		}
 	}
 

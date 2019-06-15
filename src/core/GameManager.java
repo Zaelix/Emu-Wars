@@ -47,6 +47,7 @@ public class GameManager {
 
 	static ArrayList<Projectile> bullets = new ArrayList<Projectile>();
 	static ArrayList<Emu> emus = new ArrayList<Emu>();
+	static ArrayList<Emu> closestEmus = new ArrayList<Emu>();
 	static ArrayList<UpgradeButton> buttons = new ArrayList<UpgradeButton>();
 	static ArrayList<Tower> towers = new ArrayList<Tower>();
 	static ArrayList<Shield> shields = new ArrayList<Shield>();
@@ -246,8 +247,52 @@ public class GameManager {
 		}
 		
 	}
+	
+	public static ArrayList<Emu> getClosestEmus(){
+		return closestEmus;
+	}
+	
+	ArrayList<Emu> findClosestEnemies(){
+		ArrayList<Emu> closest = new ArrayList<Emu>();
+		for(Emu e : emus){
+			if(isCloserThanAny(closest, (int) e.getCenterX())){
+				if(closest.size() == 5){
+					closest.remove(getIndexOfFarthest(closest));
+				}
+				closest.add(e);
+			}
+		}
+		return closest;
+	}
+	
+	boolean isCloserThanAny(ArrayList<Emu> closest, int dist){
+		if(closest.size() < 5){
+			return true;
+		}
+		for(Emu e : closest){
+			if(dist < e.getCenterX()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	int getIndexOfFarthest(ArrayList<Emu> closest){
+		int farthest = 0;
+		int index = -1;
+		for(int i = 0; i < closest.size(); i++){
+			if(closest.get(i).getCenterX() > farthest){
+				farthest = (int) closest.get(i).getCenterX();
+				index = i;
+			}
+		}
+		return index;
+	}
 
 	void updateGameState() {
+		if(frameCount%10==0){
+			closestEmus = findClosestEnemies();
+		}
 		if(mouseLoc.x > 230){
 			EmuCore.setCursor(0);
 		}
@@ -405,12 +450,12 @@ public class GameManager {
 	void checkCollisions() {
 		for (Projectile p : bullets) {
 			for (Emu e : emus) {
-				if (e.collidesWith(p)) {
+				if (e.isAlive() && e.collidesWith(p)) {
 					p.setAlive(false);
 				}
 			}
 			for (Shield s : shields) {
-				if (s.collidesWith(p)) {
+				if (s.isAlive() && s.collidesWith(p)) {
 					s.takeDamage(p.getDamage());
 					p.setAlive(false);
 				}
@@ -591,7 +636,7 @@ public class GameManager {
 		GameObject obj;
 		if (object.equals("Tower")) {
 			obj = new Tower((int) player.getCenterX(),
-					(int) player.getCenterY(), 100, 100, 0, Color.GREEN);
+					(int) player.getCenterY(), 100, 100, Color.GREEN);
 			towers.add((Tower) obj);
 		}
 

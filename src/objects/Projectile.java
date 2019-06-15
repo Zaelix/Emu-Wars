@@ -10,7 +10,8 @@ import core.GamePanel;
 
 public class Projectile extends GameObject {
 	private double damage = 1;
-	
+	Point from;
+	Point to;
 
 	public Projectile(int x, int y, double speed, Color color, Point from, Point to, double damage){
 		super(x,y,(int) (20+speed), (int) (15-(speed/2)),speed,color);
@@ -21,6 +22,8 @@ public class Projectile extends GameObject {
 
 	void setup(int x, int y, double speed, Color color,
 			Point from, Point to, double damage) {
+		this.from= from;
+		this.to = to;
 		double slopeX = from.x - (to.x - GameManager.mouseXOffset);
 		double slopeY = from.y - (to.y - GameManager.mouseYOffset);
 
@@ -44,6 +47,13 @@ public class Projectile extends GameObject {
 			g2d.rotate(-rads, (int) getX()+width/2, (int) getY()+height/2);
 			g2d.dispose();
 		}
+		//drawLineToTarget(g);
+	}
+	
+	void drawLineToTarget(Graphics g) {
+		g.setColor(Color.MAGENTA);
+		g.drawLine((int) from.getX(), (int) from.getY(), to.x - GameManager.mouseXOffset,
+				to.y - GameManager.mouseYOffset);
 	}
 
 	public void update() {
