@@ -438,7 +438,7 @@ public class GameManager {
 		buttons.add(new UpgradeButton("T.Bullet Dmg", 1, 0.2));
 		buttons.add(new UpgradeButton());
 		buttons.add(new UpgradeButton("Grenade Count", 1, 1, 1));
-		buttons.add(new UpgradeButton("G.Refill rate", 0, 10, 10));
+		buttons.add(new UpgradeButton("G.Refill rate", 4000, 10, -10));
 		
 	}
 	
@@ -453,7 +453,7 @@ public class GameManager {
 		Tower.setDamage(buttons.get(8).getValue());
 		
 		Player.maxGrenades = (int) buttons.get(10).getValue();
-		Player.grenadeCooldown = 4000 - (int)buttons.get(11).getValue();
+		Player.grenadeCooldown = (int)buttons.get(11).getValue();
 	}
 
 	void checkCollisions() {
