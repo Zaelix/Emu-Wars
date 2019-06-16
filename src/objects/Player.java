@@ -25,8 +25,8 @@ public class Player extends GameObject {
 
 	long grenadeTimer = 0;
 	public static long grenadeCooldown = 4000;
-	public static int grenades = 3;
-	public static int maxGrenades = 3;
+	public static int grenades = 1;
+	public static int maxGrenades = 1;
 
 	Point barrel = new Point();
 	

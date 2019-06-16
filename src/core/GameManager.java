@@ -348,16 +348,7 @@ public class GameManager {
 		menuEmu.update();
 	}
 
-	void updateStats() {
-		player.setFireCooldown((long) (600 / buttons.get(0).getValue()));
-		player.setBulletSpeed(2 + buttons.get(1).getValue());
-		player.setDamage(buttons.get(2).getValue());
-		player.setSpeed(buttons.get(3).getValue());
-
-		Tower.setFireCooldown((long) (5000 / buttons.get(6).getValue()));
-		Tower.setBulletSpeed(1 + buttons.get(7).getValue());
-		Tower.setDamage(buttons.get(8).getValue());
-	}
+	
 
 	public static int getSecondsSinceStart() {
 		return (int) ((System.currentTimeMillis() - timeAtStart) / 1000);
@@ -445,6 +436,24 @@ public class GameManager {
 		buttons.add(new UpgradeButton("T.Fire Rate", 1, 0.2));
 		buttons.add(new UpgradeButton("T.Bullet Speed", 1, 0.3));
 		buttons.add(new UpgradeButton("T.Bullet Dmg", 1, 0.2));
+		buttons.add(new UpgradeButton());
+		buttons.add(new UpgradeButton("Grenade Count", 1, 1, 1));
+		buttons.add(new UpgradeButton("G.Refill rate", 0, 10, 10));
+		
+	}
+	
+	void updateStats() {
+		player.setFireCooldown((long) (600 / buttons.get(0).getValue()));
+		player.setBulletSpeed(2 + buttons.get(1).getValue());
+		player.setDamage(buttons.get(2).getValue());
+		player.setSpeed(buttons.get(3).getValue());
+
+		Tower.setFireCooldown((long) (5000 / buttons.get(6).getValue()));
+		Tower.setBulletSpeed(1 + buttons.get(7).getValue());
+		Tower.setDamage(buttons.get(8).getValue());
+		
+		Player.maxGrenades = (int) buttons.get(10).getValue();
+		Player.grenadeCooldown = 4000 - (int)buttons.get(11).getValue();
 	}
 
 	void checkCollisions() {

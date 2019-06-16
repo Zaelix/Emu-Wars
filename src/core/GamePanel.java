@@ -287,7 +287,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// System.out.println(e.getKeyCode());
+		System.out.println(e.getKeyCode());
 		int keyCode = e.getKeyCode();
 		char keyChar = e.getKeyChar();
 		if (GameManager.currentState == GameManager.GAME_STATE) {

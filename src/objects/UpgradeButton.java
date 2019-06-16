@@ -23,19 +23,25 @@ public class UpgradeButton {
 	private double value;
 	int decimals;
 	double cost = 1;
-	double multiplier = 1;
+	double costMult = 1;
+	double valueMult = 0.1;
 	int maxValue = Integer.MAX_VALUE;
 	boolean buysAnObject = false;
 	String object;
 
 	DecimalFormat myFormatter = new DecimalFormat("###.#");
 
-	public UpgradeButton(String text, double value, double multiplier) {
-		setup(text, value, multiplier);
+	public UpgradeButton(String text, double value, double costMult) {
+		setup(text, value, costMult);
+	}
+	public UpgradeButton(String text, double value, double costMult, double valueMult) {
+		setup(text, value, costMult);
+		this.valueMult = valueMult;
 	}
 
-	public UpgradeButton(String text, double value,double multiplier, String object) {
-		setup(text, value, multiplier);
+	public UpgradeButton(String text, double value, double costMult,
+			String object) {
+		setup(text, value, costMult);
 		this.buysAnObject = true;
 		this.object = object;
 	}
@@ -49,7 +55,7 @@ public class UpgradeButton {
 		isDivider = true;
 	}
 
-	void setup(String text, double value, double multiplier) {
+	void setup(String text, double value, double costMult) {
 		this.setKey(nextValidKey);
 		nextValidKey++;
 		this.x = 10;
@@ -60,7 +66,7 @@ public class UpgradeButton {
 		this.text = text;
 		this.setValue(value);
 		this.decimals = 2;
-		this.multiplier = multiplier;
+		this.costMult = costMult;
 	}
 
 	public void update() {
@@ -100,12 +106,14 @@ public class UpgradeButton {
 			g.setColor(Color.GREEN);
 			g.fillRect(x + 1, y + 1, keyBoxWidth - 2, height * 2 - 2);
 			g.setColor(Color.RED);
-			g.drawString(getKey() + "", x + 3, tHeight + 20);
+			if (getKey() < 10) {
+				g.drawString(getKey() + "", x + 3, tHeight + 20);
+			}
 		}
 
 		if (GameObject.debugRenderMode == 1) {
-			//g.setColor(Color.MAGENTA);
-			//g.fillRect(x, y, 200, height);
+			// g.setColor(Color.MAGENTA);
+			// g.fillRect(x, y, 200, height);
 		}
 	}
 
@@ -114,11 +122,11 @@ public class UpgradeButton {
 			GameManager.spendPoints(cost);
 			if (buysAnObject) {
 				GameManager.spawnObject(object);
-				cost /= multiplier;
+				cost /= costMult;
 				setValue(getValue() + 1);
 			} else {
-				cost += 1 / multiplier;
-				setValue(getValue() + 0.1);
+				cost += 1 / costMult;
+				setValue(getValue() + valueMult);
 			}
 		}
 	}
