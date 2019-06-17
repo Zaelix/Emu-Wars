@@ -13,8 +13,9 @@ import core.GamePanel;
 public class Grenade extends GameObject{
 	long startTime = System.currentTimeMillis();
 	long fuseLength = 2000;
-	int diameter = 100;
-	private double damage = 1;
+	public static int diameter = 100;
+	public static double damage = 1;
+	public static double maxDamage = 5;
 	
 	double angle = 0;
 	Grenade(int x, int y, double speed, Point from, Point to) {
@@ -59,6 +60,6 @@ public class Grenade extends GameObject{
 		setAlive(false);
 		
 		GameManager.explodeAt((int)getX()-diameter+20, (int)getY()-diameter+20, diameter, GamePanel.explosion);
-		GameManager.damageArea((int)getX(), (int)getY(), diameter, damage, damage*5);
+		GameManager.damageArea((int)getX(), (int)getY(), diameter, damage, damage*maxDamage);
 	}
 }
