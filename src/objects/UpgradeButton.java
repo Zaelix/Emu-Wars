@@ -156,6 +156,10 @@ public class UpgradeButton {
 		this.key = key;
 	}
 
+	public String getText(){
+		return this.text;
+	}
+	
 	public void setMaxRank(int maxValue) {
 		this.maxValue = maxValue;
 	}

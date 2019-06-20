@@ -430,20 +430,20 @@ public class GameManager {
 	static void createButtons() {
 		buttons.clear();
 		buttons.add(new UpgradeButton("TANK"));
-		buttons.add(new UpgradeButton("Fire Rate", 1, 1));
-		buttons.add(new UpgradeButton("Bullet Speed", 1, 1.4));
-		buttons.add(new UpgradeButton("Bullet Damage", 1, 1));
-		buttons.add(new UpgradeButton("Move Speed", 1, 2.3));
-		buttons.add(new UpgradeButton(""));
-		buttons.add(new UpgradeButton("Buy Tower", 1, 0.35, "Tower"));
-		buttons.add(new UpgradeButton("T.Fire Rate", 1, 0.2));
-		buttons.add(new UpgradeButton("T.Bullet Speed", 1, 0.3));
-		buttons.add(new UpgradeButton("T.Bullet Dmg", 1, 0.2));
-		buttons.add(new UpgradeButton(""));
-		buttons.add(new UpgradeButton("Grenade Count", 1, 1, 1));
+		buttons.add(new UpgradeButton("T.Fire Rate", 1, 1));
+		buttons.add(new UpgradeButton("T.Bullet Speed", 1, 1.4));
+		buttons.add(new UpgradeButton("T.Bullet Dmg", 1, 1));
+		buttons.add(new UpgradeButton("T.Move Speed", 1, 2.3));
+		buttons.add(new UpgradeButton("SOLDIER"));
+		buttons.add(new UpgradeButton("Buy Soldier", 1, 0.35, "Tower"));
+		buttons.add(new UpgradeButton("S.Fire Rate", 1, 0.2));
+		buttons.add(new UpgradeButton("S.Bullet Speed", 1, 0.3));
+		buttons.add(new UpgradeButton("S.Bullet Dmg", 1, 0.2));
+		buttons.add(new UpgradeButton("GRENADE"));
+		buttons.add(new UpgradeButton("G.Count", 1, 1, 1));
 		buttons.add(new UpgradeButton("G.Refill rate", 4000, 10, -10));
-		buttons.add(new UpgradeButton("Grenade Dmg", 1, 2, 0.1));
-		buttons.add(new UpgradeButton("Grenade Area", 100, 2, 5));
+		buttons.add(new UpgradeButton("G.Dmg", 1, 2, 0.1));
+		buttons.add(new UpgradeButton("G.Area", 100, 2, 5));
 		
 	}
 	
@@ -452,20 +452,49 @@ public class GameManager {
 	}
 	
 	void updateStats() {
-		player.setFireCooldown((long) (600 / buttons.get(0).getValue()));
-		player.setBulletSpeed(2 + buttons.get(1).getValue());
-		player.setDamage(buttons.get(2).getValue());
-		player.setSpeed(buttons.get(3).getValue());
+		int[] i = findUpgradeButtonIndexes();
+		player.setFireCooldown((long) (600 / buttons.get(i[0]).getValue()));
+		player.setBulletSpeed(2 + buttons.get(i[1]).getValue());
+		player.setDamage(buttons.get(i[2]).getValue());
+		player.setSpeed(buttons.get(i[3]).getValue());
 
-		Tower.setFireCooldown((long) (5000 / buttons.get(6).getValue()));
-		Tower.setBulletSpeed(1 + buttons.get(7).getValue());
-		Tower.setDamage(buttons.get(8).getValue());
+		Tower.setFireCooldown((long) (5000 / buttons.get(i[5]).getValue()));
+		Tower.setBulletSpeed(1 + buttons.get(i[6]).getValue());
+		Tower.setDamage(buttons.get(i[7]).getValue());
 		
-		Player.maxGrenades = (int) buttons.get(10).getValue();
-		Player.grenadeCooldown = (int)buttons.get(11).getValue();
-		Grenade.damage = (int)buttons.get(12).getValue();
-		Grenade.maxDamage = (int)buttons.get(12).getValue()*5;
-		Grenade.diameter = (int)buttons.get(13).getValue();
+		Player.maxGrenades = (int) buttons.get(i[8]).getValue();
+		Player.grenadeCooldown = (int)buttons.get(i[9]).getValue();
+		Grenade.damage = (int)buttons.get(i[10]).getValue();
+		Grenade.maxDamage = (int)buttons.get(i[10]).getValue()*5;
+		Grenade.diameter = (int)buttons.get(i[11]).getValue();
+	}
+	
+	int[] findUpgradeButtonIndexes(){
+		int[] i = new int[12];
+		i[0] = findButtonIndex("T.Fire Rate");
+		i[1] = findButtonIndex("T.Bullet Speed");
+		i[2] = findButtonIndex("T.Bullet Dmg");
+		i[3] = findButtonIndex("T.Move Speed");
+
+		i[7] = findButtonIndex("Buy Soldier");
+		i[4] = findButtonIndex("S.Fire Rate");
+		i[5] = findButtonIndex("S.Bullet Speed");
+		i[6] = findButtonIndex("S.Bullet Dmg");
+
+		i[8] = findButtonIndex("G.Count");
+		i[9] = findButtonIndex("G.Refill rate");
+		i[10] = findButtonIndex("G.Dmg");
+		i[11] = findButtonIndex("G.Area");
+		return i;
+	}
+	
+	int findButtonIndex(String s){
+		for(int i = 0; i < buttons.size(); i++){
+			if(buttons.get(i).getText().equals(s)){
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	void checkCollisions() {
