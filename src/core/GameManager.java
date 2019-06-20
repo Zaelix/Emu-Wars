@@ -463,9 +463,9 @@ public class GameManager {
 		Tower.setDamage(buttons.get(i[7]).getValue());
 		
 		Player.maxGrenades = (int) buttons.get(i[8]).getValue();
-		Player.grenadeCooldown = (int)buttons.get(i[9]).getValue();
-		Grenade.damage = (int)buttons.get(i[10]).getValue();
-		Grenade.maxDamage = (int)buttons.get(i[10]).getValue()*5;
+		Player.grenadeCooldown = (long)buttons.get(i[9]).getValue();
+		Grenade.damage = buttons.get(i[10]).getValue();
+		Grenade.maxDamage = buttons.get(i[10]).getValue()*5;
 		Grenade.diameter = (int)buttons.get(i[11]).getValue();
 	}
 	
