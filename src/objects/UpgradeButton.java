@@ -34,7 +34,9 @@ public class UpgradeButton {
 	public UpgradeButton(String text, double value, double costMult) {
 		setup(text, value, costMult);
 	}
-	public UpgradeButton(String text, double value, double costMult, double valueMult) {
+
+	public UpgradeButton(String text, double value, double costMult,
+			double valueMult) {
 		setup(text, value, costMult);
 		this.valueMult = valueMult;
 	}
@@ -46,13 +48,22 @@ public class UpgradeButton {
 		this.object = object;
 	}
 
-	public UpgradeButton() {
+	public UpgradeButton(String text) {
 		this.x = 10;
 		this.y = nextValidY;
 		this.width = 200;
 		this.height = 10;
 		nextValidY += height + 5;
+		if (text.equals("")) {
+			this.height = 10;
+			nextValidY += height + 5;
+		}
+		else{
+			this.height = 35;
+			nextValidY += height + 5;
+		}
 		isDivider = true;
+		this.text = text;
 	}
 
 	void setup(String text, double value, double costMult) {
@@ -75,8 +86,16 @@ public class UpgradeButton {
 
 	public void draw(Graphics g) {
 		if (isDivider) {
-			g.setColor(Color.BLACK);
-			g.fillRect(x, y, width, height); // Name box
+			if (text.equals("")) {
+				g.setColor(Color.BLACK);
+				g.fillRect(x, y, width, height); // Name box
+			} else {
+				g.setFont(displayFont);
+				g.setColor(Color.BLACK);
+				g.fillRect(x, y, width, height); // Name box
+				g.setColor(Color.RED);
+				g.drawString(text, x+ (width / 4), y+28);
+			}
 		} else {
 			String val = myFormatter.format(getValue());
 			String costF = myFormatter.format(cost);
@@ -88,10 +107,8 @@ public class UpgradeButton {
 
 			g.setColor(Color.GREEN);
 			g.fillRect(x + 1, y + 1, width - 2, height - 2); // Name Box
-			g.fillRect(x + 1, y + height + 1, (width) - 2, height - 2); // Cost
-																		// Box
-			g.fillRect(x + width + 1, y + 1, (width / 3) - 2, (height * 2) - 2); // Value
-																					// Box
+			g.fillRect(x + 1, y + height + 1, (width) - 2, height - 2); // Cost Box
+			g.fillRect(x + width + 1, y + 1, (width / 3) - 2, (height * 2) - 2); // Value Box
 			int keyBoxWidth = (width / 5);
 			g.setFont(displayFont);
 			g.setColor(Color.BLACK);

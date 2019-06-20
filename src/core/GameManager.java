@@ -45,10 +45,12 @@ public class GameManager {
 	static Point mouseLoc = new Point();
 	static Point clicked = new Point();
 
+	static ArrayList<ArrayList<UpgradeButton>> buttonCategories = new ArrayList<ArrayList<UpgradeButton>>();
+	static ArrayList<UpgradeButton> buttons = new ArrayList<UpgradeButton>();
+	
 	static ArrayList<Projectile> bullets = new ArrayList<Projectile>();
 	static ArrayList<Emu> emus = new ArrayList<Emu>();
 	static ArrayList<Emu> closestEmus = new ArrayList<Emu>();
-	static ArrayList<UpgradeButton> buttons = new ArrayList<UpgradeButton>();
 	static ArrayList<Tower> towers = new ArrayList<Tower>();
 	static ArrayList<Shield> shields = new ArrayList<Shield>();
 	static ArrayList<Grenade> grenades = new ArrayList<Grenade>();
@@ -427,20 +429,25 @@ public class GameManager {
 
 	static void createButtons() {
 		buttons.clear();
+		buttons.add(new UpgradeButton("TANK"));
 		buttons.add(new UpgradeButton("Fire Rate", 1, 1));
 		buttons.add(new UpgradeButton("Bullet Speed", 1, 1.4));
 		buttons.add(new UpgradeButton("Bullet Damage", 1, 1));
 		buttons.add(new UpgradeButton("Move Speed", 1, 2.3));
-		buttons.add(new UpgradeButton());
+		buttons.add(new UpgradeButton(""));
 		buttons.add(new UpgradeButton("Buy Tower", 1, 0.35, "Tower"));
 		buttons.add(new UpgradeButton("T.Fire Rate", 1, 0.2));
 		buttons.add(new UpgradeButton("T.Bullet Speed", 1, 0.3));
 		buttons.add(new UpgradeButton("T.Bullet Dmg", 1, 0.2));
-		buttons.add(new UpgradeButton());
+		buttons.add(new UpgradeButton(""));
 		buttons.add(new UpgradeButton("Grenade Count", 1, 1, 1));
 		buttons.add(new UpgradeButton("G.Refill rate", 4000, 10, -10));
 		buttons.add(new UpgradeButton("Grenade Dmg", 1, 2, 0.1));
 		buttons.add(new UpgradeButton("Grenade Area", 100, 2, 5));
+		
+	}
+	
+	static void createButtonsWithCategories(){
 		
 	}
 	
