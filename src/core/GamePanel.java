@@ -317,7 +317,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 				dm.player.setFiringScattered(true);
 			}
-
+			if (keyCode == 192) {
+				GameManager.topCategory++;
+				if(GameManager.topCategory > 2){
+					GameManager.topCategory = 0;
+				}
+				GameManager.addButtonsToUI();
+			}
 			// 49 is the 1 key
 			if (keyCode >= 49 && keyCode <= 58) {
 				dm.buy(keyCode - 49);

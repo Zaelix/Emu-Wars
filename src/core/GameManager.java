@@ -45,6 +45,7 @@ public class GameManager {
 	static Point mouseLoc = new Point();
 	static Point clicked = new Point();
 
+	public static int topCategory = 0;
 	static ArrayList<ArrayList<UpgradeButton>> buttonCategories = new ArrayList<ArrayList<UpgradeButton>>();
 	static ArrayList<UpgradeButton> buttons = new ArrayList<UpgradeButton>();
 	
@@ -447,7 +448,50 @@ public class GameManager {
 		
 	}
 	
-	static void createButtonsWithCategories(){
+	public static void createButtonsWithCategories(){
+		ArrayList<UpgradeButton> tankButtons = new ArrayList<UpgradeButton>();
+		tankButtons.add(new UpgradeButton("TANK"));
+		tankButtons.add(new UpgradeButton("T.Fire Rate", 1, 1));
+		tankButtons.add(new UpgradeButton("T.Bullet Speed", 1, 1.4));
+		tankButtons.add(new UpgradeButton("T.Bullet Dmg", 1, 1));
+		tankButtons.add(new UpgradeButton("T.Move Speed", 1, 2.3));
+		
+		ArrayList<UpgradeButton> soldierButtons = new ArrayList<UpgradeButton>();
+		soldierButtons.add(new UpgradeButton("SOLDIER"));
+		soldierButtons.add(new UpgradeButton("Buy Soldier", 1, 0.35, "Tower"));
+		soldierButtons.add(new UpgradeButton("S.Fire Rate", 1, 0.2));
+		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 0.3));
+		soldierButtons.add(new UpgradeButton("S.Bullet Dmg", 1, 0.2));
+
+		ArrayList<UpgradeButton> grenadeButtons = new ArrayList<UpgradeButton>();
+		grenadeButtons.add(new UpgradeButton("GRENADE"));
+		grenadeButtons.add(new UpgradeButton("G.Count", 1, 1, 1));
+		grenadeButtons.add(new UpgradeButton("G.Refill rate", 4000, 10, -10));
+		grenadeButtons.add(new UpgradeButton("G.Dmg", 1, 2, 0.1));
+		grenadeButtons.add(new UpgradeButton("G.Area", 100, 2, 5));
+		
+		buttonCategories.add(tankButtons);
+		buttonCategories.add(soldierButtons);
+		buttonCategories.add(grenadeButtons);
+		
+		assignButtonKeys();
+		addButtonsToUI();
+	}
+	
+	public static void addButtonsToUI(){
+		buttons.clear();
+		int x = topCategory;
+		for(int i = 0; i < buttonCategories.size(); i++){
+			if(i+x>= buttonCategories.size()){
+				x = -buttonCategories.size()+1;
+			}
+			for(int k = 0; k < buttonCategories.get(i+x).size(); k++){
+				buttons.add(buttonCategories.get(i+x).get(k));
+			}
+		}
+	}
+	
+	static void assignButtonKeys(){
 		
 	}
 	
@@ -666,7 +710,8 @@ public class GameManager {
 		shields.clear();
 		UpgradeButton.nextValidKey = 1;
 		UpgradeButton.nextValidY = 65;
-		createButtons();
+		//createButtons();
+		createButtonsWithCategories();
 		currentState = GAME_STATE;
 	}
 
