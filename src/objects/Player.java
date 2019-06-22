@@ -173,8 +173,8 @@ public class Player extends GameObject {
 		double slopeY = getCenterY() - (tar.y - GameManager.mouseYOffset);
 
 		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
-		vx = -slopeX / magn * speed;
-		vy = -slopeY / magn * speed;
+		vx = -slopeX / magn;
+		vy = -slopeY / magn;
 		angle = (Math.atan2(slopeY, slopeX)*180/Math.PI)-90;
 		
 		barrel = new Point((int)(getCenterX()+vx*50), (int)(getCenterY()+vy*50));
