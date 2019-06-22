@@ -481,6 +481,8 @@ public class GameManager {
 	public static void addButtonsToUI(){
 		buttons.clear();
 		int x = topCategory; 
+		System.out.println("Category:" + x);
+		UpgradeButton.nextValidY = 65;
 		for(int i = 0; i < buttonCategories.size(); i++){
 			if(x>= buttonCategories.size()){
 				x = 0;
@@ -490,10 +492,24 @@ public class GameManager {
 			}
 			x++;
 		}
+		assignButtonPositions();
+		assignButtonKeys();
+	}
+	
+	static void assignButtonPositions(){
+		for(int i = 0; i < buttons.size(); i++){
+			buttons.get(i).calculateYPosition();
+		}
 	}
 	
 	static void assignButtonKeys(){
-		
+		UpgradeButton.nextValidKey = 1;
+		for(int i = 0; i < buttons.size(); i++){
+			if(!buttons.get(i).isDivider){
+				buttons.get(i).setKey(UpgradeButton.nextValidKey);
+				UpgradeButton.nextValidKey++;
+			}
+		}
 	}
 	
 	void updateStats() {

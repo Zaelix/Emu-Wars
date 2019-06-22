@@ -50,10 +50,9 @@ public class UpgradeButton {
 
 	public UpgradeButton(String text) {
 		this.x = 10;
-		this.y = nextValidY;
 		this.width = 200;
 		this.height = 10;
-		nextValidY += height + 5;
+		calculateYPosition();
 		if (text.equals("")) {
 			this.height = 10;
 			nextValidY += height + 5;
@@ -70,14 +69,23 @@ public class UpgradeButton {
 		this.setKey(nextValidKey);
 		nextValidKey++;
 		this.x = 10;
-		this.y = nextValidY;
 		this.width = 150;
 		this.height = 25;
-		nextValidY += height * 2 + 5;
+		calculateYPosition();
 		this.text = text;
 		this.setValue(value);
 		this.decimals = 2;
 		this.costMult = costMult;
+	}
+	
+	public void calculateYPosition(){
+		this.y = nextValidY;
+		if(!isDivider){
+			nextValidY += height * 2 + 5;			
+		}
+		else{
+			nextValidY += height + 5;
+		}
 	}
 
 	public void update() {
