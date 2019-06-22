@@ -480,14 +480,15 @@ public class GameManager {
 	
 	public static void addButtonsToUI(){
 		buttons.clear();
-		int x = topCategory;
+		int x = topCategory; 
 		for(int i = 0; i < buttonCategories.size(); i++){
-			if(i+x>= buttonCategories.size()){
-				x = -buttonCategories.size()+1;
+			if(x>= buttonCategories.size()){
+				x = 0;
 			}
-			for(int k = 0; k < buttonCategories.get(i+x).size(); k++){
-				buttons.add(buttonCategories.get(i+x).get(k));
+			for(int k = 0; k < buttonCategories.get(x).size(); k++){
+				buttons.add(buttonCategories.get(x).get(k));
 			}
+			x++;
 		}
 	}
 	

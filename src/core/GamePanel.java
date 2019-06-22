@@ -322,6 +322,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 				if(GameManager.topCategory > 2){
 					GameManager.topCategory = 0;
 				}
+				System.out.println(GameManager.topCategory);
 				GameManager.addButtonsToUI();
 			}
 			// 49 is the 1 key
