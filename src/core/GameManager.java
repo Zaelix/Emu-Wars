@@ -22,6 +22,7 @@ import objects.Emu;
 import objects.Explosion;
 import objects.GameObject;
 import objects.Grenade;
+import objects.Jerky;
 import objects.Player;
 import objects.Projectile;
 import objects.Shield;
@@ -55,6 +56,7 @@ public class GameManager {
 	static ArrayList<Tower> towers = new ArrayList<Tower>();
 	static ArrayList<Shield> shields = new ArrayList<Shield>();
 	static ArrayList<Grenade> grenades = new ArrayList<Grenade>();
+	static ArrayList<Jerky> jerkies = new ArrayList<Jerky>();
 	static ArrayList<Explosion> explosionPool = new ArrayList<Explosion>();
 
 	static Player player = new Player(250, 450, 50, 100, Color.BLUE);
@@ -178,6 +180,10 @@ public class GameManager {
 
 			for (int i = 0; i < grenades.size(); i++) {
 				grenades.get(i).draw(g);
+			}
+			
+			for (int i = 0; i < jerkies.size(); i++) {
+				jerkies.get(i).draw(g);
 			}
 			player.draw(g);
 			// drawLineToCursor(g);
@@ -326,6 +332,10 @@ public class GameManager {
 		}
 		for (int i = 0; i < grenades.size(); i++) {
 			grenades.get(i).update();
+		}
+		
+		for (int i = 0; i < jerkies.size(); i++) {
+			jerkies.get(i).update();
 		}
 		spawnEmus();
 		checkCollisions();
@@ -599,6 +609,12 @@ public class GameManager {
 				grenades.remove(i);
 			}
 		}
+		
+		for (int i = jerkies.size() - 1; i >= 0; i--) {
+			if (jerkies.get(i).isAlive() == false) {
+				jerkies.remove(i);
+			}
+		}
 	}
 
 	public static void togglePaused() {
@@ -626,7 +642,11 @@ public class GameManager {
 	public static void addGrenade(Grenade g) {
 		grenades.add(g);
 	}
-
+	
+	public static void addJerky(Jerky j) {
+		jerkies.add(j);
+	}
+	
 	public static void incrementScore(int value) {
 		score += value;
 		points += value;

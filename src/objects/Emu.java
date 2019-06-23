@@ -169,6 +169,7 @@ public class Emu extends GameObject {
 		}
 		if (health <= 0) {
 			setAlive(false);
+			GameManager.addJerky(new Jerky((int)getX(), (int)getY(), 40, 40));
 			GameManager.explodeAt((int) getX() - width / 2, (int) getY()
 					- height / 2, width, GamePanel.explosion);
 			GameManager.incrementScore((int) (maxHealth));

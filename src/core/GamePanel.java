@@ -50,6 +50,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 	public static BufferedImage shield;
 	public static BufferedImage grenade;
+	public static BufferedImage jerky;
 	
 	public static BufferedImage tankBase;
 	public static BufferedImage tankTurret;
@@ -91,6 +92,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		grenade = loadImage("explosives.png").getSubimage(32, 0, 32, 32);
 		tankBase = loadImage("tank_base.png");
 		tankTurret = loadImage("tank_turret.png");
+		jerky = loadImage("jerky.png");
 		
 	}
 
@@ -157,7 +159,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		for (char c : typed) {
 			t += c;
 		}
-		if (t.contains("taco")) {
+		if (t.contains("itstandstoreason")) {
 			GameManager.gainPoints(777_777);
 			typed.clear();
 		}

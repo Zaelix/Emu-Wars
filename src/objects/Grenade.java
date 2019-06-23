@@ -24,8 +24,8 @@ public class Grenade extends GameObject{
 	}
 	
 	void setup(Point from, Point to){
-		double slopeX = from.x - (to.x - 10);
-		double slopeY = from.y - (to.y - 32);
+		double slopeX = from.x - (to.x - GameManager.mouseXOffset);
+		double slopeY = from.y - (to.y - GameManager.mouseYOffset);
 
 		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
 		speed *= magn/165;
