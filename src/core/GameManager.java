@@ -224,7 +224,7 @@ public class GameManager {
 		g.fillRect(11, 11, 118, 47);
 
 		g.setColor(Color.BLACK);
-		g.drawString("Points: ", 12, 40);
+		g.drawString("Jerky: ", 12, 40);
 		g.drawString(pts, 90 - pts.length() * 4, 40);
 	}
 
@@ -470,7 +470,7 @@ public class GameManager {
 		grenadeButtons.add(new UpgradeButton("G.Count", 1, 1, 1));
 		grenadeButtons.add(new UpgradeButton("G.Refill rate", 4000, 10, -1).setPercentageBasedValue(true).setPercentageBasedCost(true));
 		grenadeButtons.add(new UpgradeButton("G.Dmg", 1, 2, 0.1));
-		grenadeButtons.add(new UpgradeButton("G.Area", 100, 2, 5));
+		grenadeButtons.add(new UpgradeButton("G.Area", 100, 2, 5).setPercentageBasedCost(true));
 		
 		buttonCategories.add(tankButtons);
 		buttonCategories.add(soldierButtons);
