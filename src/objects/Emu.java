@@ -74,8 +74,8 @@ public class Emu extends GameObject {
 		}
 		else if (type == BOUNCER) {
 			int healthMod = (int) (GameManager.getSecondsSinceStart() / healthDifficultyDivisor)*8;
-			this.width = 5;
-			this.height = 5;
+			this.width = 8;
+			this.height = 8;
 			this.maxHealth = 200+healthMod;
 			this.health = this.maxHealth;
 		}
