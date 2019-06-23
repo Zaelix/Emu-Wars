@@ -27,6 +27,8 @@ public class UpgradeButton {
 	double valueMult = 0.1;
 	int maxValue = Integer.MAX_VALUE;
 	boolean buysAnObject = false;
+	boolean isPercentageBasedValue = false;
+	boolean isPercentageBasedCost = false;
 	String object;
 
 	DecimalFormat myFormatter = new DecimalFormat("###.#");
@@ -46,6 +48,7 @@ public class UpgradeButton {
 		setup(text, value, costMult);
 		this.buysAnObject = true;
 		this.object = object;
+		valueMult = 1;
 	}
 
 	public UpgradeButton(String text) {
@@ -56,8 +59,7 @@ public class UpgradeButton {
 		if (text.equals("")) {
 			this.height = 10;
 			nextValidY += height + 5;
-		}
-		else{
+		} else {
 			this.height = 35;
 			nextValidY += height + 5;
 		}
@@ -77,13 +79,12 @@ public class UpgradeButton {
 		this.decimals = 2;
 		this.costMult = costMult;
 	}
-	
-	public void calculateYPosition(){
+
+	public void calculateYPosition() {
 		this.y = nextValidY;
-		if(!isDivider){
-			nextValidY += height * 2 + 5;			
-		}
-		else{
+		if (!isDivider) {
+			nextValidY += height * 2 + 5;
+		} else {
 			nextValidY += height + 5;
 		}
 	}
@@ -102,7 +103,7 @@ public class UpgradeButton {
 				g.setColor(Color.BLACK);
 				g.fillRect(x, y, width, height); // Name box
 				g.setColor(Color.RED);
-				g.drawString(text, x+ (width / 4), y+28);
+				g.drawString(text, x + (width / 4), y + 28);
 			}
 		} else {
 			String val = myFormatter.format(getValue());
@@ -115,8 +116,10 @@ public class UpgradeButton {
 
 			g.setColor(Color.GREEN);
 			g.fillRect(x + 1, y + 1, width - 2, height - 2); // Name Box
-			g.fillRect(x + 1, y + height + 1, (width) - 2, height - 2); // Cost Box
-			g.fillRect(x + width + 1, y + 1, (width / 3) - 2, (height * 2) - 2); // Value Box
+			g.fillRect(x + 1, y + height + 1, (width) - 2, height - 2); // Cost
+																		// Box
+			g.fillRect(x + width + 1, y + 1, (width / 3) - 2, (height * 2) - 2); // Value
+																					// Box
 			int keyBoxWidth = (width / 5);
 			g.setFont(displayFont);
 			g.setColor(Color.BLACK);
@@ -147,11 +150,18 @@ public class UpgradeButton {
 			GameManager.spendPoints(cost);
 			if (buysAnObject) {
 				GameManager.spawnObject(object);
-				cost /= costMult;
-				setValue(getValue() + 1);
-			} else {
-				cost += 1 / costMult;
+			} 
+			if (isPercentageBasedValue) {
+				setValue(getValue() + (getValue() * (valueMult/100)));
+			}
+			else{
 				setValue(getValue() + valueMult);
+			}
+			if(isPercentageBasedCost){
+				cost *= 1 + (costMult/100);
+			}
+			else{
+				cost += 1 / costMult;
 			}
 		}
 	}
@@ -164,12 +174,22 @@ public class UpgradeButton {
 		this.key = key;
 	}
 
-	public String getText(){
+	public String getText() {
 		return this.text;
 	}
-	
+
 	public void setMaxRank(int maxValue) {
 		this.maxValue = maxValue;
+	}
+
+	public UpgradeButton setPercentageBasedValue(boolean b) {
+		isPercentageBasedValue = b;
+		return this;
+	}
+	
+	public UpgradeButton setPercentageBasedCost(boolean b) {
+		isPercentageBasedCost = b;
+		return this;
 	}
 
 	public double getValue() {

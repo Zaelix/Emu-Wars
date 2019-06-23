@@ -459,16 +459,16 @@ public class GameManager {
 		
 		ArrayList<UpgradeButton> soldierButtons = new ArrayList<UpgradeButton>();
 		soldierButtons.add(new UpgradeButton("SOLDIER"));
-		soldierButtons.add(new UpgradeButton("Buy Soldier", 1, 0.35, "Tower"));
+		soldierButtons.add(new UpgradeButton("Buy Soldier", 1, 285, "Tower").setPercentageBasedCost(true));
 		soldierButtons.add(new UpgradeButton("S.Fire Rate", 1, 0.2));
-		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 0.4));
-		soldierButtons.add(new UpgradeButton("S.Bullet Dmg", 1, 0.2));
+		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 3).setPercentageBasedCost(true));
+		soldierButtons.add(new UpgradeButton("S.Bullet Dmg", 1, 2).setPercentageBasedCost(true));
 		soldierButtons.add(new UpgradeButton("S.Move Speed", 1, 0.4));
 
 		ArrayList<UpgradeButton> grenadeButtons = new ArrayList<UpgradeButton>();
 		grenadeButtons.add(new UpgradeButton("GRENADE"));
 		grenadeButtons.add(new UpgradeButton("G.Count", 1, 1, 1));
-		grenadeButtons.add(new UpgradeButton("G.Refill rate", 4000, 10, -10));
+		grenadeButtons.add(new UpgradeButton("G.Refill rate", 4000, 10, -1).setPercentageBasedValue(true).setPercentageBasedCost(true));
 		grenadeButtons.add(new UpgradeButton("G.Dmg", 1, 2, 0.1));
 		grenadeButtons.add(new UpgradeButton("G.Area", 100, 2, 5));
 		
