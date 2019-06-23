@@ -449,6 +449,7 @@ public class GameManager {
 	}
 	
 	public static void createButtonsWithCategories(){
+		buttonCategories.clear();
 		ArrayList<UpgradeButton> tankButtons = new ArrayList<UpgradeButton>();
 		tankButtons.add(new UpgradeButton("TANK"));
 		tankButtons.add(new UpgradeButton("T.Fire Rate", 1, 1));
@@ -737,6 +738,7 @@ public class GameManager {
 
 	public static void restart() {
 		setDifficultyStats();
+		createButtonsWithCategories();
 	}
 
 	public void buy(int key) {
