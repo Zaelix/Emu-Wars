@@ -13,6 +13,7 @@ public class Emu extends GameObject {
 	public static final int NORMAL = 0;
 	public static final int SHIELD = 1;
 	public static final int MOTHER = 2;
+	public static final int BOUNCER = 3;
 	public static double healthDifficultyDivisor = 20;
 	ArrayList<BufferedImage> emuAnim;
 	HealthBar hpBar;
@@ -43,7 +44,7 @@ public class Emu extends GameObject {
 		body = new Rectangle();
 		legs = new Rectangle();
 		setAnimCooldown((long) (getAnimCooldown() * (3.2 - speed)));
-		int healthMod = (int) ((GameManager.getSecondsSinceStart() / healthDifficultyDivisor) * size);
+		int healthMod = (int) ((GameManager.getSecondsSinceStart() / healthDifficultyDivisor) * size * size);
 		this.maxHealth = Math.max(2.5 - speed, 1) + 1 + healthMod;
 		this.health = maxHealth;
 		bhXMod = (this.width / 25);
@@ -69,6 +70,13 @@ public class Emu extends GameObject {
 			this.width *= 1.5;
 			this.height *= 1.5;
 			this.maxHealth *= 1.5;
+			this.health = this.maxHealth;
+		}
+		else if (type == BOUNCER) {
+			int healthMod = (int) (GameManager.getSecondsSinceStart() / healthDifficultyDivisor)*8;
+			this.width = 5;
+			this.height = 5;
+			this.maxHealth = 200+healthMod;
 			this.health = this.maxHealth;
 		}
 	}

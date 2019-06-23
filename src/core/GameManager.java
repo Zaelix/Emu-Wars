@@ -460,8 +460,9 @@ public class GameManager {
 		soldierButtons.add(new UpgradeButton("SOLDIER"));
 		soldierButtons.add(new UpgradeButton("Buy Soldier", 1, 0.35, "Tower"));
 		soldierButtons.add(new UpgradeButton("S.Fire Rate", 1, 0.2));
-		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 0.3));
+		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 0.4));
 		soldierButtons.add(new UpgradeButton("S.Bullet Dmg", 1, 0.2));
+		soldierButtons.add(new UpgradeButton("S.Move Speed", 1, 0.4));
 
 		ArrayList<UpgradeButton> grenadeButtons = new ArrayList<UpgradeButton>();
 		grenadeButtons.add(new UpgradeButton("GRENADE"));
@@ -522,30 +523,32 @@ public class GameManager {
 		Tower.setFireCooldown((long) (5000 / buttons.get(i[5]).getValue()));
 		Tower.setBulletSpeed(1 + buttons.get(i[6]).getValue());
 		Tower.setDamage(buttons.get(i[7]).getValue());
+		Tower.setMoveSpeed(buttons.get(i[8]).getValue());
 		
-		Player.maxGrenades = (int) buttons.get(i[8]).getValue();
-		Player.grenadeCooldown = (long)buttons.get(i[9]).getValue();
-		Grenade.damage = buttons.get(i[10]).getValue();
-		Grenade.maxDamage = buttons.get(i[10]).getValue()*5;
-		Grenade.diameter = (int)buttons.get(i[11]).getValue();
+		Player.maxGrenades = (int) buttons.get(i[9]).getValue();
+		Player.grenadeCooldown = (long)buttons.get(i[10]).getValue();
+		Grenade.damage = buttons.get(i[11]).getValue();
+		Grenade.maxDamage = buttons.get(i[11]).getValue()*5;
+		Grenade.diameter = (int)buttons.get(i[12]).getValue();
 	}
 	
 	int[] findUpgradeButtonIndexes(){
-		int[] i = new int[12];
+		int[] i = new int[13];
 		i[0] = findButtonIndex("T.Fire Rate");
 		i[1] = findButtonIndex("T.Bullet Speed");
 		i[2] = findButtonIndex("T.Bullet Dmg");
 		i[3] = findButtonIndex("T.Move Speed");
 
-		i[7] = findButtonIndex("Buy Soldier");
-		i[4] = findButtonIndex("S.Fire Rate");
-		i[5] = findButtonIndex("S.Bullet Speed");
-		i[6] = findButtonIndex("S.Bullet Dmg");
+		i[4] = findButtonIndex("Buy Soldier");
+		i[5] = findButtonIndex("S.Fire Rate");
+		i[6] = findButtonIndex("S.Bullet Speed");
+		i[7] = findButtonIndex("S.Bullet Dmg");
+		i[8] = findButtonIndex("S.Move Speed");
 
-		i[8] = findButtonIndex("G.Count");
-		i[9] = findButtonIndex("G.Refill rate");
-		i[10] = findButtonIndex("G.Dmg");
-		i[11] = findButtonIndex("G.Area");
+		i[9] = findButtonIndex("G.Count");
+		i[10] = findButtonIndex("G.Refill rate");
+		i[11] = findButtonIndex("G.Dmg");
+		i[12] = findButtonIndex("G.Area");
 		return i;
 	}
 	

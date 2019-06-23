@@ -66,6 +66,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 	private static int menuDifficultyChoice = 0;
 
+	private boolean isShiftHeld = false;
 	GamePanel() {
 		timer = new Timer(1000 / 100, this);
 		startGame();
@@ -312,7 +313,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			if (keyCode == 10) {
 				GameManager.restart();
 			}
-
+			if (keyCode == 16) {
+				isShiftHeld = true;
+			}
 			if (keyCode == 32) {
 
 				dm.player.setFiringScattered(true);
@@ -327,7 +330,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			}
 			// 49 is the 1 key
 			if (keyCode >= 49 && keyCode <= 58) {
-				dm.buy(keyCode - 49);
+				if(isShiftHeld){
+					for(int i = 0; i < 5; i++){
+						dm.buy(keyCode - 49);
+					}
+				}
+				else{
+					dm.buy(keyCode - 49);
+				}
 			}
 		}
 		if (GameManager.currentState == GameManager.MENU_STATE) {
@@ -395,6 +405,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		}
 		if (keyCode == 32) {
 			dm.player.setFiringScattered(false);
+		}if (keyCode == 16) {
+			isShiftHeld = false;
 		}
 
 	}

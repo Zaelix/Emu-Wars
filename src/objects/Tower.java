@@ -16,7 +16,7 @@ public class Tower extends GameObject {
 	private static long fireCooldown = 1000;
 	private static double damage = 1;
 	private static double bulletSpeed = 1;
-	static int speed = 2;
+	static double speed = 2;
 	Emu target;
 
 	public Tower(int x, int y, int width, int height, Color color) {
@@ -94,6 +94,10 @@ public class Tower extends GameObject {
 
 	public static void setBulletSpeed(double bulletSpeed) {
 		Tower.bulletSpeed = bulletSpeed;
+	}
+	
+	public static void setMoveSpeed(double speed){
+		Tower.speed = speed;
 	}
 
 	public static long getFireCooldown() {
