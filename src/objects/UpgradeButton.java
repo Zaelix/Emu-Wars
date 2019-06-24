@@ -199,6 +199,15 @@ public class UpgradeButton {
 	public void setValue(double value) {
 		this.value = value;
 	}
+	
+	public double getCost() {
+		return cost;
+	}
+
+	public UpgradeButton setCost(double cost) {
+		this.cost = cost;
+		return this;
+	}
 
 	public int getX() {
 		return x;
