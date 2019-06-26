@@ -342,9 +342,9 @@ public class GameManager {
 		purgeObjects();
 
 		// Increasing spawn rates
-		if (frameCount % 10 == 0 && spawnCooldown > 10) {
+		if (frameCount % 10 == 0 && spawnCooldown > 100) {
 			spawnCooldown *= spawnChangeRate;
-		} else if (spawnCooldown < 10 && frameCount % 10 == 0) {
+		} else if (spawnCooldown <= 100 && frameCount % 10 == 0 && Emu.healthDifficultyDivisor > 0.01) {
 			Emu.healthDifficultyDivisor -= 0.01;
 		}
 		if (frameCount % 2000 == 0 && spawnChangeRate < 0.9999) {

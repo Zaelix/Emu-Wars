@@ -46,7 +46,7 @@ public class Jerky extends GameObject {
 		setY(getY() + vy);
 		slow();
 		age++;
-		if (getX() < 120 && getY() < 60) {
+		if (isAlive() && getX() < 120 && getY() < 60) {
 			setAlive(false);
 		}
 	}
