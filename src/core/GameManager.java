@@ -422,10 +422,12 @@ public class GameManager {
 				&& GamePanel.runAnims.size() > 0) {
 			spawnEmu(GamePanel.runAnims.get(0));
 			GamePanel.runAnims.remove(0);
+			spawnFarmer();
 		} else if (System.currentTimeMillis() - spawnTimer >= spawnCooldown
 				&& GamePanel.runAnims.size() == 0) {
 			spawnEmu(GamePanel.emuRun);
 		}
+		
 	}
 
 	void spawnEmu(ArrayList<BufferedImage> anim) {
@@ -784,6 +786,7 @@ public class GameManager {
 		if (object.equals("Tower")) {
 			obj = new Soldier((int) getPlayer().getCenterX(),
 					(int) getPlayer().getCenterY(), 100, 100, Color.GREEN);
+			((Soldier) obj).trainAsSoldier();
 			towers.add((Soldier) obj);
 		}
 

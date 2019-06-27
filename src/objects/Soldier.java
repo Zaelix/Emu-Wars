@@ -28,12 +28,20 @@ public class Soldier extends GameObject {
 	public void draw(Graphics g) {
 		// drawCollisionBoxes(g);
 		int f = 0;
-		if (getFrame() < GamePanel.soldierFire.size()) {
-			f = getFrame();
-		}
-		g.drawImage(GamePanel.soldierFire.get(f), (int) getX(), (int) getY(),
+		if(!isFarmer){
+			if (getFrame() < GamePanel.soldierFire.size()) {
+				f = getFrame();
+			}
+			g.drawImage(GamePanel.soldierFire.get(f), (int) getX(), (int) getY(),
 				width, height, null);
-
+		}
+		else{
+			if (getFrame() < GamePanel.soldierWalk.size()) {
+				f = getFrame();
+			}
+			g.drawImage(GamePanel.soldierWalk.get(f), (int) getX(), (int) getY(),
+					width, height, null);
+		}
 		super.draw(g);
 	}
 
@@ -68,6 +76,7 @@ public class Soldier extends GameObject {
 			}
 		}
 		else{
+			animate();
 			setX(getX() - speed);
 			if(getX() < 240){
 				isFarmer = false;
