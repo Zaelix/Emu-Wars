@@ -158,9 +158,6 @@ public class GameManager {
 			g.drawString("PAUSED", 0, (int) (EmuCore.HEIGHT * 0.65));
 			g.drawString("PAUSED", 0, (int) (EmuCore.HEIGHT * 1));
 		} else {
-			g.setColor(Color.GRAY);
-			g.fillRect(0, 0, 220, EmuCore.HEIGHT);
-			drawLine(g);
 			for (Projectile p : bullets) {
 				p.draw(g);
 			}
@@ -171,9 +168,7 @@ public class GameManager {
 				t.draw(g);
 			}
 
-			for (int i = 0; i < buttons.size(); i++) {
-				buttons.get(i).draw(g);
-			}
+			player.draw(g);
 
 			for (int i = 0; i < explosionPool.size(); i++) {
 				explosionPool.get(i).draw(g);
@@ -182,11 +177,17 @@ public class GameManager {
 			for (int i = 0; i < grenades.size(); i++) {
 				grenades.get(i).draw(g);
 			}
-			
+
+			g.setColor(Color.GRAY);
+			g.fillRect(0, 0, 220, EmuCore.HEIGHT);
+			for (int i = 0; i < buttons.size(); i++) {
+				buttons.get(i).draw(g);
+			}
 			for (int i = 0; i < jerkies.size(); i++) {
 				jerkies.get(i).draw(g);
 			}
-			player.draw(g);
+			
+			drawLine(g);
 			// drawLineToCursor(g);
 			drawPointsBox(g);
 			drawHealthBox(g);
