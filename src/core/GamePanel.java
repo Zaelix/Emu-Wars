@@ -46,7 +46,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	public static ArrayList<BufferedImage> emuFloat = new ArrayList<BufferedImage>();
 
 	public static ArrayList<BufferedImage> explosion = new ArrayList<BufferedImage>();
-	public static ArrayList<BufferedImage> turretFire = new ArrayList<BufferedImage>();
+	public static ArrayList<BufferedImage> soldierFire = new ArrayList<BufferedImage>();
+	public static ArrayList<BufferedImage> soldierWalk = new ArrayList<BufferedImage>();
 	public static ArrayList<BufferedImage> fireball = new ArrayList<BufferedImage>();
 
 	public static BufferedImage shield;
@@ -87,7 +88,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	void loadImages() {
 		loadEmuImages();
 		loadExplosionImages();
-		loadTurretImages();
+		loadSoldierImages();
 		loadFireballImages();
 		shield = loadImage("spr_shield.png");
 		grenade = loadImage("explosives.png").getSubimage(32, 0, 32, 32);
@@ -141,10 +142,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		}
 	}
 
-	void loadTurretImages() {
+	void loadSoldierImages() {
 		BufferedImage img = loadImage("kir-shoot.png");
 		for (int i = 0; i < 5; i++) {
-			turretFire.add(img.getSubimage(i * 96, 0, 96, 96));
+			soldierFire.add(img.getSubimage(i * 96, 0, 96, 96));
+		}
+		img = loadImage("kir-walk_unarmed.png");
+		for (int i = 0; i < 4; i++) {
+			soldierWalk.add(img.getSubimage(i * 96, 0, 96, 96));
 		}
 	}
 

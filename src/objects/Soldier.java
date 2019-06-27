@@ -10,30 +10,28 @@ import core.GamePanel;
 
 public class Soldier extends GameObject {
 	public static boolean canMove = false;
-	static int seekRange;
-	int frame = 0;
-	long fireTimer = 0;
 	private static long fireCooldown = 1000;
 	private static double damage = 1;
 	private static double bulletSpeed = 1;
+	
+	public boolean isFarmer = true;
+	static int seekRange;
+	int frame = 0;
+	long fireTimer = 0;
 	static double speed = 2;
 	Emu target;
 
 	public Soldier(int x, int y, int width, int height, Color color) {
 		super(x, y, width, height, speed, color);
-		// this.x = x + (width/2);
-		// this.y = y + (height/2);
-		// centerX = (int) (x + width / 2);
-		// centerY = (int) (y + height / 2);
 	}
 
 	public void draw(Graphics g) {
 		// drawCollisionBoxes(g);
 		int f = 0;
-		if (getFrame() < GamePanel.turretFire.size()) {
+		if (getFrame() < GamePanel.soldierFire.size()) {
 			f = getFrame();
 		}
-		g.drawImage(GamePanel.turretFire.get(f), (int) getX(), (int) getY(),
+		g.drawImage(GamePanel.soldierFire.get(f), (int) getX(), (int) getY(),
 				width, height, null);
 
 		super.draw(g);
@@ -57,7 +55,7 @@ public class Soldier extends GameObject {
 		}
 		
 		if (isActive) {
-			animateOnce(GamePanel.turretFire.size());
+			animateOnce(GamePanel.soldierFire.size());
 		}
 		if (getFireCooldown() < getAnimCooldown() * 6) {
 			setAnimCooldown((long) (getFireCooldown() * 0.1));
