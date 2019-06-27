@@ -18,7 +18,7 @@ public class Soldier extends GameObject {
 	static int seekRange;
 	int frame = 0;
 	long fireTimer = 0;
-	static double speed = 2;
+	static double speed = 1;
 	Emu target;
 
 	public Soldier(int x, int y, int width, int height, Color color) {
@@ -40,14 +40,16 @@ public class Soldier extends GameObject {
 			if (getFrame() < GamePanel.soldierWalk.size()) {
 				f = getFrame();
 			}
-			g.drawImage(GamePanel.soldierWalk.get(GamePanel.soldierFire.size()-f), (int) getX(), (int) getY(),
+			g.drawImage(GamePanel.soldierWalk.get(f), (int) getX(), (int) getY(),
 					width, height, null);
 		}
+		hpBar.draw(g);
 		super.draw(g);
 	}
 
 	public void update() {
 		super.update();
+		hpBar.update();
 
 		if (!isFarmer) {
 			if (target != null && target.isAlive()) {
@@ -78,9 +80,10 @@ public class Soldier extends GameObject {
 		}
 		else{
 			animate();
-			setX(getX() - speed);
+			setX(getX() - 0.5);
 			if(getX() < 240){
 				isFarmer = false;
+				health = maxHealth;
 				setX(GameManager.getPlayer().getX());
 			}
 		}

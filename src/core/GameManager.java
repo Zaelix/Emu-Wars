@@ -445,7 +445,7 @@ public class GameManager {
 	}
 	
 	void spawnFarmer(){
-		Soldier obj = new Soldier(EmuCore.WIDTH + 50,
+		Soldier obj = new Soldier(EmuCore.WIDTH + 20,
 				new Random().nextInt(750) + 100, 100, 100, Color.GREEN);
 		soldiers.add((Soldier) obj);
 	}
@@ -600,7 +600,7 @@ public class GameManager {
 		}
 		for(Emu e : emus){
 			for(Soldier s : soldiers){
-				if(s.isFarmer && s.getCollisionBox().intersects(e.getCollisionBox())){
+				if(s.isFarmer && e.getX() < EmuCore.WIDTH*0.90 && s.getCollisionBox().intersects(e.getCollisionBox())){
 					s.takeDamage(1);
 					e.setMoveSpeedPercent(0.2);
 				}
