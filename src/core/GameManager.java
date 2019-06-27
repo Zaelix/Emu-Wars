@@ -342,6 +342,7 @@ public class GameManager {
 			jerkies.get(i).update();
 		}
 		spawnEmus();
+		spawnFarmers();
 		checkCollisions();
 		purgeObjects();
 
@@ -429,6 +430,11 @@ public class GameManager {
 		}
 		
 	}
+	void spawnFarmers() {
+		if (System.currentTimeMillis() - farmerTimer >= farmerCooldown) {
+			spawnFarmer();
+		}
+	}
 
 	void spawnEmu(ArrayList<BufferedImage> anim) {
 		spawnTimer = System.currentTimeMillis();
@@ -445,6 +451,7 @@ public class GameManager {
 	}
 	
 	void spawnFarmer(){
+		farmerTimer = System.currentTimeMillis();
 		Soldier obj = new Soldier(EmuCore.WIDTH + 20,
 				new Random().nextInt(750) + 100, 100, 100, Color.GREEN);
 		soldiers.add((Soldier) obj);

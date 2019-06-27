@@ -145,11 +145,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	void loadSoldierImages() {
 		BufferedImage img = loadImage("kir-shoot.png");
 		for (int i = 0; i < 5; i++) {
-			soldierFire.add(img.getSubimage(i * 96, 0, 96, 96));
+			soldierFire.add(img.getSubimage(i * 62, 0, 62, 61));
 		}
 		img = loadImage("kir-walk_unarmed.png");
 		for (int i = 0; i < 4; i++) {
-			soldierWalk.add(img.getSubimage(i * 96, 0, 96, 96));
+			soldierWalk.add(img.getSubimage(i * 64, 0, 64, 64));
 		}
 	}
 
