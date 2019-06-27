@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import core.GameManager;
 import core.GamePanel;
 
-public class Tower extends GameObject {
+public class Soldier extends GameObject {
 	public static boolean canMove = false;
 	static int seekRange;
 	int frame = 0;
@@ -19,7 +19,7 @@ public class Tower extends GameObject {
 	static double speed = 2;
 	Emu target;
 
-	public Tower(int x, int y, int width, int height, Color color) {
+	public Soldier(int x, int y, int width, int height, Color color) {
 		super(x, y, width, height, speed, color);
 		// this.x = x + (width/2);
 		// this.y = y + (height/2);
@@ -85,7 +85,7 @@ public class Tower extends GameObject {
 	}
 
 	public static void setDamage(double damage) {
-		Tower.damage = damage;
+		Soldier.damage = damage;
 	}
 
 	public static double getBulletSpeed() {
@@ -93,11 +93,11 @@ public class Tower extends GameObject {
 	}
 
 	public static void setBulletSpeed(double bulletSpeed) {
-		Tower.bulletSpeed = bulletSpeed;
+		Soldier.bulletSpeed = bulletSpeed;
 	}
 	
 	public static void setMoveSpeed(double speed){
-		Tower.speed = speed;
+		Soldier.speed = speed;
 	}
 
 	public static long getFireCooldown() {
@@ -105,7 +105,7 @@ public class Tower extends GameObject {
 	}
 
 	public static void setFireCooldown(long fireCooldown) {
-		Tower.fireCooldown = fireCooldown;
+		Soldier.fireCooldown = fireCooldown;
 	}
 
 }

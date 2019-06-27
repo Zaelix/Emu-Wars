@@ -26,7 +26,7 @@ import objects.Jerky;
 import objects.Player;
 import objects.Projectile;
 import objects.Shield;
-import objects.Tower;
+import objects.Soldier;
 import objects.UpgradeButton;
 
 public class GameManager {
@@ -53,7 +53,7 @@ public class GameManager {
 	static ArrayList<Projectile> bullets = new ArrayList<Projectile>();
 	static ArrayList<Emu> emus = new ArrayList<Emu>();
 	static ArrayList<Emu> closestEmus = new ArrayList<Emu>();
-	static ArrayList<Tower> towers = new ArrayList<Tower>();
+	static ArrayList<Soldier> towers = new ArrayList<Soldier>();
 	static ArrayList<Shield> shields = new ArrayList<Shield>();
 	static ArrayList<Grenade> grenades = new ArrayList<Grenade>();
 	static ArrayList<Jerky> jerkies = new ArrayList<Jerky>();
@@ -167,7 +167,7 @@ public class GameManager {
 			for (Emu e : emus) {
 				e.draw(g);
 			}
-			for (Tower t : towers) {
+			for (Soldier t : towers) {
 				t.draw(g);
 			}
 
@@ -533,10 +533,10 @@ public class GameManager {
 		player.setDamage(buttons.get(i[2]).getValue());
 		player.setSpeed(buttons.get(i[3]).getValue());
 
-		Tower.setFireCooldown((long) (5000 / buttons.get(i[5]).getValue()));
-		Tower.setBulletSpeed(1 + buttons.get(i[6]).getValue());
-		Tower.setDamage(buttons.get(i[7]).getValue());
-		Tower.setMoveSpeed(buttons.get(i[8]).getValue());
+		Soldier.setFireCooldown((long) (5000 / buttons.get(i[5]).getValue()));
+		Soldier.setBulletSpeed(1 + buttons.get(i[6]).getValue());
+		Soldier.setDamage(buttons.get(i[7]).getValue());
+		Soldier.setMoveSpeed(buttons.get(i[8]).getValue());
 		
 		Player.maxGrenades = (int) buttons.get(i[9]).getValue();
 		Player.grenadeCooldown = (long)buttons.get(i[10]).getValue();
@@ -774,9 +774,9 @@ public class GameManager {
 	public static void spawnObject(String object) {
 		GameObject obj;
 		if (object.equals("Tower")) {
-			obj = new Tower((int) player.getCenterX(),
+			obj = new Soldier((int) player.getCenterX(),
 					(int) player.getCenterY(), 100, 100, Color.GREEN);
-			towers.add((Tower) obj);
+			towers.add((Soldier) obj);
 		}
 
 	}
