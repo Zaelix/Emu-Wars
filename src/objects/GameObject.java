@@ -23,7 +23,7 @@ public class GameObject {
 	double speed;
 	Color color;
 	private boolean isAlive = true;
-	Rectangle collisionBox;
+	private Rectangle collisionBox;
 	private long animTimer;
 	private long animCooldown = 100;
 	private int frame;
@@ -40,7 +40,7 @@ public class GameObject {
 		this.speed = speed;
 		this.color = color;
 		
-		collisionBox = new Rectangle(x,y,width,height);
+		setCollisionBox(new Rectangle(x,y,width,height));
 	}
 	
 	void update(){
@@ -52,13 +52,13 @@ public class GameObject {
 		if(getY()>EmuCore.HEIGHT + 250 || getY() < -250){
 			setAlive(false);
 		}
-		collisionBox.setBounds((int)getX(), (int)getY(), width, height);
+		getCollisionBox().setBounds((int)getX(), (int)getY(), width, height);
 	}
 	
 	void draw(Graphics g){
 		if(debugRenderMode == 1){
 			g.setColor(Color.RED);
-			g.drawRect(collisionBox.x, collisionBox.y, collisionBox.width, collisionBox.height);
+			g.drawRect(getCollisionBox().x, getCollisionBox().y, getCollisionBox().width, getCollisionBox().height);
 			g.setColor(Color.CYAN);
 			g.drawOval((int)getCenterX()-2, (int)getCenterY()-2, 4, 4);
 		}
@@ -153,5 +153,13 @@ public class GameObject {
 
 	public void setFrame(int frame) {
 		this.frame = frame;
+	}
+
+	public Rectangle getCollisionBox() {
+		return collisionBox;
+	}
+
+	public void setCollisionBox(Rectangle collisionBox) {
+		this.collisionBox = collisionBox;
 	}
 }

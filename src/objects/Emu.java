@@ -31,6 +31,7 @@ public class Emu extends GameObject {
 	int bhXMod = (width / 25);
 	int legsXMod = (width / 3);
 	int bodyYMod = (int) (height * 0.4);
+	private double moveSpeedPercent = 0;
 	
 	public Emu(int x, int y, int width, int height, double speed, Color color,
 			ArrayList<BufferedImage> emuAnim) {
@@ -93,6 +94,9 @@ public class Emu extends GameObject {
 		animate();
 		translateCollisionBoxes();
 		move();
+		if(moveSpeedPercent < 1){
+			moveSpeedPercent += 0.001;
+		}
 	}
 
 	void performSpecial() {
@@ -142,11 +146,11 @@ public class Emu extends GameObject {
 	}
 
 	public boolean collidesWith(Projectile o) {
-		if (o.collisionBox.intersects(head)) {
+		if (o.getCollisionBox().intersects(head)) {
 			takeDamage(o.getDamage() * Player.headshotMultiplier);
 			return true;
-		} else if (o.collisionBox.intersects(body)
-				|| o.collisionBox.intersects(legs)) {
+		} else if (o.getCollisionBox().intersects(body)
+				|| o.getCollisionBox().intersects(legs)) {
 			takeDamage(o.getDamage());
 			return true;
 		}
@@ -154,13 +158,13 @@ public class Emu extends GameObject {
 	}
 
 	public void move() {
-		setX(getX() - speed);
+		setX(getX() - (speed*getMoveSpeedPercent()));
 		if (collidesWith(GameManager.base)) {
 			GameManager.takeDamage((int) health);
 			setAlive(false);
 		}
 	}
-
+	
 	public void takeDamage(double damage) {
 		if (type == SHIELD && shield.isAlive()) {
 			shield.takeDamage(damage);
@@ -191,5 +195,13 @@ public class Emu extends GameObject {
 
 	public void setAnim(ArrayList<BufferedImage> anim) {
 		this.emuAnim = anim;
+	}
+
+	public double getMoveSpeedPercent() {
+		return moveSpeedPercent;
+	}
+
+	public void setMoveSpeedPercent(double moveSpeedPercent) {
+		this.moveSpeedPercent = moveSpeedPercent;
 	}
 }

@@ -598,6 +598,14 @@ public class GameManager {
 				}
 			}
 		}
+		for(Emu e : emus){
+			for(Soldier s : towers){
+				if(s.isFarmer && s.getCollisionBox().intersects(e.getCollisionBox())){
+					s.takeDamage(1);
+					e.setMoveSpeedPercent(0.2);
+				}
+			}
+		}
 	}
 
 	void purgeObjects() {
