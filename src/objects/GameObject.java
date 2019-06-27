@@ -9,8 +9,8 @@ import core.GamePanel;
 
 public class GameObject {
 	public static int debugRenderMode = 0;
-	double maxHealth = 2;
-	double health = 2;
+	double maxHealth = 20;
+	double health = 20;
 	private double x;
 	private double y;
 	private double centerX;

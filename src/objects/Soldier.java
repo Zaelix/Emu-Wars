@@ -23,6 +23,7 @@ public class Soldier extends GameObject {
 
 	public Soldier(int x, int y, int width, int height, Color color) {
 		super(x, y, width, height, speed, color);
+		
 	}
 
 	public void draw(Graphics g) {
