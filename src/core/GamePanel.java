@@ -326,7 +326,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			}
 			if (keyCode == 32) {
 
-				dm.player.setFiringScattered(true);
+				dm.getPlayer().setFiringScattered(true);
 			}
 			if (keyCode == 192) {
 				GameManager.topCategory++;
@@ -412,7 +412,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			Player.down = false;
 		}
 		if (keyCode == 32) {
-			dm.player.setFiringScattered(false);
+			dm.getPlayer().setFiringScattered(false);
 		}if (keyCode == 16) {
 			isShiftHeld = false;
 		}
@@ -451,10 +451,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		GameManager.setClickPoint(new Point(e.getX(), e.getY()));
 		if (GameManager.currentState == GameManager.GAME_STATE) {
 			if (e.getButton() == MouseEvent.BUTTON1 && e.getX() > 230) {
-				dm.player.setFiring(true);
+				dm.getPlayer().setFiring(true);
 			}
 			if (e.getButton() == MouseEvent.BUTTON3) {
-				dm.player.throwGrenade();
+				dm.getPlayer().throwGrenade();
 			}
 			GameManager.checkIfUpgradeButtonsClicked(e);
 		}
@@ -474,7 +474,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			dm.player.setFiring(false);
+			dm.getPlayer().setFiring(false);
 		}
 	}
 

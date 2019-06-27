@@ -13,7 +13,7 @@ public class Soldier extends GameObject {
 	private static long fireCooldown = 1000;
 	private static double damage = 1;
 	private static double bulletSpeed = 1;
-	
+
 	public boolean isFarmer = true;
 	static int seekRange;
 	int frame = 0;
@@ -39,32 +39,40 @@ public class Soldier extends GameObject {
 
 	public void update() {
 		super.update();
-		
-		if(target != null && target.isAlive()){
-			if(target.getY()>getY()){
-				setY(getY()+speed);
+
+		if (!isFarmer) {
+			if (target != null && target.isAlive()) {
+				if (target.getY() > getY()) {
+					setY(getY() + speed);
+				}
+				if (target.getY() < getY()) {
+					setY(getY() - speed);
+				}
+			} else if (GameManager.getClosestEmus().size() > 0) {
+				ArrayList<Emu> c = GameManager.getClosestEmus();
+				int n = GamePanel.gen.nextInt(c.size());
+				target = c.get(n);
 			}
-			if(target.getY()<getY()){
-				setY(getY()-speed);
+
+			if (isActive) {
+				animateOnce(GamePanel.soldierFire.size());
+			}
+			if (getFireCooldown() < getAnimCooldown() * 6) {
+				setAnimCooldown((long) (getFireCooldown() * 0.1));
+			}
+			if (System.currentTimeMillis() - fireTimer >= getFireCooldown()
+					* (30 / GameManager.frameRate)) {
+				fire();
+				startAnimation();
+				fireTimer = System.currentTimeMillis();
 			}
 		}
-		else if(GameManager.getClosestEmus().size() > 0){
-			ArrayList<Emu> c = GameManager.getClosestEmus();
-			int n = GamePanel.gen.nextInt(c.size());
-			target = c.get(n);
-		}
-		
-		if (isActive) {
-			animateOnce(GamePanel.soldierFire.size());
-		}
-		if (getFireCooldown() < getAnimCooldown() * 6) {
-			setAnimCooldown((long) (getFireCooldown() * 0.1));
-		}
-		if (System.currentTimeMillis() - fireTimer >= getFireCooldown()
-				* (30 / GameManager.frameRate)) {
-			fire();
-			startAnimation();
-			fireTimer = System.currentTimeMillis();
+		else{
+			setX(getX() - speed);
+			if(getX() < 240){
+				isFarmer = false;
+				setX(GameManager.getPlayer().getX());
+			}
 		}
 	}
 
@@ -93,8 +101,8 @@ public class Soldier extends GameObject {
 	public static void setBulletSpeed(double bulletSpeed) {
 		Soldier.bulletSpeed = bulletSpeed;
 	}
-	
-	public static void setMoveSpeed(double speed){
+
+	public static void setMoveSpeed(double speed) {
 		Soldier.speed = speed;
 	}
 
@@ -104,6 +112,10 @@ public class Soldier extends GameObject {
 
 	public static void setFireCooldown(long fireCooldown) {
 		Soldier.fireCooldown = fireCooldown;
+	}
+
+	public void trainAsSoldier() {
+		isFarmer = false;
 	}
 
 }

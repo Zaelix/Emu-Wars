@@ -59,7 +59,7 @@ public class GameManager {
 	static ArrayList<Jerky> jerkies = new ArrayList<Jerky>();
 	static ArrayList<Explosion> explosionPool = new ArrayList<Explosion>();
 
-	static Player player = new Player(250, 450, 50, 100, Color.BLUE);
+	private static Player player = new Player(250, 450, 50, 100, Color.BLUE);
 	static Emu menuEmu = new Emu(EmuCore.WIDTH / 2, 200, 200, 300, 0,
 			Color.BLUE, GamePanel.emuSit);
 	static Rectangle menuSelection = new Rectangle(100,
@@ -69,11 +69,12 @@ public class GameManager {
 	static int difficulty = 0;
 	long lastFrameTime;
 	long spawnTimer;
-	public static long deltaTime = 1;
 	static long spawnCooldown = 5000;
+	public static long deltaTime = 1;
 	static double spawnChangeRate = 0.9985; // 0.9996 is the original value
 	public static long frameCount = 0;
-
+	long farmerTimer;
+	static long farmerCooldown = 10000;
 	static long pausedStart;
 	static long pausedEnd;
 	static long timeAtStart;
@@ -168,7 +169,7 @@ public class GameManager {
 				t.draw(g);
 			}
 
-			player.draw(g);
+			getPlayer().draw(g);
 
 			for (int i = 0; i < explosionPool.size(); i++) {
 				explosionPool.get(i).draw(g);
@@ -316,7 +317,7 @@ public class GameManager {
 		} else {
 			EmuCore.setCursor(1);
 		}
-		player.update();
+		getPlayer().update();
 		// fire();
 		for (int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).update();
@@ -372,7 +373,7 @@ public class GameManager {
 
 	void drawLineToCursor(Graphics g) {
 		g.setColor(Color.RED);
-		g.drawLine((int) player.getX(), (int) player.getY(), clicked.x
+		g.drawLine((int) getPlayer().getX(), (int) getPlayer().getY(), clicked.x
 				- mouseXOffset, clicked.y - mouseYOffset);
 	}
 
@@ -381,9 +382,9 @@ public class GameManager {
 		Point frame = EmuCore.frame.getLocation();
 		clicked = mouseLoc;
 		g.setColor(Color.RED);
-		g.drawLine((int) player.getCenterX(), (int) player.getCenterY(),
+		g.drawLine((int) getPlayer().getCenterX(), (int) getPlayer().getCenterY(),
 				clicked.x - mouseXOffset, clicked.y - mouseYOffset);
-		player.setFiringAngle(clicked);
+		getPlayer().setFiringAngle(clicked);
 	}
 
 	public Point getMouseLocation() {
@@ -439,6 +440,12 @@ public class GameManager {
 		}
 		addEmu(e);
 
+	}
+	
+	void spawnFarmer(){
+		Soldier obj = new Soldier(EmuCore.WIDTH + 50,
+				new Random().nextInt(750) + 100, 100, 100, Color.GREEN);
+		towers.add((Soldier) obj);
 	}
 
 	static void createButtons() {
@@ -529,10 +536,10 @@ public class GameManager {
 	
 	void updateStats() {
 		int[] i = findUpgradeButtonIndexes();
-		player.setFireCooldown((long) (600 / buttons.get(i[0]).getValue()));
-		player.setBulletSpeed(2 + buttons.get(i[1]).getValue());
-		player.setDamage(buttons.get(i[2]).getValue());
-		player.setSpeed(buttons.get(i[3]).getValue());
+		getPlayer().setFireCooldown((long) (600 / buttons.get(i[0]).getValue()));
+		getPlayer().setBulletSpeed(2 + buttons.get(i[1]).getValue());
+		getPlayer().setDamage(buttons.get(i[2]).getValue());
+		getPlayer().setSpeed(buttons.get(i[3]).getValue());
 
 		Soldier.setFireCooldown((long) (5000 / buttons.get(i[5]).getValue()));
 		Soldier.setBulletSpeed(1 + buttons.get(i[6]).getValue());
@@ -679,11 +686,11 @@ public class GameManager {
 	}
 
 	void fireAt(Point p) {
-		Point play = new Point((int) player.getCenterX(),
-				(int) player.getCenterY());
-		bullets.add(new Projectile((int) player.getCenterX(), (int) player
-				.getCenterY(), player.getBulletSpeed(), Color.ORANGE, play, p,
-				player.getDamage()));
+		Point play = new Point((int) getPlayer().getCenterX(),
+				(int) getPlayer().getCenterY());
+		bullets.add(new Projectile((int) getPlayer().getCenterX(), (int) getPlayer()
+				.getCenterY(), getPlayer().getBulletSpeed(), Color.ORANGE, play, p,
+				getPlayer().getDamage()));
 	}
 
 	static void setClickPoint(Point p) {
@@ -775,8 +782,8 @@ public class GameManager {
 	public static void spawnObject(String object) {
 		GameObject obj;
 		if (object.equals("Tower")) {
-			obj = new Soldier((int) player.getCenterX(),
-					(int) player.getCenterY(), 100, 100, Color.GREEN);
+			obj = new Soldier((int) getPlayer().getCenterX(),
+					(int) getPlayer().getCenterY(), 100, 100, Color.GREEN);
 			towers.add((Soldier) obj);
 		}
 
@@ -817,5 +824,13 @@ public class GameManager {
 
 	public static Point getClickedPoint() {
 		return clicked;
+	}
+
+	public static Player getPlayer() {
+		return player;
+	}
+
+	public static void setPlayer(Player player) {
+		GameManager.player = player;
 	}
 }
