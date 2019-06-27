@@ -27,6 +27,9 @@ public class GameObject {
 	private long animTimer;
 	private long animCooldown = 100;
 	private int frame;
+	
+	private long actionTimer;
+	private long actionCooldown = 10;
 	public boolean isActive = true;
 	
 	GameObject(int x, int y, int width, int height, double speed, Color color){

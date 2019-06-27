@@ -56,8 +56,8 @@ public class Player extends GameObject {
 		g.setFont(GameManager.defaultFont);
 		g.setColor(Color.BLACK);
 		g.drawString(grenades+"", (int) getX(), (int) getY() - 4);
-		g.drawString("x", (int) getX()+15, (int) getY() - 4);
-		g.drawImage(GamePanel.grenade, (int) getX() + 25, (int) getY() - 25,
+		g.drawString("x", (int) getX()+((grenades+"").length()*10), (int) getY() - 4);
+		g.drawImage(GamePanel.grenade, (int) getX() + 10 + ((grenades+"").length()*10), (int) getY() - 25,
 				25, 25, null);
 	}
 

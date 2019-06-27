@@ -38,6 +38,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	public GameManager dm = new GameManager();
 	public static Random gen = new Random();
 	float winScreenTimer = 0;
+	public static double targetFrameRate = 100;
 
 	public static ArrayList<BufferedImage> emuStand = new ArrayList<BufferedImage>();
 	public static ArrayList<BufferedImage> emuRun = new ArrayList<BufferedImage>();
@@ -69,7 +70,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 
 	private boolean isShiftHeld = false;
 	GamePanel() {
-		timer = new Timer(1000 / 100, this);
+		timer = new Timer(1000 / (int)targetFrameRate, this);
 		startGame();
 	}
 
@@ -160,11 +161,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			t += c;
 		}
 		if (t.contains("itstandstoreason")) {
-			GameManager.gainPoints(777_777);
+			GameManager.gainPoints(777_777_777);
 			typed.clear();
 		}
 		if (t.contains("diediedie")) {
-			GameManager.spawnCooldown = 100;
+			GameManager.spawnCooldown = 10;
 			typed.clear();
 		}
 		if (t.contains("ineedmorebooms")) {
@@ -418,7 +419,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		char keyChar = e.getKeyChar();
 		typed.add(keyChar);
 
-		if (typed.size() > 10) {
+		if (typed.size() > 20) {
 			typed.remove(0);
 		}
 		checkForCheatKeyword();

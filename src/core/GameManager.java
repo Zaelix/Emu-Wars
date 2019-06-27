@@ -69,6 +69,7 @@ public class GameManager {
 	static int difficulty = 0;
 	long lastFrameTime;
 	long spawnTimer;
+	public static long deltaTime = 1;
 	static long spawnCooldown = 5000;
 	static double spawnChangeRate = 0.9985; // 0.9996 is the original value
 	public static long frameCount = 0;
@@ -301,6 +302,11 @@ public class GameManager {
 	}
 
 	void updateGameState() {
+		deltaTime = System.currentTimeMillis() - lastFrameTime;
+		frameRate = (1000.0 / (deltaTime));
+		String fps = myFormatter.format(frameRate);
+		// System.out.println(fps);
+		lastFrameTime = System.currentTimeMillis();
 		if (frameCount % 10 == 0) {
 			closestEmus = findClosestEnemies();
 		}
@@ -309,10 +315,6 @@ public class GameManager {
 		} else {
 			EmuCore.setCursor(1);
 		}
-		frameRate = (1000.0 / (System.currentTimeMillis() - lastFrameTime));
-		String fps = myFormatter.format(frameRate);
-		// System.out.println(fps);
-		lastFrameTime = System.currentTimeMillis();
 		player.update();
 		// fire();
 		for (int i = 0; i < bullets.size(); i++) {
@@ -342,9 +344,9 @@ public class GameManager {
 		purgeObjects();
 
 		// Increasing spawn rates
-		if (frameCount % 10 == 0 && spawnCooldown > 100) {
+		if (frameCount % 10 == 0 && spawnCooldown > 200) {
 			spawnCooldown *= spawnChangeRate;
-		} else if (spawnCooldown <= 100 && frameCount % 10 == 0 && Emu.healthDifficultyDivisor > 0.01) {
+		} else if (spawnCooldown <= 200 && frameCount % 10 == 0 && Emu.healthDifficultyDivisor > 0.01) {
 			Emu.healthDifficultyDivisor -= 0.01;
 		}
 		if (frameCount % 2000 == 0 && spawnChangeRate < 0.9999) {
@@ -479,7 +481,7 @@ public class GameManager {
 		grenadeButtons.add(new UpgradeButton("GRENADE"));
 		grenadeButtons.add(new UpgradeButton("G.Count", 1, 1, 1));
 		grenadeButtons.add(new UpgradeButton("G.Refill rate", 4000, 10, -1).setPercentageBasedValue(true).setPercentageBasedCost(true));
-		grenadeButtons.add(new UpgradeButton("G.Dmg", 1, 2, 0.1));
+		grenadeButtons.add(new UpgradeButton("G.Dmg", 1, 2, 0.1).setPercentageBasedCost(true));
 		grenadeButtons.add(new UpgradeButton("G.Area", 100, 4, 5).setPercentageBasedCost(true).setCost(10));
 		
 		buttonCategories.add(tankButtons);
