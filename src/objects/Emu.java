@@ -16,7 +16,6 @@ public class Emu extends GameObject {
 	public static final int BOUNCER = 3;
 	public static double healthDifficultyDivisor = 20;
 	ArrayList<BufferedImage> emuAnim;
-	HealthBar hpBar;
 	Shield shield;
 
 	Rectangle head;
@@ -40,7 +39,6 @@ public class Emu extends GameObject {
 		double size = (2.0 - speed / 2.1);
 		this.width *= size;
 		this.height *= size;
-		this.hpBar = new HealthBar(this, 50, 10);
 		head = new Rectangle();
 		body = new Rectangle();
 		legs = new Rectangle();

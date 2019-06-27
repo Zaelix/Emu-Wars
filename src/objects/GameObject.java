@@ -32,6 +32,8 @@ public class GameObject {
 	private long actionCooldown = 10;
 	public boolean isActive = true;
 	
+	HealthBar hpBar;
+	
 	GameObject(int x, int y, int width, int height, double speed, Color color){
 		this.setX(x - (width/2));
 		this.setY(y - (height/2));
@@ -39,6 +41,7 @@ public class GameObject {
 		this.height = height;
 		this.speed = speed;
 		this.color = color;
+		this.hpBar = new HealthBar(this, 50, 10);
 		
 		setCollisionBox(new Rectangle(x,y,width,height));
 	}

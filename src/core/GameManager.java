@@ -53,7 +53,7 @@ public class GameManager {
 	static ArrayList<Projectile> bullets = new ArrayList<Projectile>();
 	static ArrayList<Emu> emus = new ArrayList<Emu>();
 	static ArrayList<Emu> closestEmus = new ArrayList<Emu>();
-	static ArrayList<Soldier> towers = new ArrayList<Soldier>();
+	static ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
 	static ArrayList<Shield> shields = new ArrayList<Shield>();
 	static ArrayList<Grenade> grenades = new ArrayList<Grenade>();
 	static ArrayList<Jerky> jerkies = new ArrayList<Jerky>();
@@ -165,7 +165,7 @@ public class GameManager {
 			for (Emu e : emus) {
 				e.draw(g);
 			}
-			for (Soldier t : towers) {
+			for (Soldier t : soldiers) {
 				t.draw(g);
 			}
 
@@ -328,8 +328,8 @@ public class GameManager {
 		for (int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).update();
 		}
-		for (int i = 0; i < towers.size(); i++) {
-			towers.get(i).update();
+		for (int i = 0; i < soldiers.size(); i++) {
+			soldiers.get(i).update();
 		}
 		for (int i = 0; i < explosionPool.size(); i++) {
 			explosionPool.get(i).update();
@@ -447,7 +447,7 @@ public class GameManager {
 	void spawnFarmer(){
 		Soldier obj = new Soldier(EmuCore.WIDTH + 50,
 				new Random().nextInt(750) + 100, 100, 100, Color.GREEN);
-		towers.add((Soldier) obj);
+		soldiers.add((Soldier) obj);
 	}
 
 	static void createButtons() {
@@ -599,7 +599,7 @@ public class GameManager {
 			}
 		}
 		for(Emu e : emus){
-			for(Soldier s : towers){
+			for(Soldier s : soldiers){
 				if(s.isFarmer && s.getCollisionBox().intersects(e.getCollisionBox())){
 					s.takeDamage(1);
 					e.setMoveSpeedPercent(0.2);
@@ -633,6 +633,12 @@ public class GameManager {
 		for (int i = jerkies.size() - 1; i >= 0; i--) {
 			if (jerkies.get(i).isAlive() == false) {
 				jerkies.remove(i);
+			}
+		}
+		
+		for (int i = soldiers.size() - 1; i >= 0; i--) {
+			if (soldiers.get(i).isAlive() == false) {
+				soldiers.remove(i);
 			}
 		}
 	}
@@ -767,7 +773,7 @@ public class GameManager {
 		emus.clear();
 		bullets.clear();
 		buttons.clear();
-		towers.clear();
+		soldiers.clear();
 		shields.clear();
 		UpgradeButton.nextValidKey = 1;
 		UpgradeButton.nextValidY = 65;
@@ -795,7 +801,7 @@ public class GameManager {
 			obj = new Soldier((int) getPlayer().getCenterX(),
 					(int) getPlayer().getCenterY(), 100, 100, Color.GREEN);
 			((Soldier) obj).trainAsSoldier();
-			towers.add((Soldier) obj);
+			soldiers.add((Soldier) obj);
 		}
 
 	}

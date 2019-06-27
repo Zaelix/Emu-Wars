@@ -40,7 +40,7 @@ public class Soldier extends GameObject {
 			if (getFrame() < GamePanel.soldierWalk.size()) {
 				f = getFrame();
 			}
-			g.drawImage(GamePanel.soldierWalk.get(f), (int) getX(), (int) getY(),
+			g.drawImage(GamePanel.soldierWalk.get(GamePanel.soldierFire.size()-f), (int) getX(), (int) getY(),
 					width, height, null);
 		}
 		super.draw(g);
