@@ -486,7 +486,7 @@ public class GameManager {
 		ArrayList<UpgradeButton> tankButtons = new ArrayList<UpgradeButton>();
 		tankButtons.add(new UpgradeButton("TANK"));
 		tankButtons.add(new UpgradeButton("T.Fire Rate", 1, 1));
-		tankButtons.add(new UpgradeButton("T.Bullet Speed", 1, 1.4));
+		tankButtons.add(new UpgradeButton("T.Bullet Speed", 1, 1.4).setMaxValue(20));
 		tankButtons.add(new UpgradeButton("T.Bullet Dmg", 1, 1));
 		tankButtons.add(new UpgradeButton("T.Move Speed", 1, 2.3));
 		

@@ -178,8 +178,9 @@ public class UpgradeButton {
 		return this.text;
 	}
 
-	public void setMaxRank(int maxValue) {
+	public UpgradeButton setMaxValue(int maxValue) {
 		this.maxValue = maxValue;
+		return this;
 	}
 
 	public UpgradeButton setPercentageBasedValue(boolean b) {
