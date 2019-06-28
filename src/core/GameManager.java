@@ -607,7 +607,7 @@ public class GameManager {
 		}
 		for(Emu e : emus){
 			for(Soldier s : soldiers){
-				if(s.isFarmer && e.getX() < EmuCore.WIDTH*0.90 && s.getCollisionBox().intersects(e.getCollisionBox())){
+				if(s.isFarmer && frameCount % 5 == 0 && s.getCenterX() < EmuCore.WIDTH*0.90  && e.getCenterX() < EmuCore.WIDTH*0.90 && s.getCollisionBox().intersects(e.getCollisionBox())){
 					s.takeDamage(1);
 					e.setMoveSpeedPercent(0.2);
 				}
