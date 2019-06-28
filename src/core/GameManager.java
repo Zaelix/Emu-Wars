@@ -350,9 +350,7 @@ public class GameManager {
 		// Increasing spawn rates
 		if (frameCount % 10 == 0 && spawnCooldown > 200) {
 			spawnCooldown *= spawnChangeRate;
-		} else if (spawnCooldown <= 200 && frameCount % 10 == 0 && Emu.healthDifficultyDivisor > 0.01) {
-			Emu.healthDifficultyDivisor -= 0.01;
-		}
+		} 
 		if (frameCount % 2000 == 0 && spawnChangeRate < 0.9999) {
 			spawnChangeRate += 0.0001;
 		}
@@ -429,6 +427,8 @@ public class GameManager {
 			spawnEmu(GamePanel.emuRun);
 		}
 		
+		
+		
 	}
 	void spawnFarmers() {
 		if (System.currentTimeMillis() - farmerTimer >= farmerCooldown) {
@@ -443,10 +443,14 @@ public class GameManager {
 				Color.BLACK, anim);
 
 		if (GamePanel.gen.nextInt(100) < specialsSpawnChance) {
-			int type = GamePanel.gen.nextInt(3);
+			int type = GamePanel.gen.nextInt(4);
 			e.setType(type);
 		}
 		addEmu(e);
+		
+		if (spawnCooldown <= 200 && Emu.healthDifficultyDivisor > 0.01) {
+			Emu.healthDifficultyDivisor -= 0.01;
+		}
 
 	}
 	
@@ -607,7 +611,7 @@ public class GameManager {
 		}
 		for(Emu e : emus){
 			for(Soldier s : soldiers){
-				if(s.isFarmer && frameCount % 5 == 0 && s.getCenterX() < EmuCore.WIDTH*0.90  && e.getCenterX() < EmuCore.WIDTH*0.90 && s.getCollisionBox().intersects(e.getCollisionBox())){
+				if(s.isFarmer && e.getMoveSpeedPercent() > 0.3 && s.getCenterX() < EmuCore.WIDTH*0.90  && e.getCenterX() < EmuCore.WIDTH*0.90 && s.getCollisionBox().intersects(e.getCollisionBox())){
 					s.takeDamage(1);
 					e.setMoveSpeedPercent(0.2);
 				}
@@ -746,7 +750,7 @@ public class GameManager {
 			spawnChangeRate = 0.9999;
 			specialsSpawnChance = 0;
 			specialsSpawnChanceGrowthrate = 40;
-			specialsSpawnChanceMax = 50;
+			specialsSpawnChanceMax = 30;
 		}
 		if (difficulty == 1) {
 			playerHealth = 50;
@@ -764,7 +768,7 @@ public class GameManager {
 			spawnChangeRate = 0.9985;
 			specialsSpawnChance = 0;
 			specialsSpawnChanceGrowthrate = 40;
-			specialsSpawnChanceMax = 50;
+			specialsSpawnChanceMax = 70;
 		}
 		if (difficulty == 9) {
 			playerHealth = 100000;
