@@ -25,7 +25,7 @@ public class Shield extends GameObject {
 
 	void draw(Graphics g) {
 		if (isAlive()) {
-			g.drawImage(GamePanel.shield, (int) getX(), (int) getY(), getWidth(), height, null);
+			g.drawImage(GamePanel.shield, (int) getX(), (int) getY(), getWidth(), getHeight(), null);
 			hpBar.draw(g);
 		}
 		super.draw(g);
@@ -36,8 +36,10 @@ public class Shield extends GameObject {
 		if (isAlive()) {
 			hpBar.update();
 		}
-		this.setX(parent.getX() - parent.getWidth() / 3);
-		this.setY(parent.getY() - parent.height / 3);
+		this.setX(parent.getCenterX() - getWidth()/2);
+		this.setX(parent.getCenterY() - getHeight()/2);
+		//this.setX(parent.getX() - parent.getWidth() / 3);
+		//this.setY(parent.getY() - parent.height / 3);
 		percent = parent.health / parent.maxHealth;
 		if (isAlive() && health < maxHealth && type == 0) {
 			health *= regenRate;

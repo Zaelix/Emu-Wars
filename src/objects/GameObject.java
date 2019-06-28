@@ -16,7 +16,7 @@ public class GameObject {
 	private double centerX;
 	private double centerY;
 	private int width;
-	int height;
+	private int height;
 	double angle;
 	double vx;
 	double vy;
@@ -38,7 +38,7 @@ public class GameObject {
 		this.setX(x - (width/2));
 		this.setY(y - (height/2));
 		this.setWidth(width);
-		this.height = height;
+		this.setHeight(height);
 		this.speed = speed;
 		this.color = color;
 		this.hpBar = new HealthBar(this, 50, 10);
@@ -48,14 +48,14 @@ public class GameObject {
 	
 	void update(){
 		setCenterX((int) (getX() + getWidth() / 2));
-		setCenterY((int) (getY() + height / 2));
+		setCenterY((int) (getY() + getHeight() / 2));
 		if(getX()>EmuCore.WIDTH + 250 || getX() < 200){
 			setAlive(false);	
 		}
 		if(getY()>EmuCore.HEIGHT + 250 || getY() < -250){
 			setAlive(false);
 		}
-		getCollisionBox().setBounds((int)getX(), (int)getY(), getWidth(), height);
+		getCollisionBox().setBounds((int)getX(), (int)getY(), getWidth(), getHeight());
 	}
 	
 	void draw(Graphics g){
@@ -128,7 +128,7 @@ public class GameObject {
 	}
 	
 	public int getAverageSize(){
-		return (getWidth()+height)/2;
+		return (getWidth()+getHeight())/2;
 	}
 
 	public long getAnimCooldown() {
@@ -172,5 +172,13 @@ public class GameObject {
 
 	void setWidth(int width) {
 		this.width = width;
+	}
+
+	int getHeight() {
+		return height;
+	}
+
+	void setHeight(int height) {
+		this.height = height;
 	}
 }
