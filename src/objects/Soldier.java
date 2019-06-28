@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 import core.GameManager;
 import core.GamePanel;
@@ -20,6 +21,8 @@ public class Soldier extends GameObject {
 	long fireTimer = 0;
 	static double speed = 1;
 	Emu target;
+	int xOffset = 0;
+	int yOffset = 0;
 
 	public Soldier(int x, int y, int width, int height, Color color) {
 		super(x, y, width, height, speed, color);
@@ -52,17 +55,25 @@ public class Soldier extends GameObject {
 		hpBar.update();
 
 		if (!isFarmer) {
+			if(getX() > GameManager.getPlayer().getX() + xOffset ){
+				setX(getX() - 1);
+			}
+			else if(getX() < GameManager.getPlayer().getX() + xOffset){
+				setX(getX() + 1);
+			}
 			if (target != null && target.isAlive()) {
-				if (target.getY() > getY()) {
+				if (target.getY() > getY()+yOffset) {
 					setY(getY() + speed);
 				}
-				if (target.getY() < getY()) {
+				if (target.getY() < getY()-yOffset) {
 					setY(getY() - speed);
 				}
 			} else if (GameManager.getClosestEmus().size() > 0) {
 				ArrayList<Emu> c = GameManager.getClosestEmus();
 				int n = GamePanel.gen.nextInt(c.size());
 				target = c.get(n);
+				xOffset = GamePanel.gen.nextInt(100);
+				yOffset = GamePanel.gen.nextInt(50);
 			}
 
 			if (isActive) {
@@ -82,9 +93,7 @@ public class Soldier extends GameObject {
 			animate();
 			setX(getX() - 0.5);
 			if(getX() < GameManager.getPlayer().getX()){
-				isFarmer = false;
-				health = maxHealth;
-				setX(GameManager.getPlayer().getX());
+				trainAsSoldier();
 			}
 		}
 	}
@@ -138,6 +147,8 @@ public class Soldier extends GameObject {
 
 	public void trainAsSoldier() {
 		isFarmer = false;
+		health = maxHealth;
+		setX(GameManager.getPlayer().getX());
 	}
 
 }
