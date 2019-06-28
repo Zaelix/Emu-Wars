@@ -27,7 +27,7 @@ public class Explosion extends GameObject {
 
 	public void draw(Graphics g) {
 		if(getFrame()<GamePanel.explosion.size()){
-			g.drawImage(anim.get(getFrame()), (int) getX() - 10, (int) getY() - 15, width, height, null);
+			g.drawImage(anim.get(getFrame()), (int) getX() - 10, (int) getY() - 15, getWidth(), height, null);
 		}
 		super.draw(g);
 	}
@@ -38,12 +38,12 @@ public class Explosion extends GameObject {
 	}
 	
 	public void setSize(int width, int height){
-		this.width = width;
+		this.setWidth(width);
 		this.height = height;
 	}
 	
 	public void setSize(int size){
-		this.width = size;
+		this.setWidth(size);
 		this.height = size;
 	}
 

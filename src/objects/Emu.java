@@ -27,17 +27,17 @@ public class Emu extends GameObject {
 	long specialCooldown = 5000;
 
 	// Hitbox adjustment numbers
-	int bhXMod = (width / 25);
-	int legsXMod = (width / 3);
+	int bhXMod = (getWidth() / 25);
+	int legsXMod = (getWidth() / 3);
 	int bodyYMod = (int) (height * 0.4);
-	private double moveSpeedPercent = 0;
+	private double moveSpeedPercent = 1;
 	
 	public Emu(int x, int y, int width, int height, double speed, Color color,
 			ArrayList<BufferedImage> emuAnim) {
 		super(x, y, width, height, speed, color);
 		this.emuAnim = emuAnim;
 		double size = (2.0 - speed / 2.1);
-		this.width *= size;
+		this.setWidth((int) (this.getWidth() * size));
 		this.height *= size;
 		head = new Rectangle();
 		body = new Rectangle();
@@ -46,8 +46,8 @@ public class Emu extends GameObject {
 		int healthMod = (int) ((GameManager.getSecondsSinceStart() / healthDifficultyDivisor) * size * size);
 		this.maxHealth = Math.max(2.5 - speed, 1) + 1 + healthMod;
 		this.health = maxHealth;
-		bhXMod = (this.width / 25);
-		legsXMod = (this.width / 3);
+		bhXMod = (this.getWidth() / 25);
+		legsXMod = (this.getWidth() / 3);
 		bodyYMod = (int) (this.height * 0.4);
 		updateCollisionBoxes();
 	}
@@ -55,8 +55,8 @@ public class Emu extends GameObject {
 	public void setType(int type) {
 		this.type = type;
 		if (type == SHIELD) {
-			shield = new Shield((int) (getX() + width / 3),
-					(int) (getY() - height / 3), (int) (width * 1.5),
+			shield = new Shield((int) (getX() + getWidth() / 3),
+					(int) (getY() - height / 3), (int) (getWidth() * 1.5),
 					(int) (height * 1.5), 0, Color.BLUE, this);
 			GameManager.addShield(shield);
 			setAnim(GamePanel.emuFloat);
@@ -66,14 +66,14 @@ public class Emu extends GameObject {
 			setAnim(GamePanel.emuFloat);
 		} else if (type == MOTHER) {
 			setAnim(GamePanel.emuSit);
-			this.width *= 1.5;
+			this.setWidth((int) (this.getWidth() * 1.5));
 			this.height *= 1.5;
 			this.maxHealth *= 1.5;
 			this.health = this.maxHealth;
 		}
 		else if (type == BOUNCER) {
 			int healthMod = (int) (GameManager.getSecondsSinceStart() / healthDifficultyDivisor)*8;
-			this.width = 8;
+			this.setWidth(8);
 			this.height = 8;
 			this.maxHealth = 200+healthMod;
 			this.health = this.maxHealth;
@@ -102,7 +102,7 @@ public class Emu extends GameObject {
 			specialTimer = System.currentTimeMillis();
 			if (type == MOTHER) {
 				Emu e = new Emu((int) getX(), (int) getY(),
-						(int) (width / 1.5), (int) (height / 1.5), speed * 1.5,
+						(int) (getWidth() / 1.5), (int) (height / 1.5), speed * 1.5,
 						Color.BLACK, GamePanel.emuRun);
 				GameManager.addEmu(e);
 			}
@@ -119,13 +119,13 @@ public class Emu extends GameObject {
 
 	void updateCollisionBoxes() {
 		int d = Math.abs(2 - getFrame());
-		head.setBounds((int) getX() + (width / 25) - d * 3, (int) getY(),
-				(int) (width / 2.5), (int) (height / 2.6));
-		body.setBounds((int) getX() + (width / 25),
-				(int) (getY() + (height * 0.4)), (int) (width * 0.95),
+		head.setBounds((int) getX() + (getWidth() / 25) - d * 3, (int) getY(),
+				(int) (getWidth() / 2.5), (int) (height / 2.6));
+		body.setBounds((int) getX() + (getWidth() / 25),
+				(int) (getY() + (height * 0.4)), (int) (getWidth() * 0.95),
 				(int) (height / 2.5));
-		legs.setBounds((int) (getX() + width / 3),
-				(int) (getY() + (height * 0.8)), (int) (width / 2.5),
+		legs.setBounds((int) (getX() + getWidth() / 3),
+				(int) (getY() + (height * 0.8)), (int) (getWidth() / 2.5),
 				height / 5);
 	}
 
@@ -172,8 +172,8 @@ public class Emu extends GameObject {
 		if (health <= 0) {
 			setAlive(false);
 			GameManager.addJerky(new Jerky((int)getX(), (int)getY(), 40, 40));
-			GameManager.explodeAt((int) getX() - width / 2, (int) getY()
-					- height / 2, width, GamePanel.explosion);
+			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY()
+					- height / 2, getWidth(), GamePanel.explosion);
 			GameManager.incrementScore((int) (maxHealth));
 		}
 	}
@@ -181,7 +181,7 @@ public class Emu extends GameObject {
 	public void draw(Graphics g) {
 		hpBar.draw(g);
 		g.drawImage(emuAnim.get(getFrame()), (int) getX() - 10,
-				(int) getY() - 15, width + 20, height + 25, null);
+				(int) getY() - 15, getWidth() + 20, height + 25, null);
 		if (GameObject.debugRenderMode == 1) {
 			drawCollisionBoxes(g);
 		}

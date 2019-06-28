@@ -74,7 +74,7 @@ public class GameManager {
 	static double spawnChangeRate = 0.9985; // 0.9996 is the original value
 	public static long frameCount = 0;
 	long farmerTimer;
-	static long farmerCooldown = 10000;
+	static long farmerCooldown = 25000;
 	static long pausedStart;
 	static long pausedEnd;
 	static long timeAtStart;
@@ -192,6 +192,7 @@ public class GameManager {
 			// drawLineToCursor(g);
 			drawPointsBox(g);
 			drawHealthBox(g);
+			g.drawLine((int)(EmuCore.WIDTH*0.90), 0, (int)(EmuCore.WIDTH*0.90), EmuCore.HEIGHT);
 			g.drawString(getSecondsSinceStart() + "", EmuCore.WIDTH / 2, 40);
 			g.drawString(spawnCooldown + "", (int) (EmuCore.WIDTH * 0.8), 40);
 		}
@@ -423,7 +424,6 @@ public class GameManager {
 				&& GamePanel.runAnims.size() > 0) {
 			spawnEmu(GamePanel.runAnims.get(0));
 			GamePanel.runAnims.remove(0);
-			spawnFarmer();
 		} else if (System.currentTimeMillis() - spawnTimer >= spawnCooldown
 				&& GamePanel.runAnims.size() == 0) {
 			spawnEmu(GamePanel.emuRun);
@@ -454,7 +454,7 @@ public class GameManager {
 		farmerTimer = System.currentTimeMillis();
 		Soldier obj = new Soldier(EmuCore.WIDTH + 20,
 				new Random().nextInt(750) + 100, 100, 100, Color.GREEN);
-		soldiers.add((Soldier) obj);
+		soldiers.add(obj);
 	}
 
 	static void createButtons() {
@@ -805,7 +805,7 @@ public class GameManager {
 	public static void spawnObject(String object) {
 		GameObject obj;
 		if (object.equals("Tower")) {
-			obj = new Soldier((int) getPlayer().getCenterX(),
+			obj = new Soldier((int) (getPlayer().getX()+getPlayer().getWidth()),
 					(int) getPlayer().getCenterY(), 100, 100, Color.GREEN);
 			((Soldier) obj).trainAsSoldier();
 			soldiers.add((Soldier) obj);

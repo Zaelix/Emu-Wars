@@ -26,7 +26,7 @@ public class Jerky extends GameObject {
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(GamePanel.jerky, (int) getX(), (int) getY(), width, height,
+		g.drawImage(GamePanel.jerky, (int) getX(), (int) getY(), getWidth(), height,
 				null);
 	}
 

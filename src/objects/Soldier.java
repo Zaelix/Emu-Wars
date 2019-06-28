@@ -34,14 +34,14 @@ public class Soldier extends GameObject {
 				f = getFrame();
 			}
 			g.drawImage(GamePanel.soldierFire.get(f), (int) getX(), (int) getY(),
-				width, height, null);
+				getWidth(), height, null);
 		}
 		else{
 			if (getFrame() < GamePanel.soldierWalk.size()) {
 				f = getFrame();
 			}
 			g.drawImage(GamePanel.soldierWalk.get(f), (int) getX(), (int) getY(),
-					width, height, null);
+					getWidth(), height, null);
 		}
 		hpBar.draw(g);
 		super.draw(g);
@@ -81,7 +81,7 @@ public class Soldier extends GameObject {
 		else{
 			animate();
 			setX(getX() - 0.5);
-			if(getX() < 240){
+			if(getX() < GameManager.getPlayer().getX()){
 				isFarmer = false;
 				health = maxHealth;
 				setX(GameManager.getPlayer().getX());
@@ -103,8 +103,8 @@ public class Soldier extends GameObject {
 		health -= damage;
 		if (health <= 0) {
 			setAlive(false);
-			GameManager.explodeAt((int) getX() - width / 2, (int) getY()
-					- height / 2, width, GamePanel.explosion);
+			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY()
+					- height / 2, getWidth(), GamePanel.explosion);
 		}
 	}
 	

@@ -25,7 +25,7 @@ public class Shield extends GameObject {
 
 	void draw(Graphics g) {
 		if (isAlive()) {
-			g.drawImage(GamePanel.shield, (int) getX(), (int) getY(), width, height, null);
+			g.drawImage(GamePanel.shield, (int) getX(), (int) getY(), getWidth(), height, null);
 			hpBar.draw(g);
 		}
 		super.draw(g);
@@ -36,7 +36,7 @@ public class Shield extends GameObject {
 		if (isAlive()) {
 			hpBar.update();
 		}
-		this.setX(parent.getX() - parent.width / 3);
+		this.setX(parent.getX() - parent.getWidth() / 3);
 		this.setY(parent.getY() - parent.height / 3);
 		percent = parent.health / parent.maxHealth;
 		if (isAlive() && health < maxHealth && type == 0) {
@@ -54,7 +54,7 @@ public class Shield extends GameObject {
 	public boolean collidesWith(Projectile p) {
 		double distance = GameManager.dist(getCenterX(), getCenterY(), p.getCenterX(),
 				p.getCenterY());
-		if (isAlive() && distance < width / 2) {
+		if (isAlive() && distance < getWidth() / 2) {
 			return true;
 		}
 		return false;

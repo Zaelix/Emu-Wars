@@ -48,9 +48,9 @@ public class Grenade extends GameObject{
 		//g.drawImage(GamePanel.grenade, (int)getX(), (int)getY(), width, height, null);
 		Graphics2D g2d = (Graphics2D) g.create();
 		double rads = Math.toRadians(angle);
-		g2d.rotate(rads, (int) getX()+width/2, (int) getY()+height/2);
-		g2d.drawImage(GamePanel.grenade, (int)getX(), (int)getY(), width, height, null);
-		g2d.rotate(-rads, (int) getX()+width/2, (int) getY()+height/2);
+		g2d.rotate(rads, (int) getX()+getWidth()/2, (int) getY()+height/2);
+		g2d.drawImage(GamePanel.grenade, (int)getX(), (int)getY(), getWidth(), height, null);
+		g2d.rotate(-rads, (int) getX()+getWidth()/2, (int) getY()+height/2);
 		g2d.dispose();
 		angle+=vx+vy;
 		super.draw(g);

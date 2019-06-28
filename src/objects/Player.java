@@ -38,14 +38,14 @@ public class Player extends GameObject {
 		//g.setColor(color);
 		//g.fillRect((int) getX(), (int) getY(), width, height);
 
-		g.drawImage(GamePanel.tankBase, (int)getX(), (int)getY(), width, height, null);
+		g.drawImage(GamePanel.tankBase, (int)getX(), (int)getY(), getWidth(), height, null);
 		
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		double rads = Math.toRadians(angle);
-		g2d.rotate(rads, (int) getX()+width/2, (int) getY()+height/2);
-		g2d.drawImage(GamePanel.tankTurret, (int)getX(), (int)getY(), width, height, null);
-		g2d.rotate(-rads, (int) getX()+width/2, (int) getY()+height/2);
+		g2d.rotate(rads, (int) getX()+getWidth()/2, (int) getY()+height/2);
+		g2d.drawImage(GamePanel.tankTurret, (int)getX(), (int)getY(), getWidth(), height, null);
+		g2d.rotate(-rads, (int) getX()+getWidth()/2, (int) getY()+height/2);
 		g2d.dispose();
 		// draw the center point
 		drawGrenadeCount(g);
