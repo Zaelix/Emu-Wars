@@ -42,7 +42,7 @@ public class GameObject {
 		this.speed = speed;
 		this.color = color;
 		this.hpBar = new HealthBar(this, 50, 10);
-		
+		hpBar.setOffset(width/5);
 		setCollisionBox(new Rectangle(x,y,width,height));
 	}
 	

@@ -68,6 +68,7 @@ public class Emu extends GameObject {
 			setAnim(GamePanel.emuSit);
 			this.setWidth((int) (this.getWidth() * 1.5));
 			this.setHeight((int) (this.getHeight() * 1.5));
+			this.hpBar.setOffset(getWidth()/5);
 			this.maxHealth *= 1.5;
 			this.health = this.maxHealth;
 		}
@@ -75,8 +76,14 @@ public class Emu extends GameObject {
 			int healthMod = (int) (GameManager.getSecondsSinceStart() / healthDifficultyDivisor)*8;
 			this.setWidth(500);
 			this.setHeight(500);
+			this.hpBar.setOffset(100);
+			this.speed = 0.6;
 			this.maxHealth = 200+healthMod;
 			this.health = this.maxHealth;
+			bhXMod = (this.getWidth() / 25);
+			legsXMod = (this.getWidth() / 3);
+			bodyYMod = (int) (this.getHeight() * 0.4);
+			updateCollisionBoxes();
 		}
 	}
 
