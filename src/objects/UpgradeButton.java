@@ -40,14 +40,12 @@ public class UpgradeButton {
 		setup(text, value, costMult);
 	}
 
-	public UpgradeButton(String text, double value, double costMult,
-			double valueMult) {
+	public UpgradeButton(String text, double value, double costMult, double valueMult) {
 		setup(text, value, costMult);
 		this.valueMult = valueMult;
 	}
 
-	public UpgradeButton(String text, double value, double costMult,
-			String object) {
+	public UpgradeButton(String text, double value, double costMult, String object) {
 		setup(text, value, costMult);
 		this.buysAnObject = true;
 		this.object = object;
@@ -128,8 +126,7 @@ public class UpgradeButton {
 			g.setColor(Color.BLACK);
 			g.drawString(text, x + (width / 4), tHeight);
 			if (!isHidden()) {
-				g.drawString("Cost: " + costF, x + (width / 4), tHeight
-						+ height);
+				g.drawString("Cost: " + costF, x + (width / 4), tHeight + height);
 			} else {
 				g.drawString("MAX LEVEL", x + (width / 4), tHeight + height);
 			}

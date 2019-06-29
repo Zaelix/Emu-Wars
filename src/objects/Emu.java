@@ -32,11 +32,10 @@ public class Emu extends GameObject {
 	int legsXMod = (getWidth() / 3);
 	int bodyYMod = (int) (getHeight() * 0.4);
 	private double moveSpeedPercent = 1;
-	
+
 	int targetY = 0;
-	
-	public Emu(int x, int y, int width, int height, double speed, Color color,
-			ArrayList<BufferedImage> emuAnim) {
+
+	public Emu(int x, int y, int width, int height, double speed, Color color, ArrayList<BufferedImage> emuAnim) {
 		super(x, y, width, height, speed, color);
 		this.emuAnim = emuAnim;
 		double size = (2.0 - speed / 2.1);
@@ -59,8 +58,7 @@ public class Emu extends GameObject {
 	public void setType(int type) {
 		this.type = type;
 		if (type == SHIELD) {
-			shield = new Shield((int) (getX() + getWidth() / 3),
-					(int) (getY() - getHeight() / 3), (int) (getWidth() * 1.5),
+			shield = new Shield((int) (getX() + getWidth() / 3), (int) (getY() - getHeight() / 3), (int) (getWidth() * 1.5),
 					(int) (getHeight() * 1.5), 0, Color.BLUE, this);
 			GameManager.addShield(shield);
 			setAnim(GamePanel.emuFloat);
@@ -72,17 +70,16 @@ public class Emu extends GameObject {
 			setAnim(GamePanel.emuSit);
 			this.setWidth((int) (this.getWidth() * 1.5));
 			this.setHeight((int) (this.getHeight() * 1.5));
-			this.hpBar.setOffset(getWidth()/5);
+			this.hpBar.setOffset(getWidth() / 5);
 			this.maxHealth *= 1.5;
 			this.health = this.maxHealth;
-		}
-		else if (type == BOUNCER) {
-			int healthMod = (int) (GameManager.getSecondsSinceStart() / healthDifficultyDivisor)*8;
+		} else if (type == BOUNCER) {
+			int healthMod = (int) (GameManager.getSecondsSinceStart() / healthDifficultyDivisor) * 8;
 			this.setWidth(500);
 			this.setHeight(500);
 			this.hpBar.setOffset(100);
 			this.speed = 0.6;
-			this.maxHealth = 200+healthMod;
+			this.maxHealth = 200 + healthMod;
 			this.health = this.maxHealth;
 			bhXMod = (this.getWidth() / 25);
 			legsXMod = (this.getWidth() / 3);
@@ -103,7 +100,7 @@ public class Emu extends GameObject {
 		animate();
 		translateCollisionBoxes();
 		move();
-		if(moveSpeedPercent < 1){
+		if (moveSpeedPercent < 1) {
 			moveSpeedPercent += 0.001;
 		}
 	}
@@ -114,9 +111,8 @@ public class Emu extends GameObject {
 			if (type == MOTHER) {
 				int xMod = GamePanel.gen.nextInt(100);
 				int yMod = GamePanel.gen.nextInt(100);
-				Emu e = new Emu((int) (getX()+getWidth()/2)+xMod, (int) (getY()+getHeight()/2)+yMod,
-						(int) (getWidth() / 1.5), (int) (getHeight() / 1.5), speed * 1.5,
-						Color.BLACK, GamePanel.emuRun);
+				Emu e = new Emu((int) (getX() + getWidth() / 2) + xMod, (int) (getY() + getHeight() / 2) + yMod, (int) (getWidth() / 1.5),
+						(int) (getHeight() / 1.5), speed * 1.5, Color.BLACK, GamePanel.emuRun);
 				e.setWidth((int) (getWidth() / 1.5));
 				e.setHeight((int) (getHeight() / 1.5));
 				GameManager.addEmu(e);
@@ -124,24 +120,20 @@ public class Emu extends GameObject {
 		}
 
 	}
-	
-	void translateCollisionBoxes(){
+
+	void translateCollisionBoxes() {
 		int frameMod = Math.abs(2 - getFrame());
-		head.setLocation((int) getX()+bhXMod-frameMod*3, (int) getY());
-		body.setLocation((int) getX()+bhXMod, (int) getY()+bodyYMod);
-		legs.setLocation((int) getX()+legsXMod, (int) getY()+bodyYMod*2);
+		head.setLocation((int) getX() + bhXMod - frameMod * 3, (int) getY());
+		body.setLocation((int) getX() + bhXMod, (int) getY() + bodyYMod);
+		legs.setLocation((int) getX() + legsXMod, (int) getY() + bodyYMod * 2);
 	}
 
 	void updateCollisionBoxes() {
 		int d = Math.abs(2 - getFrame());
-		head.setBounds((int) getX() + (getWidth() / 25) - d * 3, (int) getY(),
-				(int) (getWidth() / 2.5), (int) (getHeight() / 2.6));
-		body.setBounds((int) getX() + (getWidth() / 25),
-				(int) (getY() + (getHeight() * 0.4)), (int) (getWidth() * 0.95),
+		head.setBounds((int) getX() + (getWidth() / 25) - d * 3, (int) getY(), (int) (getWidth() / 2.5), (int) (getHeight() / 2.6));
+		body.setBounds((int) getX() + (getWidth() / 25), (int) (getY() + (getHeight() * 0.4)), (int) (getWidth() * 0.95),
 				(int) (getHeight() / 2.5));
-		legs.setBounds((int) (getX() + getWidth() / 3),
-				(int) (getY() + (getHeight() * 0.8)), (int) (getWidth() / 2.5),
-				getHeight() / 5);
+		legs.setBounds((int) (getX() + getWidth() / 3), (int) (getY() + (getHeight() * 0.8)), (int) (getWidth() / 2.5), getHeight() / 5);
 	}
 
 	void drawCollisionBoxes(Graphics g) {
@@ -162,8 +154,7 @@ public class Emu extends GameObject {
 		if (o.getCollisionBox().intersects(head)) {
 			takeDamage(o.getDamage() * Player.headshotMultiplier);
 			return true;
-		} else if (o.getCollisionBox().intersects(body)
-				|| o.getCollisionBox().intersects(legs)) {
+		} else if (o.getCollisionBox().intersects(body) || o.getCollisionBox().intersects(legs)) {
 			takeDamage(o.getDamage());
 			return true;
 		}
@@ -171,24 +162,23 @@ public class Emu extends GameObject {
 	}
 
 	public void move() {
-		setX(getX() - (speed*getMoveSpeedPercent()));
+		setX(getX() - (speed * getMoveSpeedPercent()));
 		if (collidesWith(GameManager.base)) {
 			GameManager.takeDamage((int) health);
 			setAlive(false);
 		}
-		if(GameManager.frameCount % 300 == 0){
+		if (GameManager.frameCount % 300 == 0) {
 			int dis = GamePanel.gen.nextInt(400) - 200;
 			targetY = (int) (getY() + dis);
 		}
-		
-		if(getY() < targetY && getY() < EmuCore.HEIGHT - getHeight()){
-			setY(getY() + (speed*getMoveSpeedPercent()));
-		}
-		else if(getY() > targetY && getY() > 20){
-			setY(getY() - (speed*getMoveSpeedPercent()));
+
+		if (getY() < targetY && getY() < EmuCore.HEIGHT - getHeight()) {
+			setY(getY() + (speed * getMoveSpeedPercent()));
+		} else if (getY() > targetY && getY() > 20) {
+			setY(getY() - (speed * getMoveSpeedPercent()));
 		}
 	}
-	
+
 	public void takeDamage(double damage) {
 		if (type == SHIELD && shield.isAlive()) {
 			shield.takeDamage(damage);
@@ -197,17 +187,15 @@ public class Emu extends GameObject {
 		}
 		if (health <= 0) {
 			setAlive(false);
-			GameManager.addJerky(new Jerky((int)getX(), (int)getY(), 40, 40));
-			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY()
-					- getHeight() / 2, getWidth(), GamePanel.explosion);
+			GameManager.addJerky(new Jerky((int) getX(), (int) getY(), 40, 40));
+			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY() - getHeight() / 2, getWidth(), GamePanel.explosion);
 			GameManager.incrementScore((int) (maxHealth));
 		}
 	}
 
 	public void draw(Graphics g) {
 		hpBar.draw(g);
-		g.drawImage(emuAnim.get(getFrame()), (int) getX() - 10,
-				(int) getY() - 15, getWidth() + 20, getHeight() + 25, null);
+		g.drawImage(emuAnim.get(getFrame()), (int) getX() - 10, (int) getY() - 15, getWidth() + 20, getHeight() + 25, null);
 		if (GameObject.debugRenderMode == 1) {
 			drawCollisionBoxes(g);
 		}

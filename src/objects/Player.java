@@ -29,7 +29,7 @@ public class Player extends GameObject {
 	public static int maxGrenades = 1;
 
 	Point barrel = new Point();
-	
+
 	public Player(int x, int y, int width, int height, Color color) {
 		super(x, y, width, height, height, color);
 	}
@@ -38,14 +38,14 @@ public class Player extends GameObject {
 		//g.setColor(color);
 		//g.fillRect((int) getX(), (int) getY(), width, height);
 
-		g.drawImage(GamePanel.tankBase, (int)getX(), (int)getY(), getWidth(), getHeight(), null);
-		
+		g.drawImage(GamePanel.tankBase, (int) getX(), (int) getY(), getWidth(), getHeight(), null);
+
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		double rads = Math.toRadians(angle);
-		g2d.rotate(rads, (int) getX()+getWidth()/2, (int) getY()+getHeight()/2);
-		g2d.drawImage(GamePanel.tankTurret, (int)getX(), (int)getY(), getWidth(), getHeight(), null);
-		g2d.rotate(-rads, (int) getX()+getWidth()/2, (int) getY()+getHeight()/2);
+		g2d.rotate(rads, (int) getX() + getWidth() / 2, (int) getY() + getHeight() / 2);
+		g2d.drawImage(GamePanel.tankTurret, (int) getX(), (int) getY(), getWidth(), getHeight(), null);
+		g2d.rotate(-rads, (int) getX() + getWidth() / 2, (int) getY() + getHeight() / 2);
 		g2d.dispose();
 		// draw the center point
 		drawGrenadeCount(g);
@@ -55,31 +55,28 @@ public class Player extends GameObject {
 	public void drawGrenadeCount(Graphics g) {
 		g.setFont(GameManager.defaultFont);
 		g.setColor(Color.BLACK);
-		g.drawString(grenades+"", (int) getX(), (int) getY() - 4);
-		g.drawString("x", (int) getX()+((grenades+"").length()*10), (int) getY() - 4);
-		g.drawImage(GamePanel.grenade, (int) getX() + 10 + ((grenades+"").length()*10), (int) getY() - 25,
-				25, 25, null);
+		g.drawString(grenades + "", (int) getX(), (int) getY() - 4);
+		g.drawString("x", (int) getX() + ((grenades + "").length() * 10), (int) getY() - 4);
+		g.drawImage(GamePanel.grenade, (int) getX() + 10 + ((grenades + "").length() * 10), (int) getY() - 25, 25, 25, null);
 	}
 
 	public void update() {
 		super.update();
-		if (isFiring()
-				&& System.currentTimeMillis() - fireTimer >= getFireCooldown()) {
+		if (isFiring() && System.currentTimeMillis() - fireTimer >= getFireCooldown()) {
 			fire();
 
 			fireTimer = System.currentTimeMillis();
 		}
 
-		if (isFiringScattered()
-				&& System.currentTimeMillis() - fireTimer >= getFireCooldown()) {
+		if (isFiringScattered() && System.currentTimeMillis() - fireTimer >= getFireCooldown()) {
 			fireRandom();
 
 			fireTimer = System.currentTimeMillis();
 		}
-		
+
 		if (System.currentTimeMillis() - grenadeTimer >= grenadeCooldown) {
 			grenadeTimer = System.currentTimeMillis();
-			if(grenades < maxGrenades){
+			if (grenades < maxGrenades) {
 				grenades++;
 			}
 		}
@@ -95,8 +92,7 @@ public class Player extends GameObject {
 	void fireAt(int x, int y) {
 		Point play = new Point((int) getCenterX(), (int) getCenterY());
 		Point target = new Point(x, y);
-		Projectile p = new Projectile(barrel.x, barrel.y,
-				getBulletSpeed(), Color.orange, barrel, target, getDamage());
+		Projectile p = new Projectile(barrel.x, barrel.y, getBulletSpeed(), Color.orange, barrel, target, getDamage());
 		GameManager.addBullet(p);
 	}
 
@@ -111,10 +107,8 @@ public class Player extends GameObject {
 	public void throwGrenade() {
 		if (grenades > 0) {
 			Point play = new Point((int) getCenterX(), (int) getCenterY());
-			Point target = new Point(GameManager.getClickedPoint().x,
-					GameManager.getClickedPoint().y);
-			Grenade g = new Grenade((int) getCenterX(), (int) getCenterY(), 5,
-					play, target);
+			Point target = new Point(GameManager.getClickedPoint().x, GameManager.getClickedPoint().y);
+			Grenade g = new Grenade((int) getCenterX(), (int) getCenterY(), 5, play, target);
 			GameManager.addGrenade(g);
 			grenades--;
 		}
@@ -167,17 +161,17 @@ public class Player extends GameObject {
 	public void setFiring(boolean isFiring) {
 		this.isFiring = isFiring;
 	}
-	
-	public void setFiringAngle(Point tar){
+
+	public void setFiringAngle(Point tar) {
 		double slopeX = getCenterX() - (tar.x - GameManager.mouseXOffset);
 		double slopeY = getCenterY() - (tar.y - GameManager.mouseYOffset);
 
 		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
 		vx = -slopeX / magn;
 		vy = -slopeY / magn;
-		angle = (Math.atan2(slopeY, slopeX)*180/Math.PI)-90;
-		
-		barrel = new Point((int)(getCenterX()+vx*50), (int)(getCenterY()+vy*50));
+		angle = (Math.atan2(slopeY, slopeX) * 180 / Math.PI) - 90;
+
+		barrel = new Point((int) (getCenterX() + vx * 50), (int) (getCenterY() + vy * 50));
 		//angle = (vy)*90 + 90;
 	}
 }

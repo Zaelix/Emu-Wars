@@ -31,8 +31,7 @@ import javax.swing.Timer;
 import objects.GameObject;
 import objects.Player;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener,
-		MouseListener {
+public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	Timer timer;
 
 	public GameManager dm = new GameManager();
@@ -53,7 +52,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	public static BufferedImage shield;
 	public static BufferedImage grenade;
 	public static BufferedImage jerky;
-	
+	public static BufferedImage egg;
+
 	public static BufferedImage tankBase;
 	public static BufferedImage tankTurret;
 
@@ -70,8 +70,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	private static int menuDifficultyChoice = 0;
 
 	private boolean isShiftHeld = false;
+
 	GamePanel() {
-		timer = new Timer(1000 / (int)targetFrameRate, this);
+		timer = new Timer(1000 / (int) targetFrameRate, this);
 		startGame();
 	}
 
@@ -95,7 +96,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		tankBase = loadImage("tank_base.png");
 		tankTurret = loadImage("tank_turret.png");
 		jerky = loadImage("jerky.png");
-		
+		egg = loadImage("egg.png");
 	}
 
 	BufferedImage loadImage(String fileName) {
@@ -134,11 +135,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			explosion.add(img.getSubimage(i * 96, 0, 96, 96));
 		}
 		int[] arr = { gen.nextInt(3), gen.nextInt(3), gen.nextInt(3) };
-		variantColor = new Color(gen.nextInt(150), gen.nextInt(150),
-				gen.nextInt(150));
+		variantColor = new Color(gen.nextInt(150), gen.nextInt(150), gen.nextInt(150));
 		for (int i = 0; i < 10; i++) {
-			emuExplosion.add(getColoredImage(
-					img.getSubimage(i * 96, 0, 96, 96), arr, variantColor));
+			emuExplosion.add(getColoredImage(img.getSubimage(i * 96, 0, 96, 96), arr, variantColor));
 		}
 	}
 
@@ -184,16 +183,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	void makeStandardizedAnimVariants() {
 		if (runAnims.size() < 100) {
 			int[] arr = { gen.nextInt(3), gen.nextInt(3), gen.nextInt(3) };
-			runAnim.add(shuffleImageColorComponents(emuRun.get(variantFrame),
-					arr, variantColor));
+			runAnim.add(shuffleImageColorComponents(emuRun.get(variantFrame), arr, variantColor));
 			variantFrame++;
 			if (variantFrame > 3) {
 				variantFrame = 0;
 
 				runAnims.add(runAnim);
 				runAnim = new ArrayList<BufferedImage>();
-				variantColor = new Color(gen.nextInt(150), gen.nextInt(150),
-						gen.nextInt(150));
+				variantColor = new Color(gen.nextInt(150), gen.nextInt(150), gen.nextInt(150));
 			}
 		}
 	}
@@ -201,24 +198,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 	void makeAnimVariants() {
 		// System.out.println(runAnims.size());
 		if (runAnims.size() < 100) {
-			runAnim.add(getColoredImage(emuRun.get(variantFrame), null,
-					variantColor));
+			runAnim.add(getColoredImage(emuRun.get(variantFrame), null, variantColor));
 			variantFrame++;
 			if (variantFrame > 3) {
 				variantFrame = 0;
 
 				runAnims.add(runAnim);
 				runAnim = new ArrayList<BufferedImage>();
-				variantColor = new Color(gen.nextInt(150), gen.nextInt(150),
-						gen.nextInt(150));
+				variantColor = new Color(gen.nextInt(150), gen.nextInt(150), gen.nextInt(150));
 			}
 		}
 	}
 
-	static BufferedImage getColoredImage(BufferedImage image, int[] order,
-			Color cMod) {
-		BufferedImage newImage = new BufferedImage(image.getWidth(),
-				image.getHeight(), image.getType());
+	static BufferedImage getColoredImage(BufferedImage image, int[] order, Color cMod) {
+		BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				int color = image.getRGB(x, y);
@@ -238,11 +231,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		return newImage;
 	}
 
-	static BufferedImage shuffleImageColorComponents(BufferedImage image,
-			int[] order, Color cMod) {
+	static BufferedImage shuffleImageColorComponents(BufferedImage image, int[] order, Color cMod) {
 
-		BufferedImage newImage = new BufferedImage(image.getWidth(),
-				image.getHeight(), image.getType());
+		BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				int color = image.getRGB(x, y);
@@ -262,8 +253,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		return newImage;
 	}
 
-	public static BufferedImage setAlpha(BufferedImage img, int cx, int cy,
-			byte alpha) {
+	public static BufferedImage setAlpha(BufferedImage img, int cx, int cy, byte alpha) {
 		alpha %= 0xff;
 		int color = img.getRGB(cx, cy);
 
@@ -330,7 +320,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			}
 			if (keyCode == 192) {
 				GameManager.topCategory++;
-				if(GameManager.topCategory > 2){
+				if (GameManager.topCategory > 2) {
 					GameManager.topCategory = 0;
 				}
 				GameManager.addButtonsToUI();
@@ -338,12 +328,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 			}
 			// 49 is the 1 key
 			if (keyCode >= 49 && keyCode <= 58) {
-				if(isShiftHeld){
-					for(int i = 0; i < 5; i++){
+				if (isShiftHeld) {
+					for (int i = 0; i < 5; i++) {
 						dm.buy(keyCode - 49);
 					}
-				}
-				else{
+				} else {
 					dm.buy(keyCode - 49);
 				}
 			}
@@ -413,7 +402,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		}
 		if (keyCode == 32) {
 			dm.getPlayer().setFiringScattered(false);
-		}if (keyCode == 16) {
+		}
+		if (keyCode == 16) {
 			isShiftHeld = false;
 		}
 
@@ -460,8 +450,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener,
 		}
 		if (GameManager.currentState == GameManager.MENU_STATE) {
 			for (int i = 0; i < GameManager.menuDifficultyRects.length; i++) {
-				if (GameManager
-						.mouseIntersects(GameManager.menuDifficultyRects[i])) {
+				if (GameManager.mouseIntersects(GameManager.menuDifficultyRects[i])) {
 					GamePanel.setDifficulty(i);
 
 					GameManager.menuEmu.setX(EmuCore.WIDTH * 2);

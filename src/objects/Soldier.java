@@ -32,19 +32,16 @@ public class Soldier extends GameObject {
 	public void draw(Graphics g) {
 		// drawCollisionBoxes(g);
 		int f = 0;
-		if(!isFarmer){
+		if (!isFarmer) {
 			if (getFrame() < GamePanel.soldierFire.size()) {
 				f = getFrame();
 			}
-			g.drawImage(GamePanel.soldierFire.get(f), (int) getX(), (int) getY(),
-				getWidth(), getHeight(), null);
-		}
-		else{
+			g.drawImage(GamePanel.soldierFire.get(f), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
+		} else {
 			if (getFrame() < GamePanel.soldierWalk.size()) {
 				f = getFrame();
 			}
-			g.drawImage(GamePanel.soldierWalk.get(f), (int) getX(), (int) getY(),
-					getWidth(), getHeight(), null);
+			g.drawImage(GamePanel.soldierWalk.get(f), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
 		}
 		hpBar.draw(g);
 		super.draw(g);
@@ -55,17 +52,16 @@ public class Soldier extends GameObject {
 		hpBar.update();
 
 		if (!isFarmer) {
-			if(getX() > GameManager.getPlayer().getX() + xOffset ){
+			if (getX() > GameManager.getPlayer().getX() + xOffset) {
 				setX(getX() - 1);
-			}
-			else if(getX() < GameManager.getPlayer().getX() + xOffset){
+			} else if (getX() < GameManager.getPlayer().getX() + xOffset) {
 				setX(getX() + 1);
 			}
 			if (target != null && target.isAlive()) {
-				if (target.getY() > getY()+yOffset) {
+				if (target.getY() > getY() + yOffset) {
 					setY(getY() + speed);
 				}
-				if (target.getY() < getY()-yOffset) {
+				if (target.getY() < getY() - yOffset) {
 					setY(getY() - speed);
 				}
 			} else if (GameManager.getClosestEmus().size() > 0) {
@@ -82,17 +78,15 @@ public class Soldier extends GameObject {
 			if (getFireCooldown() < getAnimCooldown() * 6) {
 				setAnimCooldown((long) (getFireCooldown() * 0.1));
 			}
-			if (System.currentTimeMillis() - fireTimer >= getFireCooldown()
-					* (30 / GameManager.frameRate)) {
+			if (System.currentTimeMillis() - fireTimer >= getFireCooldown() * (30 / GameManager.frameRate)) {
 				fire();
 				startAnimation();
 				fireTimer = System.currentTimeMillis();
 			}
-		}
-		else{
+		} else {
 			animate();
 			setX(getX() - 0.5);
-			if(getX() < GameManager.getPlayer().getX()){
+			if (getX() < GameManager.getPlayer().getX()) {
 				trainAsSoldier();
 			}
 		}
@@ -100,14 +94,12 @@ public class Soldier extends GameObject {
 
 	void fire() {
 		Point tower = new Point((int) getCenterX(), (int) getCenterY());
-		Point target = new Point((int) (getCenterX() + 500),
-				(int) (getCenterY() + GameManager.mouseYOffset));
-		Projectile p = new Projectile((int) getCenterX() + 15,
-				(int) getCenterY() + 3, getBulletSpeed(), Color.BLUE, tower,
-				target, getDamage());
+		Point target = new Point((int) (getCenterX() + 500), (int) (getCenterY() + GameManager.mouseYOffset));
+		Projectile p = new Projectile((int) getCenterX() + 15, (int) getCenterY() + 3, getBulletSpeed(), Color.BLUE, tower, target,
+				getDamage());
 		GameManager.addBullet(p);
 	}
-	
+
 	public static double getDamage() {
 		return damage;
 	}

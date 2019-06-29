@@ -1,4 +1,5 @@
 package objects;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,16 +14,15 @@ public class Projectile extends GameObject {
 	Point from;
 	Point to;
 
-	public Projectile(int x, int y, double speed, Color color, Point from, Point to, double damage){
-		super(x,y,(int) (20+speed), (int) (15-(speed/3)),speed,color);
+	public Projectile(int x, int y, double speed, Color color, Point from, Point to, double damage) {
+		super(x, y, (int) (20 + speed), (int) (15 - (speed / 3)), speed, color);
 
-		setup(x,y, speed, color, from, to, damage);
-		
+		setup(x, y, speed, color, from, to, damage);
+
 	}
 
-	void setup(int x, int y, double speed, Color color,
-			Point from, Point to, double damage) {
-		this.from= from;
+	void setup(int x, int y, double speed, Color color, Point from, Point to, double damage) {
+		this.from = from;
 		this.to = to;
 		double slopeX = from.x - (to.x - GameManager.mouseXOffset);
 		double slopeY = from.y - (to.y - GameManager.mouseYOffset);
@@ -30,30 +30,28 @@ public class Projectile extends GameObject {
 		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
 		vx = -slopeX / magn * speed;
 		vy = -slopeY / magn * speed;
-		
+
 		this.setDamage(damage);
 	}
 
 	public void draw(Graphics g) {
 		super.draw(g);
-		if(vy == 0){
-			g.drawImage(GamePanel.fireball.get(getFrame()), (int) getX(), (int) getY(), getWidth(), getHeight(),	null);
-		}
-		else{
+		if (vy == 0) {
+			g.drawImage(GamePanel.fireball.get(getFrame()), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
+		} else {
 			Graphics2D g2d = (Graphics2D) g.create();
-			double rads = Math.toRadians((vy/speed)*90);
-			g2d.rotate(rads, (int) getX()+getWidth()/2, (int) getY()+getHeight()/2);
-			g2d.drawImage(GamePanel.fireball.get(getFrame()), (int) getX(), (int) getY(), getWidth(), getHeight(),	null);
-			g2d.rotate(-rads, (int) getX()+getWidth()/2, (int) getY()+getHeight()/2);
+			double rads = Math.toRadians((vy / speed) * 90);
+			g2d.rotate(rads, (int) getX() + getWidth() / 2, (int) getY() + getHeight() / 2);
+			g2d.drawImage(GamePanel.fireball.get(getFrame()), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
+			g2d.rotate(-rads, (int) getX() + getWidth() / 2, (int) getY() + getHeight() / 2);
 			g2d.dispose();
 		}
 		//drawLineToTarget(g);
 	}
-	
+
 	void drawLineToTarget(Graphics g) {
 		g.setColor(Color.MAGENTA);
-		g.drawLine((int) from.getX(), (int) from.getY(), to.x - GameManager.mouseXOffset,
-				to.y - GameManager.mouseYOffset);
+		g.drawLine((int) from.getX(), (int) from.getY(), to.x - GameManager.mouseXOffset, to.y - GameManager.mouseYOffset);
 	}
 
 	public void update() {
