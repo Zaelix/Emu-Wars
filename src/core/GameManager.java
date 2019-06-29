@@ -485,7 +485,7 @@ public class GameManager {
 		buttonCategories.clear();
 		ArrayList<UpgradeButton> tankButtons = new ArrayList<UpgradeButton>();
 		tankButtons.add(new UpgradeButton("TANK"));
-		tankButtons.add(new UpgradeButton("T.Fire Rate", 1, 1));
+		tankButtons.add(new UpgradeButton("T.Fire Rate", 800, 1, -10).setMinValue(50));
 		tankButtons.add(new UpgradeButton("T.Bullet Speed", 1, 1.4).setMaxValue(20));
 		tankButtons.add(new UpgradeButton("T.Bullet Dmg", 1, 1));
 		tankButtons.add(new UpgradeButton("T.Move Speed", 1, 2.3));
@@ -493,10 +493,10 @@ public class GameManager {
 		ArrayList<UpgradeButton> soldierButtons = new ArrayList<UpgradeButton>();
 		soldierButtons.add(new UpgradeButton("SOLDIER"));
 		soldierButtons.add(new UpgradeButton("Buy Soldier", 20, 285, "Tower").setPercentageBasedCost(true).setCost(10));
-		soldierButtons.add(new UpgradeButton("S.Fire Rate", 1, 0.2));
+		soldierButtons.add(new UpgradeButton("S.Fire Rate", 5000, 0.2, -10).setMinValue(50));
 		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 2).setPercentageBasedCost(true).setMaxValue(20));
 		soldierButtons.add(new UpgradeButton("S.Bullet Dmg", 1, 5).setPercentageBasedCost(true));
-		soldierButtons.add(new UpgradeButton("S.Move Speed", 1, 0.4));
+		soldierButtons.add(new UpgradeButton("S.Move Speed", 1, 0.4).setMaxValue(20));
 
 		ArrayList<UpgradeButton> grenadeButtons = new ArrayList<UpgradeButton>();
 		grenadeButtons.add(new UpgradeButton("GRENADE"));
@@ -549,12 +549,12 @@ public class GameManager {
 	
 	void updateStats() {
 		int[] i = findUpgradeButtonIndexes();
-		getPlayer().setFireCooldown((long) (600 / buttons.get(i[0]).getValue()));
+		getPlayer().setFireCooldown((long) (buttons.get(i[0]).getValue()));
 		getPlayer().setBulletSpeed(2 + buttons.get(i[1]).getValue());
 		getPlayer().setDamage(buttons.get(i[2]).getValue());
 		getPlayer().setSpeed(buttons.get(i[3]).getValue());
 
-		Soldier.setFireCooldown((long) (5000 / buttons.get(i[5]).getValue()));
+		Soldier.setFireCooldown((long) (buttons.get(i[5]).getValue()));
 		Soldier.setBulletSpeed(1 + buttons.get(i[6]).getValue());
 		Soldier.setDamage(buttons.get(i[7]).getValue());
 		Soldier.setMoveSpeed(buttons.get(i[8]).getValue());

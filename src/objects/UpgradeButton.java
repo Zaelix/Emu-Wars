@@ -28,6 +28,7 @@ public class UpgradeButton {
 	double costMult = 1;
 	double valueMult = 0.1;
 	int maxValue = Integer.MAX_VALUE;
+	private int minValue = 0;
 	boolean buysAnObject = false;
 	boolean isPercentageBasedValue = false;
 	boolean isPercentageBasedCost = false;
@@ -153,7 +154,7 @@ public class UpgradeButton {
 	}
 
 	public void buy() {
-		if (GameManager.getPoints() >= cost && !isDivider && value < maxValue) {
+		if (GameManager.getPoints() >= cost && !isDivider && value < maxValue && value > minValue) {
 			GameManager.spendPoints(cost);
 			if (buysAnObject) {
 				GameManager.spawnObject(object);
@@ -170,6 +171,10 @@ public class UpgradeButton {
 			}
 		}
 		if (value >= maxValue) {
+			setHidden(true);
+			color = Color.BLUE;
+		}
+		if (value <= minValue) {
 			setHidden(true);
 			color = Color.BLUE;
 		}
@@ -241,5 +246,14 @@ public class UpgradeButton {
 
 	public void setHidden(boolean isHidden) {
 		this.isHidden = isHidden;
+	}
+
+	int getMinValue() {
+		return minValue;
+	}
+
+	public UpgradeButton setMinValue(int minValue) {
+		this.minValue = minValue;
+		return this;
 	}
 }
