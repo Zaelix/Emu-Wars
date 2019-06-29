@@ -83,12 +83,12 @@ public class UpgradeButton {
 	}
 
 	public void calculateYPosition() {
-			this.y = nextValidY;
-			if (!isDivider) {
-				nextValidY += height * 2 + 5;
-			} else {
-				nextValidY += height + 5;
-			}
+		this.y = nextValidY;
+		if (!isDivider) {
+			nextValidY += height * 2 + 5;
+		} else {
+			nextValidY += height + 5;
+		}
 	}
 
 	public void update() {
@@ -118,7 +118,7 @@ public class UpgradeButton {
 
 			g.setColor(color);
 			g.fillRect(x + 1, y + 1, width - 2, height - 2); // Name Box
-			g.fillRect(x + 1, y + height + 1, (width) - 2, height - 2); // Cost
+			g.fillRect(x + 1, y + height + 1, (width) - 2, height - 2); // Cost//
 																		// Box
 			g.fillRect(x + width + 1, y + 1, (width / 3) - 2, (height * 2) - 2); // Value
 																					// Box
@@ -126,10 +126,10 @@ public class UpgradeButton {
 			g.setFont(displayFont);
 			g.setColor(Color.BLACK);
 			g.drawString(text, x + (width / 4), tHeight);
-			if(!isHidden()){
-			g.drawString("Cost: " + costF, x + (width / 4), tHeight + height);
-			}
-			else{
+			if (!isHidden()) {
+				g.drawString("Cost: " + costF, x + (width / 4), tHeight
+						+ height);
+			} else {
 				g.drawString("MAX LEVEL", x + (width / 4), tHeight + height);
 			}
 			g.drawString(val + "", x + width + 2, tHeight + (height / 2));

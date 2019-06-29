@@ -14,7 +14,7 @@ public class Projectile extends GameObject {
 	Point to;
 
 	public Projectile(int x, int y, double speed, Color color, Point from, Point to, double damage){
-		super(x,y,(int) (20+speed), (int) (15-(speed/2)),speed,color);
+		super(x,y,(int) (20+speed), (int) (15-(speed/3)),speed,color);
 
 		setup(x,y, speed, color, from, to, damage);
 		
