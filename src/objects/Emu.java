@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import core.EmuCore;
 import core.GameManager;
 import core.GamePanel;
 
@@ -32,6 +33,8 @@ public class Emu extends GameObject {
 	int bodyYMod = (int) (getHeight() * 0.4);
 	private double moveSpeedPercent = 1;
 	
+	int targetY = 0;
+	
 	public Emu(int x, int y, int width, int height, double speed, Color color,
 			ArrayList<BufferedImage> emuAnim) {
 		super(x, y, width, height, speed, color);
@@ -50,6 +53,7 @@ public class Emu extends GameObject {
 		legsXMod = (this.getWidth() / 3);
 		bodyYMod = (int) (this.getHeight() * 0.4);
 		updateCollisionBoxes();
+		targetY = y;
 	}
 
 	public void setType(int type) {
@@ -171,6 +175,17 @@ public class Emu extends GameObject {
 		if (collidesWith(GameManager.base)) {
 			GameManager.takeDamage((int) health);
 			setAlive(false);
+		}
+		if(GameManager.frameCount % 300 == 0){
+			int dis = GamePanel.gen.nextInt(400) - 200;
+			targetY = (int) (getY() + dis);
+		}
+		
+		if(getY() < targetY && getY() < EmuCore.HEIGHT - getHeight()){
+			setY(getY() + (speed*getMoveSpeedPercent()));
+		}
+		else if(getY() > targetY && getY() > 20){
+			setY(getY() - (speed*getMoveSpeedPercent()));
 		}
 	}
 	
