@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import core.GameManager;
 
 public class UpgradeButton {
+	private boolean isHidden = false;
 	public static int nextValidKey = 1;
 	public static int nextValidY = 65;
 	public boolean isDivider = false;
@@ -17,6 +18,7 @@ public class UpgradeButton {
 	int y;
 	int width;
 	int height;
+	Color color = Color.GREEN;
 	Font keyFont = new Font("AR ESSENCE", 10, 40);
 	Font displayFont = new Font("AR ESSENCE", 10, 20);
 	String text;
@@ -81,12 +83,12 @@ public class UpgradeButton {
 	}
 
 	public void calculateYPosition() {
-		this.y = nextValidY;
-		if (!isDivider) {
-			nextValidY += height * 2 + 5;
-		} else {
-			nextValidY += height + 5;
-		}
+			this.y = nextValidY;
+			if (!isDivider) {
+				nextValidY += height * 2 + 5;
+			} else {
+				nextValidY += height + 5;
+			}
 	}
 
 	public void update() {
@@ -114,7 +116,7 @@ public class UpgradeButton {
 			g.fillRect(x, y, width, height); // Cost Box
 			g.fillRect(x + width, y, width / 3, height * 2); // Value Box
 
-			g.setColor(Color.GREEN);
+			g.setColor(color);
 			g.fillRect(x + 1, y + 1, width - 2, height - 2); // Name Box
 			g.fillRect(x + 1, y + height + 1, (width) - 2, height - 2); // Cost
 																		// Box
@@ -124,14 +126,19 @@ public class UpgradeButton {
 			g.setFont(displayFont);
 			g.setColor(Color.BLACK);
 			g.drawString(text, x + (width / 4), tHeight);
+			if(!isHidden()){
 			g.drawString("Cost: " + costF, x + (width / 4), tHeight + height);
+			}
+			else{
+				g.drawString("MAX LEVEL", x + (width / 4), tHeight + height);
+			}
 			g.drawString(val + "", x + width + 2, tHeight + (height / 2));
 
 			// Key Box Display
 			g.setFont(keyFont);
 			g.setColor(Color.RED);
 			g.fillRect(x, y, keyBoxWidth, height * 2);
-			g.setColor(Color.GREEN);
+			g.setColor(color);
 			g.fillRect(x + 1, y + 1, keyBoxWidth - 2, height * 2 - 2);
 			g.setColor(Color.RED);
 			if (getKey() < 10) {
@@ -150,19 +157,21 @@ public class UpgradeButton {
 			GameManager.spendPoints(cost);
 			if (buysAnObject) {
 				GameManager.spawnObject(object);
-			} 
-			if (isPercentageBasedValue) {
-				setValue(getValue() + (getValue() * (valueMult/100)));
 			}
-			else{
+			if (isPercentageBasedValue) {
+				setValue(getValue() + (getValue() * (valueMult / 100)));
+			} else {
 				setValue(getValue() + valueMult);
 			}
-			if(isPercentageBasedCost){
-				cost *= 1 + (costMult/100);
-			}
-			else{
+			if (isPercentageBasedCost) {
+				cost *= 1 + (costMult / 100);
+			} else {
 				cost += 1 / costMult;
 			}
+		}
+		if (value >= maxValue) {
+			setHidden(true);
+			color = Color.BLUE;
 		}
 	}
 
@@ -187,7 +196,7 @@ public class UpgradeButton {
 		isPercentageBasedValue = b;
 		return this;
 	}
-	
+
 	public UpgradeButton setPercentageBasedCost(boolean b) {
 		isPercentageBasedCost = b;
 		return this;
@@ -200,7 +209,7 @@ public class UpgradeButton {
 	public void setValue(double value) {
 		this.value = value;
 	}
-	
+
 	public double getCost() {
 		return cost;
 	}
@@ -224,5 +233,13 @@ public class UpgradeButton {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public boolean isHidden() {
+		return isHidden;
+	}
+
+	public void setHidden(boolean isHidden) {
+		this.isHidden = isHidden;
 	}
 }
