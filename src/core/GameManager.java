@@ -31,6 +31,7 @@ import objects.UpgradeButton;
 
 public class GameManager {
 	static boolean isPaused = false;
+	static boolean friendlyFire = false;
 	public static int currentState = 0;
 	public static final int MENU_STATE = 0;
 	public static final int GAME_STATE = 1;
@@ -49,7 +50,7 @@ public class GameManager {
 	public static int topCategory = 0;
 	static ArrayList<ArrayList<UpgradeButton>> buttonCategories = new ArrayList<ArrayList<UpgradeButton>>();
 	static ArrayList<UpgradeButton> buttons = new ArrayList<UpgradeButton>();
-	
+
 	static ArrayList<Projectile> bullets = new ArrayList<Projectile>();
 	static ArrayList<Emu> emus = new ArrayList<Emu>();
 	static ArrayList<Emu> closestEmus = new ArrayList<Emu>();
@@ -187,12 +188,13 @@ public class GameManager {
 			for (int i = 0; i < jerkies.size(); i++) {
 				jerkies.get(i).draw(g);
 			}
-			
+
 			drawLine(g);
 			// drawLineToCursor(g);
 			drawPointsBox(g);
 			drawHealthBox(g);
-			g.drawLine((int)(EmuCore.WIDTH*0.90), 0, (int)(EmuCore.WIDTH*0.90), EmuCore.HEIGHT);
+			g.drawLine((int) (EmuCore.WIDTH * 0.90), 0,
+					(int) (EmuCore.WIDTH * 0.90), EmuCore.HEIGHT);
 			g.drawString(getSecondsSinceStart() + "", EmuCore.WIDTH / 2, 40);
 			g.drawString(spawnCooldown + "", (int) (EmuCore.WIDTH * 0.8), 40);
 		}
@@ -338,7 +340,7 @@ public class GameManager {
 		for (int i = 0; i < grenades.size(); i++) {
 			grenades.get(i).update();
 		}
-		
+
 		for (int i = 0; i < jerkies.size(); i++) {
 			jerkies.get(i).update();
 		}
@@ -350,7 +352,7 @@ public class GameManager {
 		// Increasing spawn rates
 		if (frameCount % 10 == 0 && spawnCooldown > 200) {
 			spawnCooldown *= spawnChangeRate;
-		} 
+		}
 		if (frameCount % 2000 == 0 && spawnChangeRate < 0.9999) {
 			spawnChangeRate += 0.0001;
 		}
@@ -365,16 +367,14 @@ public class GameManager {
 		menuEmu.update();
 	}
 
-	
-
 	public static int getSecondsSinceStart() {
 		return (int) ((System.currentTimeMillis() - timeAtStart) / 1000);
 	}
 
 	void drawLineToCursor(Graphics g) {
 		g.setColor(Color.RED);
-		g.drawLine((int) getPlayer().getX(), (int) getPlayer().getY(), clicked.x
-				- mouseXOffset, clicked.y - mouseYOffset);
+		g.drawLine((int) getPlayer().getX(), (int) getPlayer().getY(),
+				clicked.x - mouseXOffset, clicked.y - mouseYOffset);
 	}
 
 	void drawLine(Graphics g) {
@@ -382,8 +382,9 @@ public class GameManager {
 		Point frame = EmuCore.frame.getLocation();
 		clicked = mouseLoc;
 		g.setColor(Color.RED);
-		g.drawLine((int) getPlayer().getCenterX(), (int) getPlayer().getCenterY(),
-				clicked.x - mouseXOffset, clicked.y - mouseYOffset);
+		g.drawLine((int) getPlayer().getCenterX(), (int) getPlayer()
+				.getCenterY(), clicked.x - mouseXOffset, clicked.y
+				- mouseYOffset);
 		getPlayer().setFiringAngle(clicked);
 	}
 
@@ -426,10 +427,9 @@ public class GameManager {
 				&& GamePanel.runAnims.size() == 0) {
 			spawnEmu(GamePanel.emuRun);
 		}
-		
-		
-		
+
 	}
+
 	void spawnFarmers() {
 		if (System.currentTimeMillis() - farmerTimer >= farmerCooldown) {
 			spawnFarmer();
@@ -447,14 +447,14 @@ public class GameManager {
 			e.setType(type);
 		}
 		addEmu(e);
-		
+
 		if (spawnCooldown <= 200 && Emu.healthDifficultyDivisor > 0.01) {
 			Emu.healthDifficultyDivisor -= 0.01;
 		}
 
 	}
-	
-	void spawnFarmer(){
+
+	void spawnFarmer() {
 		farmerTimer = System.currentTimeMillis();
 		Soldier obj = new Soldier(EmuCore.WIDTH + 20,
 				new Random().nextInt(750) + 100, 100, 100, Color.GREEN);
@@ -478,51 +478,61 @@ public class GameManager {
 		buttons.add(new UpgradeButton("G.Refill rate", 4000, 10, -10));
 		buttons.add(new UpgradeButton("G.Dmg", 1, 2, 0.1));
 		buttons.add(new UpgradeButton("G.Area", 100, 2, 5));
-		
+
 	}
-	
-	public static void createButtonsWithCategories(){
+
+	public static void createButtonsWithCategories() {
 		buttonCategories.clear();
 		ArrayList<UpgradeButton> tankButtons = new ArrayList<UpgradeButton>();
 		tankButtons.add(new UpgradeButton("TANK"));
-		tankButtons.add(new UpgradeButton("T.Fire Rate", 800, 1, -10).setMinValue(50));
-		tankButtons.add(new UpgradeButton("T.Bullet Speed", 1, 1.4).setMaxValue(20));
+		tankButtons.add(new UpgradeButton("T.Fire Rate", 800, 1, -10)
+				.setMinValue(50));
+		tankButtons.add(new UpgradeButton("T.Bullet Speed", 1, 1.4)
+				.setMaxValue(20));
 		tankButtons.add(new UpgradeButton("T.Bullet Dmg", 1, 1));
 		tankButtons.add(new UpgradeButton("T.Move Speed", 1, 2.3));
-		
+
 		ArrayList<UpgradeButton> soldierButtons = new ArrayList<UpgradeButton>();
 		soldierButtons.add(new UpgradeButton("SOLDIER"));
-		soldierButtons.add(new UpgradeButton("Buy Soldier", 20, 285, "Tower").setPercentageBasedCost(true).setCost(10));
-		soldierButtons.add(new UpgradeButton("S.Fire Rate", 5000, 0.2, -10).setMinValue(50));
-		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 2).setPercentageBasedCost(true).setMaxValue(20));
-		soldierButtons.add(new UpgradeButton("S.Bullet Dmg", 1, 5).setPercentageBasedCost(true));
-		soldierButtons.add(new UpgradeButton("S.Move Speed", 1, 0.4).setMaxValue(20));
+		soldierButtons.add(new UpgradeButton("Buy Soldier", 20, 285, "Tower")
+				.setPercentageBasedCost(true).setCost(10));
+		soldierButtons.add(new UpgradeButton("S.Fire Rate", 5000, 0.2, -10)
+				.setMinValue(50));
+		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 2)
+				.setPercentageBasedCost(true).setMaxValue(20));
+		soldierButtons.add(new UpgradeButton("S.Bullet Dmg", 1, 5)
+				.setPercentageBasedCost(true));
+		soldierButtons.add(new UpgradeButton("S.Move Speed", 1, 0.4)
+				.setMaxValue(20));
 
 		ArrayList<UpgradeButton> grenadeButtons = new ArrayList<UpgradeButton>();
 		grenadeButtons.add(new UpgradeButton("GRENADE"));
 		grenadeButtons.add(new UpgradeButton("G.Count", 1, 1, 1));
-		grenadeButtons.add(new UpgradeButton("G.Refill rate", 4000, 10, -1).setPercentageBasedValue(true).setPercentageBasedCost(true));
-		grenadeButtons.add(new UpgradeButton("G.Dmg", 1, 5, 0.1).setPercentageBasedCost(true));
-		grenadeButtons.add(new UpgradeButton("G.Area", 100, 9, 5).setPercentageBasedCost(true).setCost(10));
-		
+		grenadeButtons.add(new UpgradeButton("G.Refill rate", 4000, 10, -1)
+				.setPercentageBasedValue(true).setPercentageBasedCost(true));
+		grenadeButtons.add(new UpgradeButton("G.Dmg", 1, 5, 0.1)
+				.setPercentageBasedCost(true));
+		grenadeButtons.add(new UpgradeButton("G.Area", 100, 9, 5)
+				.setPercentageBasedCost(true).setCost(10));
+
 		buttonCategories.add(tankButtons);
 		buttonCategories.add(soldierButtons);
 		buttonCategories.add(grenadeButtons);
-		
+
 		assignButtonKeys();
 		addButtonsToUI();
 	}
-	
-	public static void addButtonsToUI(){
+
+	public static void addButtonsToUI() {
 		buttons.clear();
-		int x = topCategory; 
+		int x = topCategory;
 		System.out.println("Category:" + x);
 		UpgradeButton.nextValidY = 65;
-		for(int i = 0; i < buttonCategories.size(); i++){
-			if(x>= buttonCategories.size()){
+		for (int i = 0; i < buttonCategories.size(); i++) {
+			if (x >= buttonCategories.size()) {
 				x = 0;
 			}
-			for(int k = 0; k < buttonCategories.get(x).size(); k++){
+			for (int k = 0; k < buttonCategories.get(x).size(); k++) {
 				buttons.add(buttonCategories.get(x).get(k));
 			}
 			x++;
@@ -530,23 +540,23 @@ public class GameManager {
 		assignButtonPositions();
 		assignButtonKeys();
 	}
-	
-	static void assignButtonPositions(){
-		for(int i = 0; i < buttons.size(); i++){
+
+	static void assignButtonPositions() {
+		for (int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).calculateYPosition();
 		}
 	}
-	
-	static void assignButtonKeys(){
+
+	static void assignButtonKeys() {
 		UpgradeButton.nextValidKey = 1;
-		for(int i = 0; i < buttons.size(); i++){
-			if(!buttons.get(i).isDivider){
+		for (int i = 0; i < buttons.size(); i++) {
+			if (!buttons.get(i).isDivider) {
 				buttons.get(i).setKey(UpgradeButton.nextValidKey);
 				UpgradeButton.nextValidKey++;
 			}
 		}
 	}
-	
+
 	void updateStats() {
 		int[] i = findUpgradeButtonIndexes();
 		getPlayer().setFireCooldown((long) (buttons.get(i[0]).getValue()));
@@ -558,15 +568,15 @@ public class GameManager {
 		Soldier.setBulletSpeed(1 + buttons.get(i[6]).getValue());
 		Soldier.setDamage(buttons.get(i[7]).getValue());
 		Soldier.setMoveSpeed(buttons.get(i[8]).getValue());
-		
+
 		Player.maxGrenades = (int) buttons.get(i[9]).getValue();
-		Player.grenadeCooldown = (long)buttons.get(i[10]).getValue();
+		Player.grenadeCooldown = (long) buttons.get(i[10]).getValue();
 		Grenade.damage = buttons.get(i[11]).getValue();
-		Grenade.maxDamage = buttons.get(i[11]).getValue()*5;
-		Grenade.diameter = (int)buttons.get(i[12]).getValue();
+		Grenade.maxDamage = buttons.get(i[11]).getValue() * 5;
+		Grenade.diameter = (int) buttons.get(i[12]).getValue();
 	}
-	
-	int[] findUpgradeButtonIndexes(){
+
+	int[] findUpgradeButtonIndexes() {
 		int[] i = new int[13];
 		i[0] = findButtonIndex("T.Fire Rate");
 		i[1] = findButtonIndex("T.Bullet Speed");
@@ -585,10 +595,10 @@ public class GameManager {
 		i[12] = findButtonIndex("G.Area");
 		return i;
 	}
-	
-	int findButtonIndex(String s){
-		for(int i = 0; i < buttons.size(); i++){
-			if(buttons.get(i).getText().equals(s)){
+
+	int findButtonIndex(String s) {
+		for (int i = 0; i < buttons.size(); i++) {
+			if (buttons.get(i).getText().equals(s)) {
 				return i;
 			}
 		}
@@ -609,9 +619,12 @@ public class GameManager {
 				}
 			}
 		}
-		for(Emu e : emus){
-			for(Soldier s : soldiers){
-				if(s.isFarmer && e.getMoveSpeedPercent() > 0.3 && s.getCenterX() < EmuCore.WIDTH*0.90  && e.getCenterX() < EmuCore.WIDTH*0.90 && s.getCollisionBox().intersects(e.getCollisionBox())){
+		for (Emu e : emus) {
+			for (Soldier s : soldiers) {
+				if (s.isFarmer && e.getMoveSpeedPercent() > 0.3
+						&& s.getCenterX() < EmuCore.WIDTH * 0.90
+						&& e.getCenterX() < EmuCore.WIDTH * 0.90
+						&& s.getCollisionBox().intersects(e.getCollisionBox())) {
 					s.takeDamage(1);
 					e.setMoveSpeedPercent(0.2);
 				}
@@ -640,13 +653,13 @@ public class GameManager {
 				grenades.remove(i);
 			}
 		}
-		
+
 		for (int i = jerkies.size() - 1; i >= 0; i--) {
 			if (jerkies.get(i).isAlive() == false) {
 				jerkies.remove(i);
 			}
 		}
-		
+
 		for (int i = soldiers.size() - 1; i >= 0; i--) {
 			if (soldiers.get(i).isAlive() == false) {
 				soldiers.remove(i);
@@ -679,11 +692,11 @@ public class GameManager {
 	public static void addGrenade(Grenade g) {
 		grenades.add(g);
 	}
-	
+
 	public static void addJerky(Jerky j) {
 		jerkies.add(j);
 	}
-	
+
 	public static void incrementScore(int value) {
 		score += value;
 		points += value;
@@ -715,9 +728,9 @@ public class GameManager {
 	void fireAt(Point p) {
 		Point play = new Point((int) getPlayer().getCenterX(),
 				(int) getPlayer().getCenterY());
-		bullets.add(new Projectile((int) getPlayer().getCenterX(), (int) getPlayer()
-				.getCenterY(), getPlayer().getBulletSpeed(), Color.ORANGE, play, p,
-				getPlayer().getDamage()));
+		bullets.add(new Projectile((int) getPlayer().getCenterX(),
+				(int) getPlayer().getCenterY(), getPlayer().getBulletSpeed(),
+				Color.ORANGE, play, p, getPlayer().getDamage()));
 	}
 
 	static void setClickPoint(Point p) {
@@ -751,6 +764,7 @@ public class GameManager {
 			specialsSpawnChance = 0;
 			specialsSpawnChanceGrowthrate = 40;
 			specialsSpawnChanceMax = 30;
+			friendlyFire = false;
 		}
 		if (difficulty == 1) {
 			playerHealth = 50;
@@ -760,15 +774,17 @@ public class GameManager {
 			specialsSpawnChance = 0;
 			specialsSpawnChanceGrowthrate = 40;
 			specialsSpawnChanceMax = 50;
+			friendlyFire = false;
 		}
 		if (difficulty == 2) {
 			playerHealth = 10;
 			points = 10;
 			spawnCooldown = 4000;
 			spawnChangeRate = 0.9985;
-			specialsSpawnChance = 0;
+			specialsSpawnChance = 5;
 			specialsSpawnChanceGrowthrate = 40;
 			specialsSpawnChanceMax = 70;
+			friendlyFire = true;
 		}
 		if (difficulty == 9) {
 			playerHealth = 100000;
@@ -788,7 +804,7 @@ public class GameManager {
 		shields.clear();
 		UpgradeButton.nextValidKey = 1;
 		UpgradeButton.nextValidY = 65;
-		//createButtons();
+		// createButtons();
 		createButtonsWithCategories();
 		currentState = GAME_STATE;
 	}
@@ -809,8 +825,9 @@ public class GameManager {
 	public static void spawnObject(String object) {
 		GameObject obj;
 		if (object.equals("Tower")) {
-			obj = new Soldier((int) (getPlayer().getX()+getPlayer().getWidth()),
-					(int) getPlayer().getCenterY(), 100, 100, Color.GREEN);
+			obj = new Soldier((int) (getPlayer().getX() + getPlayer()
+					.getWidth()), (int) getPlayer().getCenterY(), 100, 100,
+					Color.GREEN);
 			((Soldier) obj).trainAsSoldier();
 			soldiers.add((Soldier) obj);
 		}
@@ -838,20 +855,34 @@ public class GameManager {
 			double maxDamage, int maxTargets) {
 		int targetsHit = 0;
 		for (Emu e : emus) {
-			double dist = dist(e.getCenterX(), e.getCenterY(), x, y)
-					- e.getAverageSize() / 2;
-			if (dist <= 0) {
-				dist = 1;
+			dealExplosionDamage(e, x, y, size, damage, maxDamage);
+			targetsHit++;
+			if (targetsHit >= maxTargets) {
+				break;
 			}
-			if (dist <= size) {
-				double d = Math.min(damage * (size / dist), maxDamage);
-				e.takeDamage(d);
+		}
+		if(friendlyFire){
+			for (Soldier s : soldiers) {
+				dealExplosionDamage(s, x, y, size, damage, maxDamage);
 				targetsHit++;
-				if(targetsHit >= maxTargets){
+				if (targetsHit >= maxTargets) {
 					break;
 				}
-				// System.out.println(d);
 			}
+		}
+	}
+
+	static void dealExplosionDamage(GameObject e, int x, int y, double size, double damage,
+			double maxDamage) {
+		double dist = dist(e.getCenterX(), e.getCenterY(), x, y)
+				- e.getAverageSize() / 2;
+		if (dist <= 0) {
+			dist = 1;
+		}
+		if (dist <= size) {
+			double d = Math.min(damage * (size / dist), maxDamage);
+			e.takeDamage(d);
+			// System.out.println(d);
 		}
 	}
 

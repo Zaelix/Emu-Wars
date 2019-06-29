@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import core.EmuCore;
+import core.GameManager;
 import core.GamePanel;
 
 
@@ -84,6 +85,15 @@ public class GameObject {
 			if (getFrame() >= animationLength) {
 				isActive = false;
 			}
+		}
+	}
+	
+	public void takeDamage(double damage) {
+		health -= damage;
+		if (health <= 0) {
+			setAlive(false);
+			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY()
+					- getHeight() / 2, getWidth(), GamePanel.explosion);
 		}
 	}
 

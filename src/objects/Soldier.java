@@ -107,15 +107,6 @@ public class Soldier extends GameObject {
 				target, getDamage());
 		GameManager.addBullet(p);
 	}
-
-	public void takeDamage(double damage) {
-		health -= damage;
-		if (health <= 0) {
-			setAlive(false);
-			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY()
-					- getHeight() / 2, getWidth(), GamePanel.explosion);
-		}
-	}
 	
 	public static double getDamage() {
 		return damage;
