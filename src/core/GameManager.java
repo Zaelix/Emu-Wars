@@ -835,7 +835,8 @@ public class GameManager {
 	}
 
 	public static void damageArea(int x, int y, double size, double damage,
-			double maxDamage) {
+			double maxDamage, int maxTargets) {
+		int targetsHit = 0;
 		for (Emu e : emus) {
 			double dist = dist(e.getCenterX(), e.getCenterY(), x, y)
 					- e.getAverageSize() / 2;
@@ -845,6 +846,10 @@ public class GameManager {
 			if (dist <= size) {
 				double d = Math.min(damage * (size / dist), maxDamage);
 				e.takeDamage(d);
+				targetsHit++;
+				if(targetsHit >= maxTargets){
+					break;
+				}
 				// System.out.println(d);
 			}
 		}

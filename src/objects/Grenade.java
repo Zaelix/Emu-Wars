@@ -16,6 +16,7 @@ public class Grenade extends GameObject{
 	public static int diameter = 100;
 	public static double damage = 1;
 	public static double maxDamage = 5;
+	public int maxTargets = 8;
 	
 	double angle = 0;
 	Grenade(int x, int y, double speed, Point from, Point to) {
@@ -60,6 +61,6 @@ public class Grenade extends GameObject{
 		setAlive(false);
 		
 		GameManager.explodeAt((int)getX()-diameter+20, (int)getY()-diameter+20, diameter, GamePanel.explosion);
-		GameManager.damageArea((int)getX(), (int)getY(), diameter, damage, damage*maxDamage);
+		GameManager.damageArea((int)getX(), (int)getY(), diameter, damage, damage*maxDamage, maxTargets);
 	}
 }
