@@ -108,9 +108,13 @@ public class Emu extends GameObject {
 		if (System.currentTimeMillis() - specialTimer >= specialCooldown) {
 			specialTimer = System.currentTimeMillis();
 			if (type == MOTHER) {
-				Emu e = new Emu((int) getX(), (int) getY(),
+				int xMod = GamePanel.gen.nextInt(100);
+				int yMod = GamePanel.gen.nextInt(100);
+				Emu e = new Emu((int) (getX()+getWidth()/2)+xMod, (int) (getY()+getHeight()/2)+yMod,
 						(int) (getWidth() / 1.5), (int) (getHeight() / 1.5), speed * 1.5,
 						Color.BLACK, GamePanel.emuRun);
+				e.setWidth((int) (getWidth() / 1.5));
+				e.setHeight((int) (getHeight() / 1.5));
 				GameManager.addEmu(e);
 			}
 		}

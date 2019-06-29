@@ -494,7 +494,7 @@ public class GameManager {
 		soldierButtons.add(new UpgradeButton("SOLDIER"));
 		soldierButtons.add(new UpgradeButton("Buy Soldier", 20, 285, "Tower").setPercentageBasedCost(true).setCost(10));
 		soldierButtons.add(new UpgradeButton("S.Fire Rate", 1, 0.2));
-		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 2).setPercentageBasedCost(true));
+		soldierButtons.add(new UpgradeButton("S.Bullet Speed", 1, 2).setPercentageBasedCost(true).setMaxValue(20));
 		soldierButtons.add(new UpgradeButton("S.Bullet Dmg", 1, 5).setPercentageBasedCost(true));
 		soldierButtons.add(new UpgradeButton("S.Move Speed", 1, 0.4));
 

@@ -35,6 +35,7 @@ public class Shield extends GameObject {
 		super.update();
 		if (isAlive()) {
 			hpBar.update();
+			hpBar.setOffset((getWidth()/2)-25);
 		}
 		this.setX(parent.getX() + (parent.getWidth() / 2) - (getWidth()/2));
 		this.setY(parent.getY() + (parent.getHeight() / 2) - (getHeight()/2));
