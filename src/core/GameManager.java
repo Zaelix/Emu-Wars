@@ -18,6 +18,7 @@ import java.util.Timer;
 
 import javax.imageio.ImageIO;
 
+import objects.Egg;
 import objects.Emu;
 import objects.Explosion;
 import objects.GameObject;
@@ -58,6 +59,7 @@ public class GameManager {
 	static ArrayList<Shield> shields = new ArrayList<Shield>();
 	static ArrayList<Grenade> grenades = new ArrayList<Grenade>();
 	static ArrayList<Jerky> jerkies = new ArrayList<Jerky>();
+	static ArrayList<Egg> eggs = new ArrayList<Egg>();
 	static ArrayList<Explosion> explosionPool = new ArrayList<Explosion>();
 
 	private static Player player = new Player(250, 450, 50, 100, Color.BLUE);
@@ -176,6 +178,10 @@ public class GameManager {
 			}
 			for (int i = 0; i < jerkies.size(); i++) {
 				jerkies.get(i).draw(g);
+			}
+			
+			for (int i = 0; i < eggs.size(); i++) {
+				eggs.get(i).draw(g);
 			}
 
 			drawLine(g);
@@ -327,6 +333,10 @@ public class GameManager {
 
 		for (int i = 0; i < jerkies.size(); i++) {
 			jerkies.get(i).update();
+		}
+		
+		for (int i = 0; i < eggs.size(); i++) {
+			eggs.get(i).update();
 		}
 		spawnEmus();
 		spawnFarmers();
@@ -574,6 +584,11 @@ public class GameManager {
 					p.setAlive(false);
 				}
 			}
+			for (Egg e : eggs) {
+				if (e.isAlive() && e.collidesWith(p)) {
+					p.setAlive(false);
+				}
+			}
 			for (Shield s : shields) {
 				if (s.isAlive() && s.collidesWith(p)) {
 					s.takeDamage(p.getDamage());
@@ -625,6 +640,12 @@ public class GameManager {
 				soldiers.remove(i);
 			}
 		}
+		
+		for (int i = eggs.size() - 1; i >= 0; i--) {
+			if (eggs.get(i).isAlive() == false) {
+				eggs.remove(i);
+			}
+		}
 	}
 
 	public static void togglePaused() {
@@ -655,6 +676,10 @@ public class GameManager {
 
 	public static void addJerky(Jerky j) {
 		jerkies.add(j);
+	}
+	
+	public static void addEgg(Egg e) {
+		eggs.add(e);
 	}
 
 	public static void incrementScore(int value) {

@@ -96,6 +96,14 @@ public class GameObject {
 					- getHeight() / 2, getWidth(), GamePanel.explosion);
 		}
 	}
+	
+	public boolean collidesWith(Projectile o) {
+		if (o.getCollisionBox().intersects(collisionBox) ) {
+			takeDamage(o.getDamage());
+			return true;
+		}
+		return false;
+	}
 
 	public double getCenterX() {
 		return centerX;

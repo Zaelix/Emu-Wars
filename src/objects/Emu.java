@@ -187,9 +187,15 @@ public class Emu extends GameObject {
 		}
 		if (health <= 0) {
 			setAlive(false);
-			GameManager.addJerky(new Jerky((int) getX(), (int) getY(), 40, 40));
 			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY() - getHeight() / 2, getWidth(), GamePanel.explosion);
-			GameManager.incrementScore((int) (maxHealth));
+			if(type != BOUNCER){
+				GameManager.addJerky(new Jerky((int) getX(), (int) getY(), 40, 40));
+				GameManager.incrementScore((int) (maxHealth));
+			}
+			else{
+				Egg egg = new Egg((int)getCenterX(), (int)getCenterY(), (int)(getWidth()/4), (int)(getHeight()/4), (int)speed, (int)(maxHealth/2), BOUNCER);
+				GameManager.addEgg(egg);
+			}
 		}
 	}
 
