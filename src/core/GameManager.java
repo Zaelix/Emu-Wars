@@ -491,7 +491,7 @@ public class GameManager {
 		ArrayList<UpgradeButton> healthButtons = new ArrayList<UpgradeButton>();
 		healthButtons.add(new UpgradeButton("HEALTH"));
 		healthButtons.add(new UpgradeButton("Heal", 10, 1, 0).setPercentageBasedValue(true));
-		healthButtons.add(new UpgradeButton("Max Health", player.getMaxHealth(), 5, 5).setPercentageBasedValue(true).setPercentageBasedCost(true).setCost(10));
+		healthButtons.add(new UpgradeButton("Max Health", player.getMaxHealth(), 5, 5).setPercentageBasedCost(true).setCost(10));
 		
 		buttonCategories.add(tankButtons);
 		buttonCategories.add(soldierButtons);
