@@ -10,7 +10,7 @@ import core.GamePanel;
 
 public class GameObject {
 	public static int debugRenderMode = 0;
-	double maxHealth = 5;
+	private double maxHealth = 5;
 	double health = 5;
 	private double x;
 	private double y;
@@ -198,5 +198,21 @@ public class GameObject {
 
 	void setHeight(int height) {
 		this.height = height;
+	}
+
+	public double getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(double maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+	
+	public double getHealth() {
+		return health;
+	}
+
+	public void setHealth(double health) {
+		this.health = health;
 	}
 }

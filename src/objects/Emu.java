@@ -46,8 +46,8 @@ public class Emu extends GameObject {
 		legs = new Rectangle();
 		setAnimCooldown((long) (getAnimCooldown() * (3.2 - speed)));
 		int healthMod = (int) ((GameManager.getSecondsSinceStart() / healthDifficultyDivisor) * size * size);
-		this.maxHealth = Math.max(2.5 - speed, 1) + 1 + healthMod;
-		this.health = maxHealth;
+		this.setMaxHealth(Math.max(2.5 - speed, 1) + 1 + healthMod);
+		this.health = getMaxHealth();
 		bhXMod = (this.getWidth() / 25);
 		legsXMod = (this.getWidth() / 3);
 		bodyYMod = (int) (this.getHeight() * 0.4);
@@ -71,16 +71,16 @@ public class Emu extends GameObject {
 			this.setWidth((int) (this.getWidth() * 1.5));
 			this.setHeight((int) (this.getHeight() * 1.5));
 			this.hpBar.setOffset(getWidth() / 5);
-			this.maxHealth *= 1.5;
-			this.health = this.maxHealth;
+			this.setMaxHealth(this.getMaxHealth() * 1.5);
+			this.health = this.getMaxHealth();
 		} else if (type == BOUNCER) {
 			int healthMod = (int) (GameManager.getSecondsSinceStart() / healthDifficultyDivisor) * 8;
 			this.setWidth(500);
 			this.setHeight(500);
 			this.hpBar.setOffset(100);
 			this.speed = 0.6;
-			this.maxHealth = 200 + healthMod;
-			this.health = this.maxHealth;
+			this.setMaxHealth(200 + healthMod);
+			this.health = this.getMaxHealth();
 			bhXMod = (this.getWidth() / 25);
 			legsXMod = (this.getWidth() / 3);
 			bodyYMod = (int) (this.getHeight() * 0.4);
@@ -190,10 +190,10 @@ public class Emu extends GameObject {
 			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY() - getHeight() / 2, getWidth(), GamePanel.explosion);
 			if(type != BOUNCER){
 				GameManager.addJerky(new Jerky((int) getX(), (int) getY(), 40, 40));
-				GameManager.incrementScore((int) (maxHealth));
+				GameManager.incrementScore((int) (getMaxHealth()));
 			}
 			else{
-				Egg egg = new Egg((int)getCenterX(), (int)getCenterY(), (int)(getWidth()/4), (int)(getHeight()/4), (int)speed, (int)(maxHealth/2), BOUNCER);
+				Egg egg = new Egg((int)getCenterX(), (int)getCenterY(), (int)(getWidth()/4), (int)(getHeight()/4), (int)speed, (int)(getMaxHealth()/2), BOUNCER);
 				GameManager.addEgg(egg);
 			}
 		}

@@ -320,7 +320,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			}
 			if (keyCode == 192) {
 				GameManager.topCategory++;
-				if (GameManager.topCategory > 2) {
+				if (GameManager.topCategory > GameManager.buttonCategories.size()-1) {
 					GameManager.topCategory = 0;
 				}
 				GameManager.addButtonsToUI();

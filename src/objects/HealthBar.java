@@ -21,13 +21,13 @@ public class HealthBar {
 		this.width = width;
 		this.height = height;
 		xOffset = (owner.getWidth()/2) - width/2;
-		percent = owner.health / owner.maxHealth;
+		percent = owner.health / owner.getMaxHealth();
 	}
 
 	void update() {
 		this.x = owner.getX() + xOffset;
 		this.y = owner.getY() - height - 5;
-		percent = Math.max(owner.health / owner.maxHealth, 0);
+		percent = Math.max(owner.health / owner.getMaxHealth(), 0);
 		if (owner instanceof Shield) {
 			this.color = Color.BLUE;
 		} else {
@@ -60,7 +60,7 @@ public class HealthBar {
 			g.setColor(color);
 			g.fillRect((int) (x + 1), (int) (y + 1), (int) ((width - 2) * percent), height - 2);
 			if (GameObject.debugRenderMode == 1) {
-				g.drawString(Math.ceil(owner.health) + "/" + Math.ceil(owner.maxHealth), (int) x, (int) y);
+				g.drawString(Math.ceil(owner.health) + "/" + Math.ceil(owner.getMaxHealth()), (int) x, (int) y);
 			}
 		}
 	}

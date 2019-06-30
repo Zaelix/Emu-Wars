@@ -41,7 +41,6 @@ public class GameManager {
 
 	public static int mouseXOffset = 10;
 	public static int mouseYOffset = 32;
-	static int playerHealth = 10;
 	public static Rectangle base = new Rectangle(0, 0, 210, EmuCore.HEIGHT);
 	static double points = 10;
 	static int score = 0;
@@ -214,7 +213,7 @@ public class GameManager {
 
 		g.setColor(Color.BLACK);
 		g.drawString("Hp: ", 133, 40);
-		g.drawString((int) playerHealth + "", 180 - (playerHealth + "").length() * 4, 40);
+		g.drawString((int) player.getHealth() + "", 180 - (player.getHealth() + "").length() * 4, 40);
 	}
 
 	void drawPointsBox(Graphics g) {
@@ -470,7 +469,7 @@ public class GameManager {
 		tankButtons.add(new UpgradeButton("T.Fire Rate", 800, 1, -10).setMinValue(50));
 		tankButtons.add(new UpgradeButton("T.Bullet Speed", 1, 1.4).setMaxValue(20));
 		tankButtons.add(new UpgradeButton("T.Bullet Dmg", 1, 1));
-		tankButtons.add(new UpgradeButton("T.Move Speed", 1, 2.3));
+		tankButtons.add(new UpgradeButton("T.Move Speed", 1, 2.3).setMaxValue(20));
 
 		ArrayList<UpgradeButton> soldierButtons = new ArrayList<UpgradeButton>();
 		soldierButtons.add(new UpgradeButton("SOLDIER"));
@@ -487,9 +486,16 @@ public class GameManager {
 		grenadeButtons.add(new UpgradeButton("G.Dmg", 1, 5, 0.1).setPercentageBasedCost(true));
 		grenadeButtons.add(new UpgradeButton("G.Area", 100, 9, 5).setPercentageBasedCost(true).setCost(10));
 
+		
+		ArrayList<UpgradeButton> healthButtons = new ArrayList<UpgradeButton>();
+		healthButtons.add(new UpgradeButton("HEALTH"));
+		healthButtons.add(new UpgradeButton("Heal", 10, 1, 0).setPercentageBasedValue(true));
+		healthButtons.add(new UpgradeButton("Max Health", player.getMaxHealth(), 5, 5).setPercentageBasedValue(true).setPercentageBasedCost(true).setCost(10));
+		
 		buttonCategories.add(tankButtons);
 		buttonCategories.add(soldierButtons);
 		buttonCategories.add(grenadeButtons);
+		buttonCategories.add(healthButtons);
 
 		assignButtonKeys();
 		addButtonsToUI();
@@ -565,6 +571,8 @@ public class GameManager {
 		i[10] = findButtonIndex("G.Refill rate");
 		i[11] = findButtonIndex("G.Dmg");
 		i[12] = findButtonIndex("G.Area");
+		
+		
 		return i;
 	}
 
@@ -700,8 +708,8 @@ public class GameManager {
 	}
 
 	public static void takeDamage(int dmg) {
-		playerHealth -= dmg;
-		if (playerHealth <= 0) {
+		player.setHealth(player.getHealth() - dmg);
+		if (player.getHealth() <= 0) {
 			gameOver();
 		}
 	}
@@ -740,7 +748,7 @@ public class GameManager {
 
 	public static void setDifficultyStats() {
 		if (difficulty == 0) {
-			playerHealth = 100;
+			player.setHealth(100);
 			points = 50;
 			spawnCooldown = 8000;
 			spawnChangeRate = 0.9999;
@@ -750,7 +758,7 @@ public class GameManager {
 			friendlyFire = false;
 		}
 		if (difficulty == 1) {
-			playerHealth = 50;
+			player.setHealth(50);
 			points = 20;
 			spawnCooldown = 6000;
 			spawnChangeRate = 0.9992;
@@ -760,7 +768,7 @@ public class GameManager {
 			friendlyFire = false;
 		}
 		if (difficulty == 2) {
-			playerHealth = 10;
+			player.setHealth(10);
 			points = 10;
 			spawnCooldown = 4000;
 			spawnChangeRate = 0.9985;
@@ -770,7 +778,7 @@ public class GameManager {
 			friendlyFire = true;
 		}
 		if (difficulty == 9) {
-			playerHealth = 100000;
+			player.setHealth(100000);
 			points = 100000;
 			spawnCooldown = 3000;
 			spawnChangeRate = 0.9985;

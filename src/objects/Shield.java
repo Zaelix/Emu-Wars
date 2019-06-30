@@ -18,8 +18,8 @@ public class Shield extends GameObject {
 		this.parent = parent;
 		hpBar = new HealthBar(this, 70, 15);
 		hpBar.setOffset(width/3);
-		this.health = parent.maxHealth * 2;
-		this.maxHealth = parent.maxHealth * 4;
+		this.health = parent.getMaxHealth() * 2;
+		this.setMaxHealth(parent.getMaxHealth() * 4);
 		this.percent = 1;
 	}
 
@@ -39,7 +39,7 @@ public class Shield extends GameObject {
 		}
 		this.setX(parent.getX() + (parent.getWidth() / 2) - (getWidth()/2));
 		this.setY(parent.getY() + (parent.getHeight() / 2) - (getHeight()/2));
-		percent = health / maxHealth;
+		percent = health / getMaxHealth();
 		if(percent > 0.01){
 			setWidth((int) ((parent.getWidth()*3)*percent));
 			setHeight((int) ((parent.getWidth()*3)*percent));
@@ -48,7 +48,7 @@ public class Shield extends GameObject {
 			setWidth(5);
 			setHeight(5);
 		}
-		if (isAlive() && health < maxHealth && type == 0) {
+		if (isAlive() && health < getMaxHealth() && type == 0) {
 			health *= regenRate;
 		}
 	}

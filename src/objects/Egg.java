@@ -15,7 +15,7 @@ public class Egg extends GameObject {
 	Egg(int x, int y, int width, int height, int speed, int hp, int emuType) {
 		super(x, y, width, height, 0, Color.WHITE);
 		this.health = hp;
-		this.maxHealth = hp;
+		this.setMaxHealth(hp);
 		this.emuType = emuType;
 		this.speed = speed;
 		hatchTimer = System.currentTimeMillis();
@@ -56,7 +56,7 @@ public class Egg extends GameObject {
 			setAlive(false);
 			GameManager.addJerky(new Jerky((int) getX(), (int) getY(), 40, 40));
 			GameManager.explodeAt((int) getX() - getWidth() / 2, (int) getY() - getHeight() / 2, getWidth(), GamePanel.explosion);
-			GameManager.incrementScore((int) (maxHealth * 2));
+			GameManager.incrementScore((int) (getMaxHealth() * 2));
 		}
 	}
 

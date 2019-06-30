@@ -130,7 +130,7 @@ public class Soldier extends GameObject {
 
 	public void trainAsSoldier() {
 		isFarmer = false;
-		health = maxHealth;
+		health = getMaxHealth();
 		setX(GameManager.getPlayer().getX());
 	}
 
