@@ -756,6 +756,7 @@ public class GameManager {
 		if (difficulty == 0) {
 			player.setHealth(100);
 			player.setMaxHealth(100);
+			player.grenades = 1;
 			points = 50;
 			spawnCooldown = 8000;
 			spawnChangeRate = 0.9999;
@@ -767,6 +768,7 @@ public class GameManager {
 		if (difficulty == 1) {
 			player.setHealth(50);
 			player.setMaxHealth(50);
+			player.grenades = 1;
 			points = 20;
 			spawnCooldown = 6000;
 			spawnChangeRate = 0.9992;
@@ -778,6 +780,7 @@ public class GameManager {
 		if (difficulty == 2) {
 			player.setHealth(10);
 			player.setMaxHealth(10);
+			player.grenades = 1;
 			points = 10;
 			spawnCooldown = 4000;
 			spawnChangeRate = 0.9985;
@@ -789,6 +792,7 @@ public class GameManager {
 		if (difficulty == 9) {
 			player.setHealth(100000);
 			player.setMaxHealth(100000);
+			player.grenades = 1;
 			points = 100000;
 			spawnCooldown = 3000;
 			spawnChangeRate = 0.9985;
@@ -856,6 +860,13 @@ public class GameManager {
 	public static void damageArea(int x, int y, double size, double damage, double maxDamage, int maxTargets) {
 		int targetsHit = 0;
 		for (Emu e : emus) {
+			dealExplosionDamage(e, x, y, size, damage, maxDamage);
+			targetsHit++;
+			if (targetsHit >= maxTargets) {
+				break;
+			}
+		}
+		for (Egg e : eggs) {
 			dealExplosionDamage(e, x, y, size, damage, maxDamage);
 			targetsHit++;
 			if (targetsHit >= maxTargets) {
