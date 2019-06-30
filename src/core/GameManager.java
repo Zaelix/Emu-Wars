@@ -23,6 +23,7 @@ import objects.Emu;
 import objects.Explosion;
 import objects.GameObject;
 import objects.Grenade;
+import objects.HealthPack;
 import objects.Jerky;
 import objects.Player;
 import objects.Projectile;
@@ -490,7 +491,7 @@ public class GameManager {
 		
 		ArrayList<UpgradeButton> healthButtons = new ArrayList<UpgradeButton>();
 		healthButtons.add(new UpgradeButton("HEALTH"));
-		healthButtons.add(new UpgradeButton("Heal", 10, 1, 0).setPercentageBasedValue(true));
+		healthButtons.add(new UpgradeButton("Heal", 10, 0, "Heal").setPercentageBasedValue(true).setValueMult(0).setPercentageBasedCost(true));
 		healthButtons.add(new UpgradeButton("Max Health", player.getMaxHealth(), 5, 5).setPercentageBasedCost(true).setCost(10));
 		
 		buttonCategories.add(tankButtons);
@@ -554,11 +555,11 @@ public class GameManager {
 		Grenade.maxDamage = buttons.get(i[11]).getValue() * 5;
 		Grenade.diameter = (int) buttons.get(i[12]).getValue();
 		
-		player.setMaxHealth((int) buttons.get(i[13]).getValue());
+		player.setMaxHealth((int) buttons.get(i[14]).getValue());
 	}
 
-	int[] findUpgradeButtonIndexes() {
-		int[] i = new int[14];
+	static int[] findUpgradeButtonIndexes() {
+		int[] i = new int[15];
 		i[0] = findButtonIndex("T.Fire Rate");
 		i[1] = findButtonIndex("T.Bullet Speed");
 		i[2] = findButtonIndex("T.Bullet Dmg");
@@ -575,12 +576,13 @@ public class GameManager {
 		i[11] = findButtonIndex("G.Dmg");
 		i[12] = findButtonIndex("G.Area");
 
-		i[13] = findButtonIndex("Max Health");
+		i[13] = findButtonIndex("Heal");
+		i[14] = findButtonIndex("Max Health");
 		
 		return i;
 	}
 
-	int findButtonIndex(String s) {
+	static int findButtonIndex(String s) {
 		for (int i = 0; i < buttons.size(); i++) {
 			if (buttons.get(i).getText().equals(s)) {
 				return i;
@@ -827,6 +829,10 @@ public class GameManager {
 			obj = new Soldier((int) (getPlayer().getX() + getPlayer().getWidth()), (int) getPlayer().getCenterY(), 100, 100, Color.GREEN);
 			((Soldier) obj).trainAsSoldier();
 			soldiers.add((Soldier) obj);
+		}
+		if(object.equals("Heal")){
+			obj = new HealthPack((int) (getPlayer().getX() + getPlayer().getWidth()), (int) getPlayer().getCenterY(), 40,40, (int) buttons.get(findUpgradeButtonIndexes()[13]).getValue());
+			jerkies.add((Jerky)obj);
 		}
 
 	}

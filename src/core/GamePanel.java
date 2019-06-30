@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public static BufferedImage grenade;
 	public static BufferedImage jerky;
 	public static BufferedImage egg;
+	public static BufferedImage healthPack;
 
 	public static BufferedImage tankBase;
 	public static BufferedImage tankTurret;
@@ -97,6 +98,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		tankTurret = loadImage("tank_turret.png");
 		jerky = loadImage("jerky.png");
 		egg = loadImage("egg.png");
+		healthPack = loadImage("heal_pack.png");
 	}
 
 	BufferedImage loadImage(String fileName) {

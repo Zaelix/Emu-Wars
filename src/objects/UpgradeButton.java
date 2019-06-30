@@ -25,7 +25,7 @@ public class UpgradeButton {
 	private double value;
 	int decimals;
 	double cost = 1;
-	double costMult = 1;
+	private double costMult = 1;
 	double valueMult = 0.1;
 	int maxValue = Integer.MAX_VALUE;
 	private int minValue = 0;
@@ -78,7 +78,7 @@ public class UpgradeButton {
 		this.text = text;
 		this.setValue(value);
 		this.decimals = 2;
-		this.costMult = costMult;
+		this.setCostMult(costMult);
 	}
 
 	public void calculateYPosition() {
@@ -162,9 +162,9 @@ public class UpgradeButton {
 				setValue(getValue() + valueMult);
 			}
 			if (isPercentageBasedCost) {
-				cost *= 1 + (costMult / 100);
+				cost *= 1 + (getCostMult() / 100);
 			} else {
-				cost += 1 / costMult;
+				cost += 1 / getCostMult();
 			}
 		}
 		if (value >= maxValue) {
@@ -251,6 +251,20 @@ public class UpgradeButton {
 
 	public UpgradeButton setMinValue(int minValue) {
 		this.minValue = minValue;
+		return this;
+	}
+
+	double getCostMult() {
+		return costMult;
+	}
+
+	public UpgradeButton setCostMult(double costMult) {
+		this.costMult = costMult;
+		return this;
+	}
+
+	public UpgradeButton setValueMult(int valueMult) {
+		this.valueMult = valueMult;
 		return this;
 	}
 }

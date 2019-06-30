@@ -50,7 +50,7 @@ public class GameObject {
 	void update(){
 		setCenterX((int) (getX() + getWidth() / 2));
 		setCenterY((int) (getY() + getHeight() / 2));
-		if(getX()>EmuCore.WIDTH + 250 || getX() < 200){
+		if(getX()>EmuCore.WIDTH + 250 || getX() < 50){
 			setAlive(false);	
 		}
 		if(getY()>EmuCore.HEIGHT + 250 || getY() < -250){

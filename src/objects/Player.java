@@ -174,4 +174,13 @@ public class Player extends GameObject {
 		barrel = new Point((int) (getCenterX() + vx * 50), (int) (getCenterY() + vy * 50));
 		//angle = (vy)*90 + 90;
 	}
+
+	public void heal(int hp) {
+		if(health + hp <= getMaxHealth()){
+			setHealth(health + hp);
+		}
+		else{
+			setHealth(getMaxHealth());
+		}
+	}
 }

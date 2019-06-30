@@ -9,6 +9,12 @@ import core.GamePanel;
 
 public class Jerky extends GameObject {
 	int age = 0;
+	int deathX = 80;
+	int deathY = 160;
+	double slowXMultAged = 0.95;
+	double slowXMultFresh = 0.995;
+	double slowYMultAged = 0.97;
+	double slowYMultFresh = 0.97;
 
 	Jerky(int x, int y, int width, int height) {
 		super(x, y, width, height, 3, Color.RED);
@@ -20,7 +26,7 @@ public class Jerky extends GameObject {
 		double slopeY = from.y - (to.y - GameManager.mouseYOffset);
 
 		double magn = Math.sqrt(Math.pow((slopeX), 2) + Math.pow((slopeY), 2));
-		speed *= magn / 165;
+		speed = 3*magn / 165;
 		vx = -slopeX / magn * speed;
 		vy = -slopeY / magn * speed*2;
 	}
@@ -32,11 +38,11 @@ public class Jerky extends GameObject {
 
 	public void slow() {
 		if (age > 150) {
-			vx *= 0.95;
-			vy *= 0.97;
+			vx *= slowXMultAged;
+			vy *= slowYMultAged;
 		} else {
-			vx *= 0.995;
-			vy *= 0.97;
+			vx *= slowXMultFresh;
+			vy *= slowYMultFresh;
 		}
 	}
 
@@ -46,9 +52,13 @@ public class Jerky extends GameObject {
 		setY(getY() + vy);
 		slow();
 		age++;
-		if (isAlive() && getX() < 120 && getY() < 60) {
-			setAlive(false);
+		if (isAlive() && getX() < deathX && getY() < deathY) {
+			die();
 		}
+	}
+	
+	public void die(){
+		setAlive(false);
 	}
 
 }
