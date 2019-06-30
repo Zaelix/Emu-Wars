@@ -20,6 +20,7 @@ public class HealthBar {
 		this.y = owner.getY() - height - 5;
 		this.width = width;
 		this.height = height;
+		xOffset = (owner.getWidth()/2) - width/2;
 		percent = owner.health / owner.maxHealth;
 	}
 
