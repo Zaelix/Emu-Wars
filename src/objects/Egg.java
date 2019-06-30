@@ -10,7 +10,7 @@ public class Egg extends GameObject {
 	private int emuType;
 	int secondsUntilHatch = 10;
 	long hatchTimer;
-	long hatchDelay = 10000;
+	long hatchDelay = 1000;
 
 	Egg(int x, int y, int width, int height, int speed, int hp, int emuType) {
 		super(x, y, width, height, 0, Color.WHITE);
@@ -23,6 +23,7 @@ public class Egg extends GameObject {
 
 	public void draw(Graphics g) {
 		g.drawImage(GamePanel.egg, (int) getX(), (int) getY(), getWidth(), getHeight(), null);
+		g.drawString(secondsUntilHatch+"s", (int)(getX()+getWidth()/2)-15, (int)(getY()+getHeight()/2)+10);
 		hpBar.draw(g);
 		super.draw(g);
 	}
@@ -31,6 +32,10 @@ public class Egg extends GameObject {
 		super.update();
 		hpBar.update();
 		if (System.currentTimeMillis() - hatchTimer >= hatchDelay) {
+			secondsUntilHatch--;
+			hatchTimer = System.currentTimeMillis();
+		}
+		if(secondsUntilHatch <= 0){
 			hatch();
 		}
 	}
