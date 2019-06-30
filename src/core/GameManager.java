@@ -207,26 +207,26 @@ public class GameManager {
 	void drawHealthBox(Graphics g) {
 		g.setFont(defaultFont);
 		g.setColor(Color.BLACK);
-		g.fillRect(130, 10, 80, 49);
+		g.fillRect(110, 10, 100, 49);
 		g.setColor(new Color(40, 240, 40));
-		g.fillRect(131, 11, 78, 47);
+		g.fillRect(111, 11, 98, 47);
 
 		g.setColor(Color.BLACK);
-		g.drawString("Hp: ", 133, 40);
-		g.drawString((int) player.getHealth() + "", 180 - (player.getHealth() + "").length() * 4, 40);
+		g.drawString("Hp: ", 113, 40);
+		g.drawString((int) player.getHealth() + "/" + (int)player.getMaxHealth(), 160 - (player.getHealth() + "").length() * 4, 40);
 	}
 
 	void drawPointsBox(Graphics g) {
 		g.setFont(defaultFont);
-		String pts = myFormatter.format(points);
+		String pts = myFormatter.format((int)points);
 		g.setColor(Color.BLACK);
-		g.fillRect(10, 10, 120, 49);
+		g.fillRect(10, 10, 100, 49);
 		g.setColor(new Color(40, 240, 40));
-		g.fillRect(11, 11, 118, 47);
+		g.fillRect(11, 11, 98, 47);
 
 		g.setColor(Color.BLACK);
 		g.drawString("Jerky: ", 12, 40);
-		g.drawString(pts, 90 - pts.length() * 4, 40);
+		g.drawString((int)points + "", 75 - pts.length() * 4, 40);
 	}
 
 	void update() {
@@ -442,6 +442,7 @@ public class GameManager {
 		soldiers.add(obj);
 	}
 
+	// DEPRECATED
 	static void createButtons() {
 		buttons.clear();
 		buttons.add(new UpgradeButton("TANK"));
@@ -552,10 +553,12 @@ public class GameManager {
 		Grenade.damage = buttons.get(i[11]).getValue();
 		Grenade.maxDamage = buttons.get(i[11]).getValue() * 5;
 		Grenade.diameter = (int) buttons.get(i[12]).getValue();
+		
+		player.setMaxHealth((int) buttons.get(i[13]).getValue());
 	}
 
 	int[] findUpgradeButtonIndexes() {
-		int[] i = new int[13];
+		int[] i = new int[14];
 		i[0] = findButtonIndex("T.Fire Rate");
 		i[1] = findButtonIndex("T.Bullet Speed");
 		i[2] = findButtonIndex("T.Bullet Dmg");
@@ -571,7 +574,8 @@ public class GameManager {
 		i[10] = findButtonIndex("G.Refill rate");
 		i[11] = findButtonIndex("G.Dmg");
 		i[12] = findButtonIndex("G.Area");
-		
+
+		i[13] = findButtonIndex("Max Health");
 		
 		return i;
 	}
@@ -749,6 +753,7 @@ public class GameManager {
 	public static void setDifficultyStats() {
 		if (difficulty == 0) {
 			player.setHealth(100);
+			player.setMaxHealth(100);
 			points = 50;
 			spawnCooldown = 8000;
 			spawnChangeRate = 0.9999;
@@ -759,6 +764,7 @@ public class GameManager {
 		}
 		if (difficulty == 1) {
 			player.setHealth(50);
+			player.setMaxHealth(50);
 			points = 20;
 			spawnCooldown = 6000;
 			spawnChangeRate = 0.9992;
@@ -769,6 +775,7 @@ public class GameManager {
 		}
 		if (difficulty == 2) {
 			player.setHealth(10);
+			player.setMaxHealth(10);
 			points = 10;
 			spawnCooldown = 4000;
 			spawnChangeRate = 0.9985;
@@ -779,6 +786,7 @@ public class GameManager {
 		}
 		if (difficulty == 9) {
 			player.setHealth(100000);
+			player.setMaxHealth(100000);
 			points = 100000;
 			spawnCooldown = 3000;
 			spawnChangeRate = 0.9985;
