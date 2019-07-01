@@ -745,6 +745,7 @@ public class GameManager {
 
 	public static void start() {
 		currentState = GAME_STATE;
+		timeAtStart = System.currentTimeMillis();
 		setDifficultyStats();
 	}
 
@@ -807,6 +808,9 @@ public class GameManager {
 		buttons.clear();
 		soldiers.clear();
 		shields.clear();
+		jerkies.clear();
+		grenades.clear();
+		resetExplosions();
 		UpgradeButton.nextValidKey = 1;
 		UpgradeButton.nextValidY = 65;
 		// createButtons();
@@ -814,6 +818,11 @@ public class GameManager {
 		currentState = GAME_STATE;
 	}
 
+	static void resetExplosions(){
+		for(Explosion e : explosionPool){
+			e.setX(10000);
+		}
+	}
 	public static void restart() {
 		setDifficultyStats();
 		createButtonsWithCategories();
