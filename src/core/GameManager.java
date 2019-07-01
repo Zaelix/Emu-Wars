@@ -810,6 +810,7 @@ public class GameManager {
 		shields.clear();
 		jerkies.clear();
 		grenades.clear();
+		eggs.clear();
 		resetExplosions();
 		UpgradeButton.nextValidKey = 1;
 		UpgradeButton.nextValidY = 65;
